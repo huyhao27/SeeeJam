@@ -1,3 +1,5 @@
+// GameManager.cs
+
 using System;
 using UnityEngine;
 
@@ -14,6 +16,7 @@ public class GameManager : Singleton<GameManager>
     public static event Action<GameState> OnGameStateChanged;
 
     public GameState CurrentState { get; private set; }
+
     public void ChangeState(GameState newState)
     {
         if (CurrentState == newState) return;
@@ -24,15 +27,19 @@ public class GameManager : Singleton<GameManager>
         {
             case GameState.MainMenu:
                 Time.timeScale = 1f;
+                PopupManager.Instance.HideAllPopups(); 
                 break;
             case GameState.Playing:
                 Time.timeScale = 1f;
+                PopupManager.Instance.HideAllPopups(); 
                 break;
             case GameState.Paused:
                 Time.timeScale = 0f; 
+                PopupManager.Instance.ShowPopup<PausePopup>(); 
                 break;
             case GameState.GameOver:
-                Time.timeScale = 1f; // or 0f
+                Time.timeScale = 1f; // or 0f 
+                PopupManager.Instance.ShowPopup<GameOverPopup>(); 
                 break;
         }
 
