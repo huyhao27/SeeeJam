@@ -1834,6 +1834,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1170576998}
   - component: {fileID: 1170576999}
+  - component: {fileID: 1170577000}
   m_Layer: 0
   m_Name: PopupManager
   m_TagString: Untagged
@@ -1868,9 +1869,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7314b1c437b8d5340825f891f73e751c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popups:
-  - {fileID: 3705653936814431702}
-  - {fileID: 5375548228699208303}
+  popups: []
+--- !u!114 &1170577000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170576997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47174cfbcd452234b9631f8ec1fe40c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: b40722eac0195f34d8d8a3da28e1f0cd, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - {m_Target: {fileID: 1170576997}, m_TargetAssemblyTypeName: , m_MethodName: , m_Mode: 0, m_Arguments: {m_ObjectArgument: {fileID: 0}, m_ObjectArgumentAssemblyTypeName: , m_IntArgument: 0, m_FloatArgument: 0, m_StringArgument: , m_BoolArgument: 0}, m_CallState: 2}
+    m_CallsDirty: 1
 --- !u!1 &1191707045
 GameObject:
   m_ObjectHideFlags: 0
@@ -2405,6 +2422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c286610b8053c0546be860424f0819f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenuSceneName: SampleScene
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
