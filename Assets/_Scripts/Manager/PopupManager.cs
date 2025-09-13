@@ -1,11 +1,12 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class PopupManager : Singleton<PopupManager>
 {
-    [SerializeField] private List<Popup> popups; 
+    [SerializeField] private List<Popup> popups;
 
     protected override void Awake()
     {
@@ -14,8 +15,18 @@ public class PopupManager : Singleton<PopupManager>
         {
             popup.gameObject.SetActive(false);
         }
+        
     }
-    
+
+    void Start()
+    {
+        EventBus.On(GameEvent.GameOver, (data) => OnGameOver((int)data));
+    }
+
+    void OnGameOver(int score) {
+        Debug.Log(score);
+    }
+
     public T ShowPopup<T>() where T : Popup
     {
         var popupToShow = popups.FirstOrDefault(p => p is T);

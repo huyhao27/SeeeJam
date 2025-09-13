@@ -22,28 +22,35 @@ public class GameManager : Singleton<GameManager>
         if (CurrentState == newState) return;
 
         CurrentState = newState;
-        
+
         switch (newState)
         {
             case GameState.MainMenu:
                 Time.timeScale = 1f;
-                PopupManager.Instance.HideAllPopups(); 
+                PopupManager.Instance.HideAllPopups();
                 break;
             case GameState.Playing:
                 Time.timeScale = 1f;
-                PopupManager.Instance.HideAllPopups(); 
+                PopupManager.Instance.HideAllPopups();
                 break;
             case GameState.Paused:
-                Time.timeScale = 0f; 
-                PopupManager.Instance.ShowPopup<PausePopup>(); 
+                Time.timeScale = 0f;
+                PopupManager.Instance.ShowPopup<PausePopup>();
                 break;
             case GameState.GameOver:
                 Time.timeScale = 1f; // or 0f 
-                PopupManager.Instance.ShowPopup<GameOverPopup>(); 
+                PopupManager.Instance.ShowPopup<GameOverPopup>();
+                EventBus.Emit(GameEvent.GameOver, 0);
                 break;
         }
 
         OnGameStateChanged?.Invoke(newState);
         Debug.Log("Game state changed to: " + newState);
     }
+}
+
+public enum GameEvent {
+    Win,
+    Lose,
+    GameOver,
 }
