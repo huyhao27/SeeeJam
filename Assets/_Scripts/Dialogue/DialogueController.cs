@@ -8,7 +8,7 @@ public class DialogueController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI NPCNameText;
     [SerializeField] private TextMeshProUGUI NPCDialogueText;
-    [SerializeField] private floart typeSpeed = 10;
+    [SerializeField] private float typeSpeed = 10;
 
     private Queue<string> paragraphs = new Queue<string>();
     private bool conversationEnded ;
@@ -23,8 +23,9 @@ public class DialogueController : MonoBehaviour
             if(paragraphs.Count == 0){
                 if(!conversationEnded){
                     StartConversation(dialogueText);
-                }else if(conversationEnded && !isTypeing){
-                     EndConversation()
+                }else if(conversationEnded && !isTypeing)
+                {
+                    EndConversation();
                      return;
                 }
             }
