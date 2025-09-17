@@ -43,11 +43,6 @@ public class PlayerMovement : MonoBehaviour
         if (!isDashing && GameManager.Instance.CurrentState == GameState.Playing)
         {
             rb.velocity = moveDirection * (moveSpeed);
-            
-            if(moveDirection != Vector2.zero)
-            {
-                Debug.Log("Applying velocity: " + rb.velocity);
-            }
         }
     }
 

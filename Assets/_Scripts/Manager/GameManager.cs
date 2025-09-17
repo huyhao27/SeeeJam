@@ -56,4 +56,5 @@ public enum GameEvent {
     Win,
     Lose,
     GameOver,
+    ActivateSkill,
 }
