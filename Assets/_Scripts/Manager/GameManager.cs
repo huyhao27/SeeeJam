@@ -1,4 +1,3 @@
-// GameManager.cs
 
 using System;
 using UnityEngine;
