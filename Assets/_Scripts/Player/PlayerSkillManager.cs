@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class PlayerSkillManager : MonoBehaviour
 {
-    [SerializeField] private List<Base_Skill> skills;
+    [SerializeField] private List<BaseSkill> skills;
 
     private PlayerInput playerInput;
     private Camera mainCamera;
-    private readonly Dictionary<Base_Skill, float> skillCooldowns = new Dictionary<Base_Skill, float>();
+    private readonly Dictionary<BaseSkill, float> skillCooldowns = new Dictionary<BaseSkill, float>();
 
     private void Awake()
     {
@@ -43,7 +43,7 @@ public class PlayerSkillManager : MonoBehaviour
         if (GameManager.Instance.CurrentState != GameState.Playing) return;
 
         HandleRotation();
-        UpdateAllCooldowns();
+        // UpdateAllCooldowns();
     }
 
     private void OnSkillActivateEvent(object data)
@@ -60,7 +60,7 @@ public class PlayerSkillManager : MonoBehaviour
 
         if (skillIndex >= 0 && skillIndex < skills.Count && skills[skillIndex] != null)
         {
-            Base_Skill skill = skills[skillIndex];
+            BaseSkill skill = skills[skillIndex];
             if (skillCooldowns[skill] <= 0)
             {
                 skill.Activate(gameObject);
@@ -75,7 +75,7 @@ public class PlayerSkillManager : MonoBehaviour
     
     private void UpdateAllCooldowns()
     {
-        var skillKeys = new List<Base_Skill>(skillCooldowns.Keys);
+        var skillKeys = new List<BaseSkill>(skillCooldowns.Keys);
         foreach (var skill in skillKeys)
         {
             if (skillCooldowns[skill] > 0)
