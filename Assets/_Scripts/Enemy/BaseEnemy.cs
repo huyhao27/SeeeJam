@@ -6,8 +6,6 @@ public class BaseEnemy : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private int maxHp = 30;              
     [SerializeField] private float baseMoveSpeed = 2.5f;
-    [Header("Pooling (tuỳ chọn)")]
-    [Tooltip("Nếu được gán, enemy sẽ trả về pool của prefab này khi chết")]
 
     [Header("AI Settings")]
     [SerializeField] private float detectionRange = 6f;   // Phạm vi phát hiện Player để chuyển sang Pursuit
@@ -36,6 +34,15 @@ public class BaseEnemy : MonoBehaviour
     [SerializeField] private Vector2 patrolChangeDirInterval = new Vector2(1.5f, 3.5f); // thời gian đổi hướng
     private Vector2 patrolDir = Vector2.zero;
     private float patrolTimer = 0f;
+    private Vector2 patrolVelocity = Vector2.zero; // vận tốc cho patrol (làm mượt)
+
+    // Rigidbody2D (nếu có) để di chuyển an toàn với vật lý 2D
+    private Rigidbody2D rb;
+
+    // Hằng số/tham số phụ
+    private const float MinSpeedMultiplier = 0.15f; // tốc độ tối thiểu khi patrol (tránh đứng im)
+    [SerializeField] private float patrolAcceleration = 20f;  // gia tốc để mượt hoá vận tốc patrol
+    [SerializeField] private float patrolRotateLerp = 5f;      // độ mượt xoay khi patrol
     #endregion
 
     #region Unity Events
@@ -43,6 +50,7 @@ public class BaseEnemy : MonoBehaviour
     {
         currentHp = maxHp;
         currentMoveSpeed = baseMoveSpeed;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
@@ -54,7 +62,7 @@ public class BaseEnemy : MonoBehaviour
 
     #region Public API
     // Được EnemySpawnManager gọi khi spawn từ pool
-    public virtual void OnSpawn()
+    public virtual void OnPersistentSpawn()
     {
         // Reset trạng thái để tái sử dụng an toàn
         currentHp = maxHp;
@@ -66,7 +74,7 @@ public class BaseEnemy : MonoBehaviour
     }
 
     // Được EnemySpawnManager gọi trước khi trả về pool
-    public virtual void OnDespawn()
+    public virtual void OnPersistentDespawn()
     {
         // Nếu cần: tắt VFX, reset animation, huỷ DOT tạm thời, vv.
         currentTarget = null;
@@ -84,7 +92,7 @@ public class BaseEnemy : MonoBehaviour
         currentHp = Mathf.Clamp(amount, 0, maxHp);
         if (currentHp <= 0)
         {
-            OnDeath();
+            OnPersistentDeath();
         }
     }
 
@@ -100,23 +108,45 @@ public class BaseEnemy : MonoBehaviour
         }
     }
 
-    // Patrol: di chuyển nhàn rỗi (đi tuần) – di chuyển ngẫu nhiên trong 2D
+    // Cập nhật hướng patrol ngẫu nhiên
+    private void UpdatePatrolDirection()
+    {
+        patrolTimer = Random.Range(patrolChangeDirInterval.x, patrolChangeDirInterval.y);
+        patrolDir = Random.insideUnitCircle.normalized;
+    }
+
+    // Patrol: di chuyển nhàn rỗi (đi tuần) – di chuyển ngẫu nhiên trong 2D, có làm mượt
     public void Patrol()
     {
-        patrolTimer -= Time.deltaTime;
+        float dt = Time.deltaTime;
+        patrolTimer -= dt;
         if (patrolTimer <= 0f || patrolDir == Vector2.zero)
         {
-            float t = Random.Range(patrolChangeDirInterval.x, patrolChangeDirInterval.y);
-            patrolTimer = t;
-            patrolDir = Random.insideUnitCircle.normalized;
+            UpdatePatrolDirection();
         }
 
-        float speed = baseMoveSpeed * Mathf.Max(0.1f, patrolSpeedMultiplier);
-        Vector3 delta = (Vector3)(patrolDir * speed * Time.deltaTime);
-        transform.position += delta;
-        if (patrolDir != Vector2.zero)
+        // Tốc độ mục tiêu và vận tốc được làm mượt theo gia tốc
+        float targetSpeed = baseMoveSpeed * Mathf.Max(MinSpeedMultiplier, patrolSpeedMultiplier);
+        Vector2 desiredVel = patrolDir * targetSpeed;
+        patrolVelocity = Vector2.MoveTowards(patrolVelocity, desiredVel, patrolAcceleration * dt);
+        Vector2 movement = patrolVelocity * dt;
+
+        // Di chuyển: ưu tiên Rigidbody2D nếu có (an toàn va chạm). Fallback: transform
+        if (rb != null && rb.isKinematic == false)
         {
-            transform.up = new Vector3(patrolDir.x, patrolDir.y, 0f);
+            rb.MovePosition(rb.position + movement);
+        }
+        else
+        {
+            transform.position += (Vector3)movement;
+        }
+
+        // Xoay mượt về hướng di chuyển
+        if (patrolVelocity.sqrMagnitude > 0.0001f)
+        {
+            Vector2 lookDir = patrolVelocity.normalized;
+            Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, new Vector3(lookDir.x, lookDir.y, 0f));
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, patrolRotateLerp * dt);
         }
     }
 
@@ -166,7 +196,7 @@ public class BaseEnemy : MonoBehaviour
         // Nếu có target thì kiểm tra khoảng cách, nếu không thì tìm player (stub)
         if (currentTarget)
         {
-            float dist = Vector3.Distance(transform.position, currentTarget.transform.position);
+            float dist = Vector2.Distance(transform.position, currentTarget.transform.position);
             if (dist <= attackRange)
             {
                 if (attackTimer <= 0f)
@@ -195,7 +225,7 @@ public class BaseEnemy : MonoBehaviour
             if (playerObj)
             {
                 Transform p = playerObj.transform;
-                float dist = Vector3.Distance(transform.position, p.position);
+                float dist = Vector2.Distance(transform.position, p.position);
                 if (dist <= detectionRange)
                 {
                     currentTarget = p;
@@ -221,7 +251,7 @@ public class BaseEnemy : MonoBehaviour
         // TODO: Hiệu ứng hit (flash, sound,...)
     }
 
-    private void OnDeath()
+    private void OnPersistentDeath()
     {
         // TODO: Drop loot / spawn effect / thông báo hệ thống progression
         Debug.Log($"Enemy {name} đã chết");
@@ -253,10 +283,19 @@ public class BaseEnemy : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+#if UNITY_EDITOR
+        // Vẽ vòng tròn 2D trên mặt phẳng XY bằng Handles
+        UnityEditor.Handles.color = Color.yellow;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, detectionRange);
+        UnityEditor.Handles.color = Color.red;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, attackRange);
+#else
+        // Fallback (nếu không có UnityEditor), vẫn vẽ được trong môi trường runtime
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+#endif
     }
     #endregion
 }
