@@ -50,7 +50,7 @@ public class PlayerSkillManager : MonoBehaviour
     {
         if (data is int skillNumber)
         {
-            TryActivateSkill(skillNumber - 1);
+            TryActivateSkill(skillNumber);
         }
     }
     
