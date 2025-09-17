@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class Note : MonoBehaviour
 {
-    private Vector3 offset;
-    private float zCoord;
+    [SerializeField] private int type;
 
-    void OnMouseDown()
+    public void onHit()
     {
-
+        EventBus.Emit(GameEvent.OnHitNote, this.type);
     }
-
 }
