@@ -16,6 +16,10 @@ public class GameManager : Singleton<GameManager>
 
     public GameState CurrentState { get; private set; }
 
+    private void Start()
+    {
+        ChangeState(GameState.Playing);
+    }
     public void ChangeState(GameState newState)
     {
         if (CurrentState == newState) return;
