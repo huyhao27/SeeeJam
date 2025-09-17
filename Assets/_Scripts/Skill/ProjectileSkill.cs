@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewProjectileSkill", menuName = "Skills/Projectile Skill")]
-public class ProjectileSkill : Base_Skill
+public class ProjectileSkill : BaseSkill
 {
     [Header("Projectile Settings")]
     [SerializeField] private Bullet bulletPrefab;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Base_Skill : ScriptableObject
+public abstract class BaseSkill : ScriptableObject
 {
     [Header("General Settings")]
     [SerializeField] private string skillName = "New Skill";
