@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Hệ thống Spawn/Pool Enemy
-// Spawn theo yêu cầu từ các SpawnZone
+// Hệ thống Spawn/Pool Enemy (2D)
+// Có thể được gọi bởi PlayerRadiusSpawner (spawn theo bán kính quanh Player)
 public class EnemySpawnManager : MonoBehaviour
 {
     public static EnemySpawnManager Instance { get; private set; }
@@ -34,24 +34,24 @@ public class EnemySpawnManager : MonoBehaviour
         if (globalContainer != null) enemy.transform.SetParent(globalContainer, true);
         enemy.gameObject.SetActive(true);
         enemy.SetPooledManaged(true);
-        enemy.OnSpawn();
+        enemy.OnPersistentSpawn();
         return enemy;
     }
 
     public void Despawn(BaseEnemy instance)
     {
         if (instance == null) return;
-        instance.OnDespawn();
+        instance.OnPersistentDespawn();
         ObjectPool<BaseEnemy>.Instance.Return(instance);
     }
 
-    // API spawn theo vị trí ngẫu nhiên trong vùng (hình chữ nhật phẳng XZ)
+    // API spawn theo vị trí ngẫu nhiên trong vùng 2D (hình chữ nhật trên mặt phẳng XY)
     public BaseEnemy SpawnInArea(BaseEnemy prefab, Bounds area)
     {
         var pos = new Vector3(
             Random.Range(area.min.x, area.max.x),
-            0f,
-            Random.Range(area.min.z, area.max.z)
+            Random.Range(area.min.y, area.max.y),
+            0f
         );
         return Spawn(prefab, pos, Quaternion.identity);
     }

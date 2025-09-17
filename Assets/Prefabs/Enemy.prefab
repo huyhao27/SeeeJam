@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6190627478653244154}
   - component: {fileID: 8807301733000379759}
   - component: {fileID: 4678129540618564909}
+  - component: {fileID: 2038542352918260597}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -101,12 +102,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 30
   baseMoveSpeed: 2.5
-  detectionRange: 1.26
-  attackRange: 1.25
+  detectionRange: 3.88
+  attackRange: 1.07
   attackCooldown: 1.2
   contactDamage: 5
-  patrolSpeedMultiplier: 0.8
+  patrolSpeedMultiplier: 1
   patrolChangeDirInterval: {x: 1.5, y: 3.5}
+  patrolAcceleration: 20
+  patrolRotateLerp: 5
 --- !u!58 &4678129540618564909
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -136,12 +139,39 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
+--- !u!50 &2038542352918260597
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883851890245192990}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &4452887534372456269
 GameObject:
   m_ObjectHideFlags: 0

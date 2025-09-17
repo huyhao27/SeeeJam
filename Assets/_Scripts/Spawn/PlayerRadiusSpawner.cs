@@ -107,12 +107,32 @@ public class PlayerRadiusSpawner : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (player == null) return;
+        Vector3 center = player != null ? player.position : transform.position;
+#if UNITY_EDITOR
+        // Vẽ các vòng tròn 2D trên mặt phẳng XY
+        // spawnRadius (xanh)
+        UnityEditor.Handles.color = new Color(0.2f, 0.8f, 1f, 0.2f);
+        UnityEditor.Handles.DrawSolidDisc(center, Vector3.forward, spawnRadius);
+        UnityEditor.Handles.color = new Color(0.2f, 0.8f, 1f, 1f);
+        UnityEditor.Handles.DrawWireDisc(center, Vector3.forward, spawnRadius);
+
+        // safeRadius (đỏ nhạt)
+        UnityEditor.Handles.color = new Color(1f, 0.3f, 0.3f, 0.2f);
+        UnityEditor.Handles.DrawSolidDisc(center, Vector3.forward, safeRadius);
+        UnityEditor.Handles.color = new Color(1f, 0.3f, 0.3f, 1f);
+        UnityEditor.Handles.DrawWireDisc(center, Vector3.forward, safeRadius);
+
+        // despawnRadius (cam viền)
+        UnityEditor.Handles.color = new Color(1f, 0.6f, 0f, 1f);
+        UnityEditor.Handles.DrawWireDisc(center, Vector3.forward, despawnRadius);
+#else
+        // Fallback nếu không có UnityEditor
         Gizmos.color = new Color(0.2f, 0.8f, 1f, 0.2f);
-        Gizmos.DrawSphere(player.position, spawnRadius);
+        Gizmos.DrawSphere(center, spawnRadius);
         Gizmos.color = new Color(1f, 0.3f, 0.3f, 0.2f);
-        Gizmos.DrawSphere(player.position, safeRadius);
+        Gizmos.DrawSphere(center, safeRadius);
         Gizmos.color = new Color(1f, 0.6f, 0f, 0.2f);
-        Gizmos.DrawWireSphere(player.position, despawnRadius);
+        Gizmos.DrawWireSphere(center, despawnRadius);
+#endif
     }
 }
