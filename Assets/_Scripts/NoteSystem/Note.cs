@@ -6,6 +6,6 @@ public class Note : MonoBehaviour
 
     public void onHit()
     {
-        EventBus.Emit(GameEvent.OnHitNote, this.type);
+        EventBus.Emit(GameEvent.ActivateSkill, this.type);
     }
 }
