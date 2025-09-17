@@ -38,16 +38,12 @@ public class PlayerMovement : MonoBehaviour
         playerInput.OnDashPerformed -= HandleDash; 
     }
     
-    private void FixedUpdate()
+    private void Update()
     {
-        // DEBUG: In ra trạng thái hiện tại mỗi frame vật lý
-        Debug.Log($"FixedUpdate Check - Current State: {GameManager.Instance.CurrentState}, isDashing: {isDashing}");
-
         if (!isDashing && GameManager.Instance.CurrentState == GameState.Playing)
         {
-            rb.velocity = moveDirection * moveSpeed;
+            rb.velocity = moveDirection * (moveSpeed);
             
-            // DEBUG: Chỉ in ra khi thực sự di chuyển
             if(moveDirection != Vector2.zero)
             {
                 Debug.Log("Applying velocity: " + rb.velocity);
