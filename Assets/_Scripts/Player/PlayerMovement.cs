@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerInput playerInput;
     private Rigidbody2D rb;
+    private Camera mainCamera;
     private Vector2 moveDirection;
     private float lastDashTime;
     private bool isDashing = false;
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody2D>();
+        mainCamera = Camera.main;
     }
 
     private void OnEnable()
@@ -38,9 +40,18 @@ public class PlayerMovement : MonoBehaviour
     
     private void FixedUpdate()
     {
+        // DEBUG: In ra trạng thái hiện tại mỗi frame vật lý
+        Debug.Log($"FixedUpdate Check - Current State: {GameManager.Instance.CurrentState}, isDashing: {isDashing}");
+
         if (!isDashing && GameManager.Instance.CurrentState == GameState.Playing)
         {
             rb.velocity = moveDirection * moveSpeed;
+            
+            // DEBUG: Chỉ in ra khi thực sự di chuyển
+            if(moveDirection != Vector2.zero)
+            {
+                Debug.Log("Applying velocity: " + rb.velocity);
+            }
         }
     }
 
@@ -56,12 +67,19 @@ public class PlayerMovement : MonoBehaviour
         isDashing = true;
         lastDashTime = Time.time;
         rb.velocity = Vector2.zero;
+        
+        Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 targetDirection = (mousePosition - rb.position).normalized;
+        
+        if (targetDirection == Vector2.zero)
+        {
+            targetDirection = transform.right;
+        }
 
-        Vector2 targetDirection = moveDirection != Vector2.zero ? moveDirection : (Vector2)transform.right;
         Vector2 targetPosition = rb.position + targetDirection * dashDistance;
 
         rb.DOMove(targetPosition, dashDuration)
-          .SetEase(Ease.OutQuint)
-          .OnComplete(() => { isDashing = false; });
+            .SetEase(Ease.OutQuint)
+            .OnComplete(() => { isDashing = false; });
     }
 }
