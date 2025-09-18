@@ -4,13 +4,13 @@ public class BaseEnemy : MonoBehaviour
 {
     #region Serialized Fields
     [Header("Stats")]
-    [SerializeField] private int maxHp = 30;              
+    [SerializeField] private int maxHp = 30;
     [SerializeField] private float baseMoveSpeed = 2.5f;
 
     [Header("AI Settings")]
-    [SerializeField] private float detectionRange = 6f;   // Phạm vi phát hiện Player để chuyển sang Pursuit
+    [SerializeField] private float detectionRange = 6f; 
     [SerializeField] private float attackRange = 1.4f;
-    [SerializeField] private float attackCooldown = 1.2f; 
+    [SerializeField] private float attackCooldown = 1.2f;
     [SerializeField] private int contactDamage = 5;
     #endregion
 
@@ -18,38 +18,36 @@ public class BaseEnemy : MonoBehaviour
     private int currentHp;
     private State currentState = State.Idle;
     private float currentMoveSpeed; // speed sau khi áp dụng Slow / Stun
-    private Transform currentTarget; 
+    private Transform currentTarget;
 
     // Quản lý cooldown tấn công
     private float attackTimer;
 
-    private bool isExternallyStunned = false;      // true -> khoá di chuyể
+    private bool isExternallyStunned = false;      // true -> khoá di chuyển
 
     // Quản lý vòng đời với object pool
-    private bool isPooledManaged = false; // true nếu instance này được spawn từ ObjectPool và sẽ trả về pool khi chết
+    private bool isPooledManaged = false; 
+
     
-    // Patrol (đi tuần) – di chuyển ngẫu nhiên trong 2D thay vì quay vòng tại chỗ
     [Header("Patrol Settings")]
-    [SerializeField] private float patrolSpeedMultiplier = 0.8f; // tốc độ khi patrol
-    [SerializeField] private Vector2 patrolChangeDirInterval = new Vector2(1.5f, 3.5f); // thời gian đổi hướng
+    [SerializeField]private float patrolSpeedMultiplier = 0.8f;
+    private Vector2 patrolChangeDirInterval = new Vector2(1.5f, 3.5f);
     private Vector2 patrolDir = Vector2.zero;
     private float patrolTimer = 0f;
-    private Vector2 patrolVelocity = Vector2.zero; // vận tốc cho patrol (làm mượt)
-
-    // Rigidbody2D (nếu có) để di chuyển an toàn với vật lý 2D
+    private Vector2 patrolVelocity = Vector2.zero; 
     private Rigidbody2D rb;
 
     // Hằng số/tham số phụ
-    private const float MinSpeedMultiplier = 0.15f; // tốc độ tối thiểu khi patrol (tránh đứng im)
-    [SerializeField] private float patrolAcceleration = 20f;  // gia tốc để mượt hoá vận tốc patrol
-    [SerializeField] private float patrolRotateLerp = 5f;      // độ mượt xoay khi patrol
+    private const float MinSpeedMultiplier = 0.15f; 
+    private float patrolAcceleration = 20f; 
+    private float patrolRotateLerp = 5f;     
 
     // Pursue smoothing
-    private Vector2 pursueVelocity = Vector2.zero;            // vận tốc khi đuổi mục tiêu
-    [SerializeField] private float pursueAcceleration = 25f;  // gia tốc khi đuổi
-    [SerializeField] private float pursueRotateLerp = 12f;    // mượt xoay khi đuổi
-    [SerializeField] private float approachSlowDown = 1.2f;   // bắt đầu giảm tốc khi còn cách attackRange + this
-    [SerializeField] private float stopDistanceBuffer = 0.12f;// dừng hơi ngoài tầm đánh để tránh xô đẩy
+    private Vector2 pursueVelocity = Vector2.zero;            
+    private float pursueAcceleration = 25f;  
+    private float pursueRotateLerp = 12f;    
+    private float approachSlowDown = 1.2f;   
+    private float stopDistanceBuffer = 0.12f;
     #endregion
 
     #region Unity Events
@@ -207,9 +205,16 @@ public class BaseEnemy : MonoBehaviour
     public void DoAttack(Transform target)
     {
         if (target == null) return;
-        // TODO: Gọi hàm nhận damage của Player (ví dụ target.TakeDamage(contactDamage))
-        // Hiện tạm chỉ log.
-        Debug.Log($"Enemy {name} Attack -> +{contactDamage} dmg lên Player (placeholder)");
+        // Gây sát thương lên Player thông qua HpSystem (nếu có)
+        var hp = target.GetComponentInParent<HpSystem>();
+        if (hp != null)
+        {
+            hp.TakeDamage(contactDamage);
+        }
+        else
+        {
+            Debug.LogWarning($"[{nameof(BaseEnemy)}] {name} DoAttack: Không tìm thấy HpSystem trên target {target.name}");
+        }
         attackTimer = attackCooldown; // reset CD
     }
 
@@ -283,6 +288,7 @@ public class BaseEnemy : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         if (dmg <= 0 || currentHp <= 0) return;
+        Debug.Log($"Enemy {name} nhận {dmg} dmg");
         SetHp(currentHp - dmg);
         // TODO: Hiệu ứng hit (flash, sound,...)
     }
@@ -291,7 +297,6 @@ public class BaseEnemy : MonoBehaviour
     {
         // TODO: Drop loot / spawn effect / thông báo hệ thống progression
         Debug.Log($"Enemy {name} đã chết");
-        // Gọi rớt thưởng (hàm rỗng – sẽ triển khai sau)
         DropReward();
         // Trả enemy về pool Utils nếu có prefab gốc, nếu không thì huỷ đối tượng
         if (isPooledManaged)
