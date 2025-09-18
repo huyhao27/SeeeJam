@@ -2,22 +2,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Spawner luôn giữ đủ số lượng enemy quanh Player trong một bán kính.
-// Không phụ thuộc SpawnZone. Dùng EnemySpawnManager + ObjectPool cho hiệu năng.
 public class PlayerRadiusSpawner : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform player; // nếu null, tự tìm theo tag "Player"
+    [SerializeField] private Transform player;
     [SerializeField] private BaseEnemy enemyPrefab; // dùng để tham số hoá API; thực tế lấy từ EnemyPool
 
     [Header("Counts & Radius")]
-    [SerializeField] private int targetCount = 10;     // số enemy mong muốn quanh player
-    [SerializeField] private float spawnRadius = 12f;  // bán kính spawn quanh player
-    [SerializeField] private float safeRadius = 2.5f;  // không spawn quá gần player
-    [SerializeField] private float despawnRadius = 20f;// nếu enemy đi quá xa, trả về pool
+    [SerializeField] private int targetCount = 10;
+    [SerializeField] private float spawnRadius = 12f;
+    [SerializeField] private float safeRadius = 2.5f;
+    [SerializeField] private float despawnRadius = 20f;
 
     [Header("Tick")]
-    [SerializeField] private float tickInterval = 0.5f; // giãn cách kiểm tra
-    [SerializeField] private int spawnPerTick = 3;      // giới hạn số spawn mỗi tick để tránh spike
+    [SerializeField] private float tickInterval = 0.5f;
+    [SerializeField] private int spawnPerTick = 3;
 
     private readonly List<BaseEnemy> _active = new List<BaseEnemy>();
     private float _nextTick;

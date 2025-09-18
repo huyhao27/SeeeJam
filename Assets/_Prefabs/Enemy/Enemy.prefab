@@ -102,18 +102,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 30
   baseMoveSpeed: 2.5
-  detectionRange: 7.66
-  attackRange: 1.52
-  attackCooldown: 1.2
+  detectionRange: 16
+  attackRange: 1.11
+  attackCooldown: 1
   contactDamage: 5
-  patrolSpeedMultiplier: 1
-  patrolChangeDirInterval: {x: 1.5, y: 3.5}
-  patrolAcceleration: 20
-  patrolRotateLerp: 5
-  pursueAcceleration: 25
-  pursueRotateLerp: 12
-  approachSlowDown: 1.2
-  stopDistanceBuffer: 0.12
+  patrolSpeedMultiplier: 3
 --- !u!58 &4678129540618564909
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -164,7 +157,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -175,7 +168,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &4452887534372456269
 GameObject:
   m_ObjectHideFlags: 0

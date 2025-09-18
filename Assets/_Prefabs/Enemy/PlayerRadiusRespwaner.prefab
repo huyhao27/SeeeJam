@@ -47,9 +47,9 @@ MonoBehaviour:
   player: {fileID: 0}
   enemyPrefab: {fileID: 8807301733000379759, guid: 9fe68e8043761574c81cb3541069960a, type: 3}
   targetCount: 4
-  spawnRadius: 11.17
-  safeRadius: 8.15
-  despawnRadius: 19
+  spawnRadius: 18
+  safeRadius: 16.5
+  despawnRadius: 22
   tickInterval: 0.5
   spawnPerTick: 3
   debugLog: 0

@@ -2,15 +2,14 @@ using UnityEngine;
 
 public class NormalBullet : BaseBullet
 {
+    [SerializeField] private int damage = 10;
     protected override void OnHit(GameObject target)
     {
         Debug.Log($"Normal Bullet hit {target.name}");
-        
-        // TODO: Có thể thêm logic gây sát thương cơ bản ở đây
-        // if (target.TryGetComponent<EnemyHealth>(out var enemyHealth))
-        // {
-        //     enemyHealth.TakeDamage(10);
-        // }
+        if (target.TryGetComponent<BaseEnemy>(out var enemy))
+        {
+            enemy.TakeDamage(damage);
+        }
     }
 
     protected override void ReturnToPool()
