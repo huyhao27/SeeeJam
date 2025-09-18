@@ -24,18 +24,18 @@ public class PlayerSkillManager : MonoBehaviour
         EventBus.On(GameEvent.ActivateSkill, OnSkillActivateEvent);
 
         // Input test skill
-        playerInput.OnSkill1Performed += () => TryActivateSkill(0);
-        playerInput.OnSkill2Performed += () => TryActivateSkill(1);
-        playerInput.OnSkill3Performed += () => TryActivateSkill(2);
+        // playerInput.OnSkill1Performed += () => TryActivateSkill(0);
+        // playerInput.OnSkill2Performed += () => TryActivateSkill(1);
+        // playerInput.OnSkill3Performed += () => TryActivateSkill(2);
     }
 
     private void OnDisable()
     {
         EventBus.Off(GameEvent.ActivateSkill, OnSkillActivateEvent);
 
-        playerInput.OnSkill1Performed -= () => TryActivateSkill(0);
-        playerInput.OnSkill2Performed -= () => TryActivateSkill(1);
-        playerInput.OnSkill3Performed -= () => TryActivateSkill(2);
+        // playerInput.OnSkill1Performed -= () => TryActivateSkill(0);
+        // playerInput.OnSkill2Performed -= () => TryActivateSkill(1);
+        // playerInput.OnSkill3Performed -= () => TryActivateSkill(2);
     }
     
     private void Update()
