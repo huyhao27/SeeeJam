@@ -53,7 +53,7 @@ public class PlayerSkillManager : MonoBehaviour
             TryActivateSkill(skillNumber);
         }
     }
-    
+
     public void TryActivateSkill(int skillIndex)
     {
         if (GameManager.Instance.CurrentState != GameState.Playing) return;
@@ -61,29 +61,22 @@ public class PlayerSkillManager : MonoBehaviour
         if (skillIndex >= 0 && skillIndex < skills.Count && skills[skillIndex] != null)
         {
             BaseSkill skill = skills[skillIndex];
-            if (skillCooldowns[skill] <= 0)
-            {
-                skill.Activate(gameObject);
-                skillCooldowns[skill] = skill.Cooldown;
-            }
-            else
-            {
-                Debug.Log($"Skill '{skill.SkillName}' is on cooldown!");
-            }
+            skill.Activate(gameObject);
+            skillCooldowns[skill] = skill.Cooldown;
         }
     }
-    
-    private void UpdateAllCooldowns()
-    {
-        var skillKeys = new List<BaseSkill>(skillCooldowns.Keys);
-        foreach (var skill in skillKeys)
-        {
-            if (skillCooldowns[skill] > 0)
-            {
-                skillCooldowns[skill] -= Time.deltaTime;
-            }
-        }
-    }
+
+    // private void UpdateAllCooldowns()
+    // {
+    //     var skillKeys = new List<BaseSkill>(skillCooldowns.Keys);
+    //     foreach (var skill in skillKeys)
+    //     {
+    //         if (skillCooldowns[skill] > 0)
+    //         {
+    //             skillCooldowns[skill] -= Time.deltaTime;
+    //         }
+    //     }
+    // }
 
     [SerializeField] private float rotationSpeed = 5f;
 

@@ -1,17 +1,19 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+
 public class NotePanel : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private RectTransform notePrefab;
+    [SerializeField] private List<RectTransform> notePrefabs;
+    
     [SerializeField] private RectTransform parentPanel;
 
     [Header("Slot config")]
-    [SerializeField] private int columns = 4;     // số cột
-    [SerializeField] private int rows = 10;       // số hàng
-    [SerializeField] private float xOffset = 100; // khoảng cách ngang
-    [SerializeField] private float yOffset = 100; // khoảng cách dọc
-    [SerializeField] private Vector2 startPos = new(-150, 200); // vị trí bắt đầu (góc trên trái chẳng hạn)
+    [SerializeField] private int columns = 3;
+    [SerializeField] private int rows = 7;
+    [SerializeField] private float xOffset = 113;
+    [SerializeField] private float yOffset = 200;
+    [SerializeField] private Vector2 startPos = new(-150, 200);
 
     private Dictionary<Vector2, bool> slotMap = new();
 
@@ -23,7 +25,6 @@ public class NotePanel : MonoBehaviour, IPointerClickHandler
     void GenerateSlots()
     {
         slotMap.Clear();
-
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < columns; col++)
@@ -36,7 +37,6 @@ public class NotePanel : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Convert click sang local trong panel
         Vector2 localPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             parentPanel,
@@ -45,7 +45,6 @@ public class NotePanel : MonoBehaviour, IPointerClickHandler
             out localPos
         );
 
-        // Tìm slot gần nhất
         Vector2 nearest = Vector2.zero;
         float minDist = float.MaxValue;
         foreach (var slot in slotMap.Keys)
@@ -58,12 +57,21 @@ public class NotePanel : MonoBehaviour, IPointerClickHandler
             }
         }
 
-        // Spawn note ở slot đó
-        if (!slotMap[nearest])
+
+        if (slotMap.ContainsKey(nearest) && !slotMap[nearest])
         {
-            slotMap[nearest] = true;
-            var note = Instantiate(notePrefab, parentPanel);
-            note.anchoredPosition = nearest;
+            int columnIndex = Mathf.RoundToInt((nearest.x - startPos.x) / xOffset);
+
+            if (columnIndex >= 0 && columnIndex < notePrefabs.Count && notePrefabs[columnIndex] != null)
+            {
+                slotMap[nearest] = true;
+                
+                RectTransform prefabToSpawn = notePrefabs[columnIndex];
+                
+                var note = Instantiate(prefabToSpawn, parentPanel);
+                note.anchoredPosition = nearest;
+                
+            }
         }
     }
 }

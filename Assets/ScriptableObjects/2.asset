@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: skill 2
   cooldown: 0.33
-  bulletPrefab: {fileID: 636582734053345947, guid: 7f019a938f0f6a1408498c3a6292b033, type: 3}
+  bulletPrefab: {fileID: 7361074736226213550, guid: ff5354c01a52c2e4cbcd47704c3f0f3d, type: 3}

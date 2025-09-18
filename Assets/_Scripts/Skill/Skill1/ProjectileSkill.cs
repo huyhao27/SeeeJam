@@ -4,7 +4,8 @@ using UnityEngine;
 public class ProjectileSkill : BaseSkill
 {
     [Header("Projectile Settings")]
-    [SerializeField] private Bullet bulletPrefab;
+
+    [SerializeField] private BaseBullet bulletPrefab;
 
     public override void Activate(GameObject caster)
     {
@@ -14,15 +15,20 @@ public class ProjectileSkill : BaseSkill
             Debug.LogError($"'{caster.name}' does not have a child object named 'FirePoint'!");
             return;
         }
-
-        Bullet bullet = ObjectPool<Bullet>.Instance.Get();
-        if (bullet == null) return;
         
-        bullet.transform.position = firePoint.position;
+        if (bulletPrefab is NormalBullet)
+        {
+            NormalBullet bullet = ObjectPool<NormalBullet>.Instance.Get();
+            bullet.transform.position = firePoint.position;
+            bullet.Launch(caster.transform.up);
+        }
+        else if (bulletPrefab is Skill2Bullet)
+        {
+            Skill2Bullet bullet = ObjectPool<Skill2Bullet>.Instance.Get();
+            bullet.transform.position = firePoint.position;
+            bullet.Launch(caster.transform.up);
+        }
 
-        Vector2 fireDirection = caster.transform.up;
-
-        bullet.Launch(fireDirection);
         Debug.Log($"Player activated skill: {this.SkillName}!");
     }
 }
