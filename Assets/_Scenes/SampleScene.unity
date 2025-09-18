@@ -641,6 +641,7 @@ GameObject:
   m_Component:
   - component: {fileID: 297321351}
   - component: {fileID: 297321352}
+  - component: {fileID: 297321353}
   m_Layer: 0
   m_Name: BulletPool
   m_TagString: Untagged
@@ -676,7 +677,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToPool: {fileID: 636582734053345947, guid: c189a1488919f1642ad643f5f4b2b7d3, type: 3}
-  initialPoolSize: 20
+  initialPoolSize: 10
+--- !u!114 &297321353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297321350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e5dee3fc86dc64aa15a50b609f7bf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToPool: {fileID: 7361074736226213550, guid: ff5354c01a52c2e4cbcd47704c3f0f3d, type: 3}
+  initialPoolSize: 10
 --- !u!1 &300404045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,6 +1023,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 297321351}
+  - {fileID: 1533545128}
   m_Father: {fileID: 656462421}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &523706757
@@ -1066,6 +1082,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4779264906577263439, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
+      propertyPath: skills.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 58285f6e0420af4409014b011147238a, type: 2}
     - target: {fileID: 5208764564457755063, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
       propertyPath: m_Material
       value: 
@@ -1782,6 +1802,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736465677}
   m_CullTransparentMesh: 1
+--- !u!4 &833611829 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1692483611697683524, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
+  m_PrefabInstance: {fileID: 523706757}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &880708658
 GameObject:
   m_ObjectHideFlags: 0
@@ -3472,7 +3497,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab08b611be6d384582c9e948c9a5765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notePrefab: {fileID: 4116088437856895024, guid: 7a50e385e437c1042b2619d77c2aca4c, type: 3}
+  notePrefabs:
+  - {fileID: 4116088437856895024, guid: 7a50e385e437c1042b2619d77c2aca4c, type: 3}
+  - {fileID: 4116088437856895024, guid: cebaf413107abfe4dbf3d70bf4461429, type: 3}
+  - {fileID: 4116088437856895024, guid: 956642f445f060c43bac3781c3e2dcc8, type: 3}
   parentPanel: {fileID: 334050919}
   columns: 3
   rows: 7
@@ -3554,6 +3582,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1531818912}
   m_CullTransparentMesh: 1
+--- !u!1 &1533545127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1533545128}
+  - component: {fileID: 1533545129}
+  m_Layer: 0
+  m_Name: AoeWavePool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1533545128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533545127}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 517028182}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1533545129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533545127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc313d34a4089df49837f92319c7ebf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToPool: {fileID: 7476872919195972662, guid: 00f31a124fdf4b24d83f96a123169381, type: 3}
+  initialPoolSize: 10
 --- !u!1 &1552397077
 GameObject:
   m_ObjectHideFlags: 0
@@ -4259,8 +4333,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_LookAt: {fileID: 833611829}
+  m_Follow: {fileID: 833611829}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 7.343929
