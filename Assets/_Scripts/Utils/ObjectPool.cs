@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ObjectPool<T> : Singleton<ObjectPool<T>> where T : MonoBehaviour
 {
-    [SerializeField] private T objectToPool;
-    [SerializeField] private int initialPoolSize = 20;
+    [SerializeField] protected T objectToPool;
+    [SerializeField] protected int initialPoolSize = 20;
 
     private Queue<T> pool = new Queue<T>();
 
