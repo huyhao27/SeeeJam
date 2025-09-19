@@ -15,7 +15,7 @@ TagManager:
   - Player
   - PlayerBullet
   - Enemy
-  - 
+  - PostProcessing
   - 
   - 
   - 
@@ -39,6 +39,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Ground
+    uniqueID: 2006181771
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
