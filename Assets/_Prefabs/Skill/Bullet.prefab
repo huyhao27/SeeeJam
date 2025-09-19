@@ -163,3 +163,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   lifetime: 3
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  debugCollisions: 0
+  damage: 10

@@ -8,6 +8,9 @@ public abstract class BaseBullet : MonoBehaviour, IPoolable
     [SerializeField] protected float lifetime = 3f;
     [SerializeField] protected LayerMask hitLayers; 
 
+    [Header("Debug")]
+    [SerializeField] private bool debugCollisions = false; // Bật để in log các va chạm & kết quả kiểm tra layer
+
     protected Rigidbody2D rb;
     private float _lifetimeTimer;
     
@@ -58,12 +61,44 @@ public abstract class BaseBullet : MonoBehaviour, IPoolable
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        if ((hitLayers.value & (1 << other.gameObject.layer)) > 0)
+        int otherLayer = other.gameObject.layer;
+        bool pass = (hitLayers.value & (1 << otherLayer)) != 0;
+
+        if (debugCollisions)
+        {
+            Debug.Log($"[BaseBullet Debug] {name} trigger -> {other.name} (layer={LayerMask.LayerToName(otherLayer)}) passMask={pass}");
+        }
+
+        if (pass)
         {
             OnHit(other.gameObject);
             PoolManager.Instance.Despawn(this);
         }
     }
+
+#if UNITY_EDITOR
+    [ContextMenu("Print Hit Layers")] 
+    private void PrintHitLayers()
+    {
+        var layers = GetLayerNamesFromMask(hitLayers);
+        Debug.Log($"[BaseBullet] {name} hitLayers = {string.Join(", ", layers)}");
+    }
+
+    private static System.Collections.Generic.List<string> GetLayerNamesFromMask(LayerMask mask)
+    {
+        var result = new System.Collections.Generic.List<string>();
+        for (int i = 0; i < 32; i++)
+        {
+            if ((mask.value & (1 << i)) != 0)
+            {
+                string layerName = LayerMask.LayerToName(i);
+                if (!string.IsNullOrEmpty(layerName)) result.Add(layerName);
+                else result.Add($"Layer{i}");
+            }
+        }
+        return result;
+    }
+#endif
 
     protected abstract void OnHit(GameObject target);
 }

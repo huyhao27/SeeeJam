@@ -66,4 +66,5 @@ public enum GameEvent
     WaveStarted ,
     
     GetXp,
+    PlayerDamaged,
 }
