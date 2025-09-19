@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using System;
 
 public class NotePanel : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private List<RectTransform> notePrefabs;
-    
+
     [SerializeField] private RectTransform parentPanel;
 
     [Header("Slot config")]
@@ -16,6 +17,12 @@ public class NotePanel : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Vector2 startPos = new(-150, 200);
 
     private Dictionary<Vector2, bool> slotMap = new();
+
+    private int noteCount
+    {
+        get => PlayerStats.Instance != null ? PlayerStats.Instance.NoteCount : 1;
+        set { if (PlayerStats.Instance != null) PlayerStats.Instance.NoteCount = value; }
+    }
 
     void Start()
     {
@@ -37,6 +44,8 @@ public class NotePanel : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (noteCount <= 0) return;
+
         Vector2 localPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             parentPanel,
@@ -65,13 +74,14 @@ public class NotePanel : MonoBehaviour, IPointerClickHandler
             if (columnIndex >= 0 && columnIndex < notePrefabs.Count && notePrefabs[columnIndex] != null)
             {
                 slotMap[nearest] = true;
-                
+
                 RectTransform prefabToSpawn = notePrefabs[columnIndex];
-                
+
                 var note = Instantiate(prefabToSpawn, parentPanel);
                 note.anchoredPosition = nearest;
-                
+
             }
+            noteCount = Math.Max(0, noteCount - 1);
         }
     }
 }

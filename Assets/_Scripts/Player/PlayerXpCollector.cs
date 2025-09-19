@@ -2,9 +2,16 @@ using UnityEngine;
 
 public class PlayerXpCollector : MonoBehaviour
 {
-    public float pickupRange = 3f;
-    public LayerMask xpLayer; 
+    private float pickupRange => PlayerStats.Instance != null ? PlayerStats.Instance.CollectRadius : 1f;
+    public LayerMask xpLayer;
 
+    private PlayerStats playerStats;
+
+    void Start()
+    {
+
+        playerStats = GetComponent<PlayerStats>();
+    }
     void Update()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, pickupRange, xpLayer);
