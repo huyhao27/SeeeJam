@@ -302,10 +302,10 @@ public class BaseEnemy : MonoBehaviour, IPoolable
 
     // Payload đơn giản: [0]=damage(int), [1]=attacker(GameObject), [2]=target(GameObject)
     EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
-    if (target.TryGetComponent<HpSystem>(out var hp))
-{
-    hp.TakeDamage(contactDamage);
-}
+//     if (target.TryGetComponent<HpSystem>(out var hp))
+// {
+//     hp.TakeDamage(contactDamage);
+// }
 
         attackTimer = attackCooldown;
     }
