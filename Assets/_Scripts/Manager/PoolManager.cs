@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 [System.Serializable]
 public class PoolInfo
@@ -93,7 +94,10 @@ public class PoolManager : Singleton<PoolManager>
     {
         try
         {
-            ObjectPool pool = _poolDictionary[prefab.name];
+            // Loại bỏ (Clone), (1), (2), ...
+            string cleanName = Regex.Replace(prefab.name, @"\(\d*\)|\(Clone\)", "").Trim();
+
+            ObjectPool pool = _poolDictionary[cleanName];
             pool.Return(prefab);
         }
         catch (Exception e)
