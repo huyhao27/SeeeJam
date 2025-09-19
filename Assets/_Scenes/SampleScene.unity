@@ -1335,7 +1335,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3464809050425438483, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 833611835}
   m_SourcePrefab: {fileID: 100100000, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
 --- !u!1 &525568671
 GameObject:
@@ -1888,11 +1891,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736465677}
   m_CullTransparentMesh: 1
+--- !u!1 &767800828 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3464809050425438483, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
+  m_PrefabInstance: {fileID: 523706757}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &833611829 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1692483611697683524, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
   m_PrefabInstance: {fileID: 523706757}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &833611835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767800828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 866ff0bfaf1d0e64b86eb648d5c16785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: {fileID: 1765756592}
+  hpIndicator: {fileID: 1965761789}
+  currentHp: 100
 --- !u!1 &841008299
 GameObject:
   m_ObjectHideFlags: 0
@@ -3438,7 +3461,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1261538196
@@ -30765,9 +30788,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5381485109238206978, guid: 99471592132d05649864aa49d172417e, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6674469979666985103, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: m_Name
       value: Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
+      propertyPath: poolsToCreate.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
+      propertyPath: poolsToCreate.Array.data[8].prefab
+      value: 
+      objectReference: {fileID: 5188537918395097275, guid: 2a26e013b875c0f4d9141e2e3e096296, type: 3}
+    - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
+      propertyPath: poolsToCreate.Array.data[9].prefab
+      value: 
+      objectReference: {fileID: -6767130331462266043, guid: 0b0d5176aa809ff47bde5fb74abf2022, type: 3}
+    - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
+      propertyPath: poolsToCreate.Array.data[8].initialSize
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
+      propertyPath: poolsToCreate.Array.data[9].initialSize
+      value: 22
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31296,7 +31343,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1921448268
@@ -31832,7 +31879,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 85, y: 77.89}
+  m_AnchoredPosition: {x: 85, y: 77.890015}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2017439862

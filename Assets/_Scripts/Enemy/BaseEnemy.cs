@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// Sử dụng PlayerDamageEvent struct
+
 public class BaseEnemy : MonoBehaviour, IPoolable
 {
     #region Serialized Fields
@@ -25,8 +27,8 @@ public class BaseEnemy : MonoBehaviour, IPoolable
 
     // AI
     private State currentState = State.Idle;
-    private Transform currentTarget;
-    private float attackTimer;
+    protected Transform currentTarget; // Cho phép lớp con (ví dụ RangedEnemy) truy cập target
+    protected float attackTimer;       // Cho phép override / tùy biến cooldown
 
     // Patrol
     private Vector2 patrolDir = Vector2.zero;
@@ -99,7 +101,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         }
     }
 
-    private void Die()
+    protected virtual void Die()
     {
         // Bắn sự kiện cho LevelManager và các hệ thống khác biết
         EventBus.Emit(GameEvent.EnemyDied, this);
@@ -240,20 +242,18 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         }
     }
 
-    public void DoAttack(Transform target)
+    protected virtual void DoAttack(Transform target)
     {
         if (target == null) return;
         rb.velocity = Vector2.zero; // Dừng lại khi tấn công
-        
-        var hp = target.GetComponentInParent<HpSystem>();
-        if (hp != null)
-        {
-            hp.TakeDamage(contactDamage);
-        }
-        else
-        {
-            Debug.LogWarning($"[{nameof(BaseEnemy)}] {name} DoAttack: Không tìm thấy HpSystem trên target {target.name}");
-        }
+
+    // Payload đơn giản: [0]=damage(int), [1]=attacker(GameObject), [2]=target(GameObject)
+    EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
+    if (target.TryGetComponent<HpSystem>(out var hp))
+{
+    hp.TakeDamage(contactDamage);
+}
+
         attackTimer = attackCooldown;
     }
     #endregion
@@ -273,6 +273,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     public int CurrentHp => currentHp;
     public int MaxHp => maxHp;
     public State CurrentState => currentState;
+    public Transform CurrentTarget => currentTarget;
 
     private void OnDrawGizmosSelected()
     {

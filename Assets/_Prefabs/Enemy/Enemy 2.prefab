@@ -103,10 +103,11 @@ MonoBehaviour:
   maxHp: 30
   baseMoveSpeed: 2.5
   detectionRange: 16
-  attackRange: 1.11
+  attackRange: 1.6
   attackCooldown: 1
   contactDamage: 5
   patrolSpeedMultiplier: 3
+  patrolChangeDirInterval: {x: 1.5, y: 3.5}
 --- !u!58 &4678129540618564909
 CircleCollider2D:
   m_ObjectHideFlags: 0
