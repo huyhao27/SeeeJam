@@ -18,7 +18,7 @@ public class PlayerStats : Singleton<PlayerStats>
 
     protected override void Awake()
     {
-        base.Awake();
+        // base.Awake();
         ResetStat();
     }
 
