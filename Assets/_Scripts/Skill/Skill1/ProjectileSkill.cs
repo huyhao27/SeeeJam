@@ -4,7 +4,7 @@ using UnityEngine;
 public class ProjectileSkill : BaseSkill
 {
     [Header("Projectile Settings")]
-
+    [Tooltip("Kéo prefab của loại đạn bất kỳ (NormalBullet, Skill2Bullet,...) vào đây")]
     [SerializeField] private BaseBullet bulletPrefab;
 
     public override void Activate(GameObject caster)
@@ -12,23 +12,16 @@ public class ProjectileSkill : BaseSkill
         Transform firePoint = caster.transform.Find("FirePoint");
         if (firePoint == null)
         {
-            Debug.LogError($"'{caster.name}' does not have a child object named 'FirePoint'!");
+            Debug.LogError($"'{caster.name}' không có 'FirePoint'!");
             return;
         }
-        
-        if (bulletPrefab is NormalBullet)
-        {
-            NormalBullet bullet = ObjectPool<NormalBullet>.Instance.Get();
-            bullet.transform.position = firePoint.position;
-            bullet.Launch(caster.transform.up);
-        }
-        else if (bulletPrefab is Skill2Bullet)
-        {
-            Skill2Bullet bullet = ObjectPool<Skill2Bullet>.Instance.Get();
-            bullet.transform.position = firePoint.position;
-            bullet.Launch(caster.transform.up);
-        }
 
-        Debug.Log($"Player activated skill: {this.SkillName}!");
+        var bullet = PoolManager.Instance.Spawn(bulletPrefab, firePoint.position, caster.transform.rotation);
+
+        if (bullet != null)
+        {
+            bullet.Launch(caster.transform.up);
+            Debug.Log($"Player activated skill: {this.SkillName}!");
+        }
     }
 }

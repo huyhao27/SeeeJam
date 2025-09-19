@@ -1,1 +1,0 @@
-public class Skill2BulletPool : ObjectPool<Skill2Bullet> { }

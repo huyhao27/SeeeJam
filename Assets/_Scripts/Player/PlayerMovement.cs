@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
         playerInput.OnDashPerformed -= HandleDash; 
     }
     
-    private void Update()
+    private void FixedUpdate()
     {
         if (!isDashing && GameManager.Instance.CurrentState == GameState.Playing)
         {
@@ -71,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
         rb.DOMove(targetPosition, dashDuration)
             .SetEase(Ease.OutQuint)
+            .SetUpdate(UpdateType.Fixed) 
             .OnComplete(() => { isDashing = false; });
     }
 }

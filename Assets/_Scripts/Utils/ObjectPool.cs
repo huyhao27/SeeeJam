@@ -1,45 +1,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> : Singleton<ObjectPool<T>> where T : MonoBehaviour
+public class ObjectPool : MonoBehaviour
 {
-    [SerializeField] protected T objectToPool;
-    [SerializeField] protected int initialPoolSize = 20;
+    private GameObject _prefab;
+    private readonly Queue<GameObject> _pool = new Queue<GameObject>();
 
-    private Queue<T> pool = new Queue<T>();
-
-    protected override void Awake()
+    public void Configure(GameObject prefab, int initialSize)
     {
-        base.Awake();
-
-        if (Instance == this)
+        _prefab = prefab;
+        for (int i = 0; i < initialSize; i++)
         {
-            for (int i = 0; i < initialPoolSize; i++)
-            {
-                T obj = Instantiate(objectToPool);
-                obj.gameObject.SetActive(false);
-                pool.Enqueue(obj);
-            }
+            GameObject obj = CreateNewObject();
+            obj.SetActive(false);
+            _pool.Enqueue(obj);
         }
     }
-    
-    public T Get()
-    {
-        if (pool.Count > 0)
-        {
-            T obj = pool.Dequeue();
-            obj.gameObject.SetActive(true);
-            return obj;
-        }
 
-        T newObj = Instantiate(objectToPool);
-        newObj.gameObject.SetActive(true);
+    private GameObject CreateNewObject()
+    {
+        GameObject newObj = Instantiate(_prefab, transform);
+        
+        var poolable = newObj.GetComponent<IPoolable>();
+        if (poolable != null)
+        {
+            poolable.SetOriginalPrefab(_prefab);
+        }
         return newObj;
     }
-    
-    public void Return(T obj)
+
+    public GameObject Get()
     {
-        obj.gameObject.SetActive(false);
-        pool.Enqueue(obj);
+        if (_pool.Count == 0)
+        {
+            GameObject newObj = CreateNewObject();
+            _pool.Enqueue(newObj);
+        }
+
+        GameObject obj = _pool.Dequeue();
+        obj.SetActive(true);
+        return obj;
+    }
+
+    public void Return(GameObject obj)
+    {
+        obj.SetActive(false);
+        obj.transform.SetParent(transform); 
+        _pool.Enqueue(obj);
     }
 }

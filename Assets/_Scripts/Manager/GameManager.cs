@@ -7,7 +7,8 @@ public enum GameState
     MainMenu,
     Playing,
     Paused,
-    GameOver
+    GameOver,
+    Win
 }
 
 public class GameManager : Singleton<GameManager>
@@ -57,4 +58,9 @@ public enum GameEvent {
     Lose,
     GameOver,
     ActivateSkill,
+    EnemyDied, 
+    KillCountUpdated,
+    EnemySpawned,
+    TimerUpdated,    
+    WaveStarted 
 }

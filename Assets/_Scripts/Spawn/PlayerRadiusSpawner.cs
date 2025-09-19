@@ -1,37 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Spawner luôn giữ đủ số lượng enemy quanh Player trong một bán kính.
+
 public class PlayerRadiusSpawner : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private Transform player;
-    [SerializeField] private BaseEnemy enemyPrefab; // dùng để tham số hoá API; thực tế lấy từ EnemyPool
+    [Header("References")] [SerializeField]
+    private Transform player;
 
-    [Header("Counts & Radius")]
-    [SerializeField] private int targetCount = 10;
-    [SerializeField] private float spawnRadius = 12f;
+    [Header("Radius Settings")] [SerializeField]
+    private float spawnRadius = 12f;
+
     [SerializeField] private float safeRadius = 2.5f;
     [SerializeField] private float despawnRadius = 20f;
 
-    [Header("Tick")]
-    [SerializeField] private float tickInterval = 0.5f;
-    [SerializeField] private int spawnPerTick = 3;
+    [Header("Debug")] [SerializeField] private bool debugLog = false;
 
-    private readonly List<BaseEnemy> _active = new List<BaseEnemy>();
-    private float _nextTick;
-    
-    [Header("Debug")]
-    [SerializeField] private bool debugLog = false;
+    private readonly List<BaseEnemy> _activeEnemies = new List<BaseEnemy>();
+    private Queue<BaseEnemy> _spawnQueue = new Queue<BaseEnemy>();
+    private float _spawnTimer;
+    private WaveData _currentWaveData;
+
+    public bool IsSpawningFinished => _spawnQueue.Count == 0;
 
     private void Update()
-    {
-        if (Time.time < _nextTick) return;
-        _nextTick = Time.time + tickInterval;
-        Tick();
-    }
-
-    private void Tick()
     {
         if (player == null)
         {
@@ -40,66 +31,102 @@ public class PlayerRadiusSpawner : MonoBehaviour
             player = po.transform;
         }
 
-        // Đảm bảo tham số hợp lệ để tránh spawn dày bất thường
-        if (despawnRadius < spawnRadius)
+        // Spawn theo hàng chờ
+        if (!IsSpawningFinished)
         {
-            despawnRadius = Mathf.Max(spawnRadius + 0.5f, spawnRadius);
-        }
-        if (safeRadius >= spawnRadius)
-        {
-            safeRadius = Mathf.Max(0f, spawnRadius * 0.3f);
-        }
-
-        // Dọn danh sách (null/inactive)
-        for (int i = _active.Count - 1; i >= 0; i--)
-        {
-            var e = _active[i];
-            if (e == null || !e.gameObject.activeSelf)
+            _spawnTimer -= Time.deltaTime;
+            if (_spawnTimer <= 0f)
             {
-                _active.RemoveAt(i);
+                SpawnFromQueue();
             }
         }
 
-        // Đếm số enemy còn sống trong phạm vi despawnRadius (alive)
-        int alive = 0;
-        for (int i = 0; i < _active.Count; i++)
+        CleanupDistantEnemies();
+    }
+
+    // --- API ---
+    public void Activate(WaveData waveData)
+    {
+        _currentWaveData = waveData;
+        _spawnQueue.Clear();
+
+        // 1. Tính toán số lượng cho mỗi loại
+        int countA = Mathf.RoundToInt(waveData.totalEnemyCount * waveData.ratioTypeA);
+        int countB = waveData.totalEnemyCount - countA;
+
+        // 2. Tạo danh sách tạm
+        var tempList = new List<BaseEnemy>();
+        if (waveData.enemyTypeA != null)
+            for (int i = 0; i < countA; i++)
+                tempList.Add(waveData.enemyTypeA);
+
+        if (waveData.enemyTypeB != null)
+            for (int i = 0; i < countB; i++)
+                tempList.Add(waveData.enemyTypeB);
+
+        // 3. Xáo trộn (Fisher-Yates shuffle)
+        for (int i = 0; i < tempList.Count - 1; i++)
         {
-            var e = _active[i];
-            if (e == null) continue;
-            float d = Vector2.Distance(player.position, e.transform.position);
-            if (d > despawnRadius)
-            {
-                // Quá xa -> despawn
-                if (EnemySpawnManager.Instance != null)
-                {
-                    EnemySpawnManager.Instance.Despawn(e);
-                }
-                _active.RemoveAt(i);
-                i--;
-            }
-            else
-            {
-                // vẫn nằm trong vùng theo dõi -> tính alive
-                alive++;
-            }
+            int rnd = Random.Range(i, tempList.Count);
+            (tempList[i], tempList[rnd]) = (tempList[rnd], tempList[i]);
         }
 
-        // Nếu số alive (<= despawnRadius) đã đủ, không spawn thêm
-        int need = targetCount - alive;
-        if (need <= 0 || EnemySpawnManager.Instance == null) return;
-    int toSpawn = Mathf.Min(spawnPerTick, need);
+        // 4. Đưa vào hàng chờ
+        _spawnQueue = new Queue<BaseEnemy>(tempList);
+        _spawnTimer = _currentWaveData.spawnInterval;
+
         if (debugLog)
+            Debug.Log($"[PlayerRadiusSpawner] Kích hoạt wave. Hàng chờ có {_spawnQueue.Count} quái.");
+    }
+
+    public void Deactivate()
+    {
+        _spawnQueue.Clear();
+
+        // Dọn hết quái còn sống
+        foreach (var e in _activeEnemies)
         {
-            Debug.Log($"[PlayerRadiusSpawner] alive={alive}, need={need}, toSpawn={toSpawn}, activeList={_active.Count}");
+            if (e != null && EnemySpawnManager.Instance != null)
+                EnemySpawnManager.Instance.Despawn(e);
         }
-        for (int i = 0; i < toSpawn; i++)
+
+        _activeEnemies.Clear();
+    }
+
+    private void SpawnFromQueue()
+    {
+        if (IsSpawningFinished || _currentWaveData == null) return;
+
+        int amountToSpawn = Mathf.Min(_currentWaveData.spawnCountPerTick, _spawnQueue.Count);
+        for (int i = 0; i < amountToSpawn; i++)
         {
+            BaseEnemy prefab = _spawnQueue.Dequeue();
             Vector2 pos2D = Random.insideUnitCircle.normalized * Random.Range(safeRadius, spawnRadius);
             Vector3 spawnPos = player.position + new Vector3(pos2D.x, pos2D.y, 0f);
-            var e = EnemySpawnManager.Instance.Spawn(enemyPrefab, spawnPos, Quaternion.identity);
-            if (e != null)
+
+            var enemyInstance = EnemySpawnManager.Instance.Spawn(prefab, spawnPos, Quaternion.identity);
+            if (enemyInstance != null) _activeEnemies.Add(enemyInstance);
+        }
+
+        _spawnTimer = _currentWaveData.spawnInterval;
+    }
+
+    private void CleanupDistantEnemies()
+    {
+        for (int i = _activeEnemies.Count - 1; i >= 0; i--)
+        {
+            var e = _activeEnemies[i];
+            if (e == null || !e.gameObject.activeSelf)
             {
-                _active.Add(e);
+                _activeEnemies.RemoveAt(i);
+                continue;
+            }
+
+            float d = Vector2.Distance(player.position, e.transform.position);
+            if (d > despawnRadius && EnemySpawnManager.Instance != null)
+            {
+                EnemySpawnManager.Instance.Despawn(e);
+                _activeEnemies.RemoveAt(i);
             }
         }
     }
@@ -107,25 +134,15 @@ public class PlayerRadiusSpawner : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Vector3 center = player != null ? player.position : transform.position;
+
 #if UNITY_EDITOR
-        // Vẽ các vòng tròn 2D trên mặt phẳng XY
-        // spawnRadius (xanh)
         UnityEditor.Handles.color = new Color(0.2f, 0.8f, 1f, 0.2f);
         UnityEditor.Handles.DrawSolidDisc(center, Vector3.forward, spawnRadius);
-        UnityEditor.Handles.color = new Color(0.2f, 0.8f, 1f, 1f);
-        UnityEditor.Handles.DrawWireDisc(center, Vector3.forward, spawnRadius);
-
-        // safeRadius (đỏ nhạt)
         UnityEditor.Handles.color = new Color(1f, 0.3f, 0.3f, 0.2f);
         UnityEditor.Handles.DrawSolidDisc(center, Vector3.forward, safeRadius);
-        UnityEditor.Handles.color = new Color(1f, 0.3f, 0.3f, 1f);
-        UnityEditor.Handles.DrawWireDisc(center, Vector3.forward, safeRadius);
-
-        // despawnRadius (cam viền)
         UnityEditor.Handles.color = new Color(1f, 0.6f, 0f, 1f);
         UnityEditor.Handles.DrawWireDisc(center, Vector3.forward, despawnRadius);
 #else
-        // Fallback nếu không có UnityEditor
         Gizmos.color = new Color(0.2f, 0.8f, 1f, 0.2f);
         Gizmos.DrawSphere(center, spawnRadius);
         Gizmos.color = new Color(1f, 0.3f, 0.3f, 0.2f);

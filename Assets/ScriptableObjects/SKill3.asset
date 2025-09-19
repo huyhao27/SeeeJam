@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52f6a080cf49d4b4ea48857106bc0957, type: 3}
-  m_Name: 3
+  m_Name: SKill3
   m_EditorClassIdentifier: 
   skillName: AoeWave
   cooldown: 1

@@ -1,43 +1,69 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
-public abstract class BaseBullet : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D))]
+public abstract class BaseBullet : MonoBehaviour, IPoolable
 {
-    [Header("Base Settings")]
+    [Header("Base Bullet Stats")]
     [SerializeField] protected float speed = 15f;
     [SerializeField] protected float lifetime = 3f;
+    [SerializeField] protected LayerMask hitLayers; 
 
     protected Rigidbody2D rb;
+    private float _lifetimeTimer;
+    
+    #region IPoolable Implementation
+    private GameObject _originalPrefab;
+
+    public virtual void OnPoolSpawn()
+    {
+        _lifetimeTimer = lifetime;
+        gameObject.SetActive(true);
+    }
+
+    public virtual void OnPoolDespawn()
+    {
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0;
+    }
+
+    public void SetOriginalPrefab(GameObject prefab)
+    {
+        _originalPrefab = prefab;
+    }
+
+    public GameObject GetOriginalPrefab()
+    {
+        return _originalPrefab;
+    }
+    #endregion
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    protected virtual void OnEnable()
+    protected virtual void Update()
     {
-        Invoke(nameof(ReturnToPool), lifetime);
+        _lifetimeTimer -= Time.deltaTime;
+        if (_lifetimeTimer <= 0)
+        {
+            PoolManager.Instance.Despawn(this);
+        }
     }
 
-    protected virtual void OnDisable()
-    {
-        CancelInvoke();
-    }
-    
     public virtual void Launch(Vector2 direction)
     {
         rb.velocity = direction.normalized * speed;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        OnHit(other.gameObject);
-        ReturnToPool();
+        if ((hitLayers.value & (1 << other.gameObject.layer)) > 0)
+        {
+            OnHit(other.gameObject);
+            PoolManager.Instance.Despawn(this);
+        }
     }
-    
-    protected abstract void OnHit(GameObject target);
 
-    protected abstract void ReturnToPool();
+    protected abstract void OnHit(GameObject target);
 }
