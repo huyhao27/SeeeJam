@@ -3,16 +3,18 @@ using UnityEngine;
 
 public class PlayerSkillManager : MonoBehaviour
 {
-    [Header("Skill Management")]
-    [SerializeField] private List<BaseSkill> skills;
+    private List<BaseSkill> skills => PlayerStats.Instance != null
+    ? PlayerStats.Instance.Skills
+    : new List<BaseSkill>();
 
     [Header("Aiming & Rotation")]
     [Tooltip("Gán đối tượng FirePoint vào đây.")]
     [SerializeField] private Transform firePoint;
     [Tooltip("Khoảng cách từ tâm Player đến FirePoint.")]
-    [SerializeField] private float firePointRadius = 1.0f; 
+    [SerializeField] private float firePointRadius = 1.0f;
     [SerializeField] private float rotationSpeed = 10f;
 
+    private PlayerStats playerStats;
     private PlayerInput playerInput;
     private Camera mainCamera;
     private Vector3 originalScale;
@@ -21,6 +23,8 @@ public class PlayerSkillManager : MonoBehaviour
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
+        playerStats = GetComponent<PlayerStats>();
+
         mainCamera = Camera.main;
         originalScale = transform.localScale;
         foreach (var skill in skills)
@@ -38,12 +42,12 @@ public class PlayerSkillManager : MonoBehaviour
     {
         EventBus.Off(GameEvent.ActivateSkill, OnSkillActivateEvent);
     }
-    
+
     private void Update()
     {
         if (GameManager.Instance.CurrentState != GameState.Playing) return;
 
-        HandleFlipAndAim(); 
+        HandleFlipAndAim();
     }
 
     private void OnSkillActivateEvent(object data)

@@ -5177,6 +5177,7 @@ GameObject:
   - component: {fileID: 1692483611697683524}
   - component: {fileID: 3759492356693486558}
   - component: {fileID: 5208764564457755063}
+  - component: {fileID: 1117413105891476733}
   - component: {fileID: 8677844241782549908}
   - component: {fileID: 6244416456596063461}
   - component: {fileID: 4779264906577263439}
@@ -5287,6 +5288,20 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &1117413105891476733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3464809050425438483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feead5c07fa3d824a87c661870e0d389, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseData: {fileID: 11400000, guid: c8d7c74b62c5b244ab11211207ebcb9c, type: 2}
+  _data: {fileID: 11400000, guid: c8d7c74b62c5b244ab11211207ebcb9c, type: 2}
 --- !u!114 &8677844241782549908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5311,10 +5326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a466779911a8249a87b51f44a81e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7.01
   dashDistance: 3
   dashDuration: 0.2
-  dashCooldown: 1
 --- !u!114 &4779264906577263439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5327,10 +5340,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 182f38dd017c4ee4ebc17d42745d203a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skills:
-  - {fileID: 11400000, guid: 81cdfc4f2c733c747b68b91aa1632b87, type: 2}
-  - {fileID: 11400000, guid: 272c8f8a0df5a42419203599a06fb1f2, type: 2}
-  - {fileID: 11400000, guid: 58285f6e0420af4409014b011147238a, type: 2}
   firePoint: {fileID: 5501908328739929232}
   firePointRadius: 1.4
   rotationSpeed: 5
@@ -5346,10 +5355,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 911c82ac71aad7b438b1e9fdb1115938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupRange: 3
   xpLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
 --- !u!1 &4641313946777187659
 GameObject:
   m_ObjectHideFlags: 0

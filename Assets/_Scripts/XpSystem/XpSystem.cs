@@ -21,7 +21,7 @@ public class XpSystem : MonoBehaviour
     void Start()
     {
         UpdateBar();
-        levelText.text = currentLevel + "";
+        levelText.text = "Lv." + currentLevel + "";
         EventBus.On(GameEvent.GetXp, (xpAmount) => { OnGetXp((float)xpAmount); });
     }
 
@@ -56,6 +56,7 @@ public class XpSystem : MonoBehaviour
 
             // Level up
             OnLevelUp();
+            EventBus.Emit(GameEvent.LevelUp);
 
             currentXp = overflow;
             xp.fillAmount = 0;
@@ -72,7 +73,7 @@ public class XpSystem : MonoBehaviour
 
     private void OnLevelUp()
     {
-        levelText.text = ++currentLevel + "";
+        levelText.text = "Lv." + ++currentLevel + "";
         maxXp *= penaltyXp; // tăng maxXp
     }
     private void OnGetXp(float xpAmount)
