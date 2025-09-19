@@ -52,9 +52,12 @@ public class GameManager : Singleton<GameManager>
     }
 }
 
-public enum GameEvent {
+public enum GameEvent
+{
     Win,
     Lose,
     GameOver,
     ActivateSkill,
+    
+    GetXp,
 }
