@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2284946697100751340}
@@ -108,6 +108,15 @@ MonoBehaviour:
   contactDamage: 5
   patrolSpeedMultiplier: 3
   patrolChangeDirInterval: {x: 1.5, y: 3.5}
+  useHorizontalFlip: 1
+  visualRoot: {fileID: 0}
+  enableSeparation: 1
+  separationRadius: 0.6
+  separationForce: 2.5
+  separationMaxSpeedMultiplier: 1.15
+  separationEnemyLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!58 &4678129540618564909
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -40,6 +40,26 @@ public class BaseEnemy : MonoBehaviour, IPoolable
 
     // Components
     private Rigidbody2D rb;
+
+    [Header("Visual Flip Settings")] 
+    [SerializeField] private bool useHorizontalFlip = true; // Nếu tắt sẽ giữ nguyên logic quay cũ
+    [SerializeField] private Transform visualRoot;           // Gốc để flip (sprite container). Nếu null dùng transform hiện tại
+    private bool facingRight = true;                         // Trạng thái hướng hiện tại
+
+    [Header("Separation (Anti-Overlap)")]
+    [Tooltip("Bật để enemy tách nhẹ khỏi nhau khi đứng gần (steering tách chứ không dùng collision).")]
+    [SerializeField] private bool enableSeparation = true;
+    [Tooltip("Bán kính quét tìm enemy khác để tách.")]
+    [SerializeField] private float separationRadius = 0.6f;
+    [Tooltip("Lực tách cơ bản.")]
+    [SerializeField] private float separationForce = 2.5f;
+    [Tooltip("Cho phép vận tốc sau khi cộng separation vượt targetSpeed tối đa bao nhiêu lần.")]
+    [SerializeField] private float separationMaxSpeedMultiplier = 1.15f;
+    [Tooltip("LayerMask dùng để tìm các enemy khác (chỉ nên tick layer Enemy).")]
+    [SerializeField] private LayerMask separationEnemyLayers;
+
+    // Reusable buffer tránh GC
+    private static readonly Collider2D[] _separationBuffer = new Collider2D[24];
     #endregion
 
     #region IPoolable Implementation
@@ -194,13 +214,29 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         Vector2 desiredVel = patrolDir * targetSpeed;
         patrolVelocity = Vector2.MoveTowards(patrolVelocity, desiredVel, patrolAcceleration * dt);
         
-        rb.velocity = patrolVelocity;
-
-        if (patrolVelocity.sqrMagnitude > 0.0001f)
+        Vector2 finalVel = patrolVelocity;
+        if (enableSeparation)
         {
-            Vector2 lookDir = patrolVelocity.normalized;
-            Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, new Vector3(lookDir.x, lookDir.y, 0f));
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, patrolRotateLerp * dt);
+            Vector2 sep = ComputeSeparationForce();
+            finalVel += sep;
+            float maxAllowed = (baseMoveSpeed * patrolSpeedMultiplier) * separationMaxSpeedMultiplier;
+            if (finalVel.magnitude > maxAllowed)
+                finalVel = finalVel.normalized * maxAllowed;
+        }
+        rb.velocity = finalVel;
+
+        if (!useHorizontalFlip)
+        {
+            if (finalVel.sqrMagnitude > 0.0001f)
+            {
+                Vector2 lookDir = finalVel.normalized;
+                Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, new Vector3(lookDir.x, lookDir.y, 0f));
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, patrolRotateLerp * dt);
+            }
+        }
+        else
+        {
+            HandleFlip(finalVel.x);
         }
     }
 
@@ -232,13 +268,30 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         Vector2 desiredVel = dist > 0.0001f ? toTarget.normalized * desiredSpeed : Vector2.zero;
         pursueVelocity = Vector2.MoveTowards(pursueVelocity, desiredVel, pursueAcceleration * dt);
         
-        rb.velocity = pursueVelocity;
-
-        Vector2 faceDir = pursueVelocity.sqrMagnitude > 0.0001f ? pursueVelocity.normalized : toTarget.normalized;
-        if (faceDir.sqrMagnitude > 0.0001f)
+        Vector2 finalVel = pursueVelocity;
+        if (enableSeparation)
         {
-            Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, new Vector3(faceDir.x, faceDir.y, 0f));
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, pursueRotateLerp * dt);
+            Vector2 sep = ComputeSeparationForce();
+            finalVel += sep;
+            float maxAllowed = currentMoveSpeed * separationMaxSpeedMultiplier;
+            if (finalVel.magnitude > maxAllowed)
+                finalVel = finalVel.normalized * maxAllowed;
+        }
+        rb.velocity = finalVel;
+
+        if (!useHorizontalFlip)
+        {
+            Vector2 faceDir = finalVel.sqrMagnitude > 0.0001f ? finalVel.normalized : toTarget.normalized;
+            if (faceDir.sqrMagnitude > 0.0001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, new Vector3(faceDir.x, faceDir.y, 0f));
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, pursueRotateLerp * dt);
+            }
+        }
+        else
+        {
+            float xDir = finalVel.sqrMagnitude > 0.0001f ? finalVel.x : toTarget.x;
+            HandleFlip(xDir);
         }
     }
 
@@ -274,6 +327,55 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     public int MaxHp => maxHp;
     public State CurrentState => currentState;
     public Transform CurrentTarget => currentTarget;
+
+    #endregion
+
+    #region Flip Logic
+    private void HandleFlip(float xMove)
+    {
+        if (!useHorizontalFlip) return;
+        if (Mathf.Abs(xMove) < 0.0001f) return; // Không thay đổi nếu gần như đứng yên ngang
+
+        bool wantRight = xMove > 0f;
+        if (wantRight != facingRight)
+        {
+            facingRight = wantRight;
+            var root = visualRoot != null ? visualRoot : transform;
+            Vector3 ls = root.localScale;
+            ls.x = Mathf.Abs(ls.x) * (facingRight ? 1f : -1f);
+            root.localScale = ls;
+        }
+    }
+
+    private Vector2 ComputeSeparationForce()
+    {
+        if (!enableSeparation || separationRadius <= 0f || separationForce <= 0f) return Vector2.zero;
+
+        int count = Physics2D.OverlapCircleNonAlloc(rb.position, separationRadius, _separationBuffer, separationEnemyLayers);
+        if (count <= 1) return Vector2.zero; // Chỉ có mình hoặc không tìm thấy
+
+        Vector2 acc = Vector2.zero;
+        int contributors = 0;
+        for (int i = 0; i < count; i++)
+        {
+            var col = _separationBuffer[i];
+            if (col == null) continue;
+            if (col.attachedRigidbody == rb) continue; // Bỏ qua chính mình
+
+            Vector2 toMe = (Vector2)rb.position - (Vector2)col.transform.position;
+            float dist = toMe.magnitude;
+            if (dist < 0.0001f) continue;
+            // Trọng số nghịch với khoảng cách bình phương để đẩy mạnh khi rất gần
+            acc += toMe / (dist * dist);
+            contributors++;
+        }
+
+        if (contributors == 0) return Vector2.zero;
+        acc /= contributors;
+        if (acc == Vector2.zero) return Vector2.zero;
+        acc = acc.normalized * separationForce;
+        return acc;
+    }
 
     private void OnDrawGizmosSelected()
     {

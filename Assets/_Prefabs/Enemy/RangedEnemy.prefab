@@ -254,6 +254,15 @@ MonoBehaviour:
   contactDamage: 5
   patrolSpeedMultiplier: 0.8
   patrolChangeDirInterval: {x: 1.5, y: 3.5}
+  useHorizontalFlip: 1
+  visualRoot: {fileID: 0}
+  enableSeparation: 1
+  separationRadius: 0.6
+  separationForce: 2.5
+  separationMaxSpeedMultiplier: 1.15
+  separationEnemyLayers:
+    serializedVersion: 2
+    m_Bits: 256
   bulletPrefab: {fileID: -6767130331462266043, guid: 0b0d5176aa809ff47bde5fb74abf2022, type: 3}
   firePoint: {fileID: 855048350305597119}
   projectileSpread: 0
