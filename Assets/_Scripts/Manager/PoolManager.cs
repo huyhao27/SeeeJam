@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 [System.Serializable]
 public class PoolInfo
@@ -11,7 +13,7 @@ public class PoolInfo
 public class PoolManager : Singleton<PoolManager>
 {
     [SerializeField] private List<PoolInfo> poolsToCreate;
-    
+
     private readonly Dictionary<string, ObjectPool> _poolDictionary = new Dictionary<string, ObjectPool>();
 
     protected override void Awake()
@@ -47,13 +49,26 @@ public class PoolManager : Singleton<PoolManager>
 
         ObjectPool pool = _poolDictionary[prefab.name];
         GameObject instanceGo = pool.Get();
-        
+
         T instance = instanceGo.GetComponent<T>();
 
         instance.transform.SetPositionAndRotation(position, rotation);
         instance.OnPoolSpawn();
-        
+
         return instance;
+    }
+
+    public T Spawn<T>(T prefab) where T : MonoBehaviour
+    {
+        if (!_poolDictionary.ContainsKey(prefab.name))
+        {
+            Debug.LogError($"PoolManager không chứa pool cho prefab: {prefab.name}");
+            return null;
+        }
+
+        ObjectPool pool = _poolDictionary[prefab.name];
+        GameObject instanceGo = pool.Get();
+        return instanceGo.GetComponent<T>();
     }
 
     public void Despawn(IPoolable instance)
@@ -71,6 +86,23 @@ public class PoolManager : Singleton<PoolManager>
         {
             Debug.LogWarning($"Không tìm thấy pool cho {instanceGo.name}, sẽ Destroy.");
             Destroy(instanceGo);
+        }
+    }
+
+
+    public void Despawn(GameObject prefab)
+    {
+        try
+        {
+            // Loại bỏ (Clone), (1), (2), ...
+            string cleanName = Regex.Replace(prefab.name, @"\(\d*\)|\(Clone\)", "").Trim();
+
+            ObjectPool pool = _poolDictionary[cleanName];
+            pool.Return(prefab);
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
         }
     }
 }

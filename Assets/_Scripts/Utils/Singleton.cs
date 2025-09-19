@@ -29,6 +29,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
         else
         {
+            Debug.Log("Pha huy " + gameObject.name);    
             Destroy(gameObject);
         }
     }

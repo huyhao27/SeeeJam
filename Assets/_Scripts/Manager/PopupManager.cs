@@ -20,6 +20,7 @@ public class PopupManager : Singleton<PopupManager>
     void Start()
     {
         EventBus.On(GameEvent.GameOver, (data) => OnGameOver((int)data));
+        EventBus.On(GameEvent.LevelUp, (data) => { ShowPopup<LevelUpPopup>(); });
     }
 
     void OnGameOver(int score) {

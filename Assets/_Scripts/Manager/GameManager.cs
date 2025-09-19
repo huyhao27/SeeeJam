@@ -59,12 +59,16 @@ public enum GameEvent
     Lose,
     GameOver,
     ActivateSkill,
-    EnemyDied, 
+    EnemyDied,
     KillCountUpdated,
     EnemySpawned,
-    TimerUpdated,    
-    WaveStarted ,
-    
+    TimerUpdated,
+    WaveStarted,
+
     GetXp,
     PlayerDamaged,
+
+    SelectUpgrade,
+    
+    LevelUp,
 }
