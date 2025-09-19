@@ -1237,18 +1237,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1692483611697683524, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1692483611697683524, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1692483611697683524, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1692483611697683524, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1288,49 +1276,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1908762008292713671, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_ApplyToSortingLayers.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908762008292713671, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_ApplyToSortingLayers.Array.data[2]
-      value: 2006181771
-      objectReference: {fileID: 0}
     - target: {fileID: 3464809050425438483, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3464809050425438483, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3759492356693486558, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 45d0f16f2d0d9704d8521cb13c9d05ce, type: 3}
-    - target: {fileID: 4779264906577263439, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: skills.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 58285f6e0420af4409014b011147238a, type: 2}
-    - target: {fileID: 4835086910629241976, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5208764564457755063, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: 3adffe50368b19f4ca757e5fef8fa672, type: 2}
-    - target: {fileID: 5208764564457755063, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6244416456596063461, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: moveSpeed
-      value: 7.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 8556994934021397407, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3438,7 +3386,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1261538196
@@ -31296,7 +31244,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1921448268

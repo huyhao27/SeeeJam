@@ -8,6 +8,5 @@ public abstract class BaseSkill : ScriptableObject
 
     public string SkillName => skillName;
     public float Cooldown => cooldown;
-    
-    public abstract void Activate(GameObject caster);
+    public abstract void Activate(GameObject caster, Transform firePoint);
 }

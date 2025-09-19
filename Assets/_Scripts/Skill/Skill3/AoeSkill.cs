@@ -8,7 +8,7 @@ public class AoeSkill : BaseSkill
     [SerializeField] private float finalRadius = 5f;
     [SerializeField] private float expandDuration = 0.5f;
 
-    public override void Activate(GameObject caster)
+    public override void Activate(GameObject caster, Transform firePoint)
     {
         var waveInstance = PoolManager.Instance.Spawn(wavePrefab, caster.transform.position, Quaternion.identity);
 

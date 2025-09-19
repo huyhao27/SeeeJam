@@ -3,16 +3,26 @@ using UnityEngine;
 
 public class PlayerSkillManager : MonoBehaviour
 {
+    [Header("Skill Management")]
     [SerializeField] private List<BaseSkill> skills;
+
+    [Header("Aiming & Rotation")]
+    [Tooltip("Gán đối tượng FirePoint vào đây.")]
+    [SerializeField] private Transform firePoint;
+    [Tooltip("Khoảng cách từ tâm Player đến FirePoint.")]
+    [SerializeField] private float firePointRadius = 1.0f; 
+    [SerializeField] private float rotationSpeed = 10f;
 
     private PlayerInput playerInput;
     private Camera mainCamera;
+    private Vector3 originalScale;
     private readonly Dictionary<BaseSkill, float> skillCooldowns = new Dictionary<BaseSkill, float>();
 
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         mainCamera = Camera.main;
+        originalScale = transform.localScale;
         foreach (var skill in skills)
         {
             if (skill != null) skillCooldowns[skill] = 0f;
@@ -22,28 +32,18 @@ public class PlayerSkillManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus.On(GameEvent.ActivateSkill, OnSkillActivateEvent);
-
-        // Input test skill
-        // playerInput.OnSkill1Performed += () => TryActivateSkill(0);
-        // playerInput.OnSkill2Performed += () => TryActivateSkill(1);
-        // playerInput.OnSkill3Performed += () => TryActivateSkill(2);
     }
 
     private void OnDisable()
     {
         EventBus.Off(GameEvent.ActivateSkill, OnSkillActivateEvent);
-
-        // playerInput.OnSkill1Performed -= () => TryActivateSkill(0);
-        // playerInput.OnSkill2Performed -= () => TryActivateSkill(1);
-        // playerInput.OnSkill3Performed -= () => TryActivateSkill(2);
     }
     
     private void Update()
     {
         if (GameManager.Instance.CurrentState != GameState.Playing) return;
 
-        HandleRotation();
-        // UpdateAllCooldowns();
+        HandleFlipAndAim(); 
     }
 
     private void OnSkillActivateEvent(object data)
@@ -61,39 +61,29 @@ public class PlayerSkillManager : MonoBehaviour
         if (skillIndex >= 0 && skillIndex < skills.Count && skills[skillIndex] != null)
         {
             BaseSkill skill = skills[skillIndex];
-            skill.Activate(gameObject);
+            skill.Activate(gameObject, firePoint);
             skillCooldowns[skill] = skill.Cooldown;
         }
     }
 
-    // private void UpdateAllCooldowns()
-    // {
-    //     var skillKeys = new List<BaseSkill>(skillCooldowns.Keys);
-    //     foreach (var skill in skillKeys)
-    //     {
-    //         if (skillCooldowns[skill] > 0)
-    //         {
-    //             skillCooldowns[skill] -= Time.deltaTime;
-    //         }
-    //     }
-    // }
-
-    [SerializeField] private float rotationSpeed = 5f;
-
-    private void HandleRotation()
+    private void HandleFlipAndAim()
     {
         Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
 
-        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+        if (direction.x < 0)
+        {
+            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
+        }
+        else if (direction.x > 0)
+        {
+            transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z);
+        }
 
-        float smoothAngle = Mathf.LerpAngle(
-            transform.eulerAngles.z,      
-            targetAngle,                 
-            rotationSpeed * Time.deltaTime 
-        );
+        firePoint.position = (Vector2)transform.position + (direction * firePointRadius); // << THAY ĐỔI QUAN TRỌNG
 
-        transform.rotation = Quaternion.Euler(0f, 0f, smoothAngle);
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
+        firePoint.rotation = Quaternion.Slerp(firePoint.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
-
 }
