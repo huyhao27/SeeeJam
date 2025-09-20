@@ -300,14 +300,10 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         if (target == null) return;
         rb.velocity = Vector2.zero; // Dừng lại khi tấn công
 
-    // Payload đơn giản: [0]=damage(int), [1]=attacker(GameObject), [2]=target(GameObject)
-    EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
-//     if (target.TryGetComponent<HpSystem>(out var hp))
-// {
-//     hp.TakeDamage(contactDamage);
-// }
-
+        // Payload đơn giản: [0]=damage(int), [1]=attacker(GameObject), [2]=target(GameObject)
+        
         attackTimer = attackCooldown;
+        Debug.Log($"[Enemy] Attacked Player: -{contactDamage} HP (chỉ log, chưa trừ máu)");
     }
     #endregion
     

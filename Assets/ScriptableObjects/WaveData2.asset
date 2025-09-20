@@ -18,4 +18,4 @@ MonoBehaviour:
   totalEnemyCount: 30
   enemyTypeA: {fileID: 8807301733000379759, guid: 624e61a798f39e041a0df3f0d21db927, type: 3}
   ratioTypeA: 0.6
-  enemyTypeB: {fileID: 8807301733000379759, guid: 1d68b9c02e422b84391575a02d498f1f, type: 3}
+  enemyTypeB: {fileID: 7160279537970851011, guid: 4577d66bf21849448a8266605bd9bf38, type: 3}

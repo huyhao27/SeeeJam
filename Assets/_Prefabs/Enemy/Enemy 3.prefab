@@ -101,12 +101,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 30
-  baseMoveSpeed: 2.5
+  baseMoveSpeed: 3.5
   detectionRange: 16
   attackRange: 1.6
   attackCooldown: 1
-  contactDamage: 5
-  patrolSpeedMultiplier: 3
+  contactDamage: 15
+  patrolSpeedMultiplier: 4
   patrolChangeDirInterval: {x: 1.5, y: 3.5}
   useHorizontalFlip: 1
   visualRoot: {fileID: 0}

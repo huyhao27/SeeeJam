@@ -1566,6 +1566,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1117413105891476733, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
+      propertyPath: MaxHp
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1692483611697683524, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -32076,7 +32080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.size
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[8].prefab
@@ -32106,6 +32110,10 @@ PrefabInstance:
       propertyPath: poolsToCreate.Array.data[14].prefab
       value: 
       objectReference: {fileID: 6688011688199741964, guid: 2191120f43d09894090c24be370f9211, type: 3}
+    - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
+      propertyPath: poolsToCreate.Array.data[15].prefab
+      value: 
+      objectReference: {fileID: 7160279537970851011, guid: 4577d66bf21849448a8266605bd9bf38, type: 3}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[0].initialSize
       value: 5
@@ -32160,6 +32168,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[14].initialSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
+      propertyPath: poolsToCreate.Array.data[15].initialSize
       value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -33524,7 +33536,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: {fileID: 1765756592}
   hpIndicator: {fileID: 1965761789}
-  currentHp: 30
+  maxHp: 50
+  currentHp: 50
+  isPlayerHp: 0
 --- !u!1001 &2032699979
 PrefabInstance:
   m_ObjectHideFlags: 0
