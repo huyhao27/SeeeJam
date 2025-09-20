@@ -8,6 +8,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     [Header("Stats")]
     [SerializeField] private int maxHp = 30;
     [SerializeField] private float baseMoveSpeed = 2.5f;
+    [SerializeField] private float knockbackResistance = 0f; // 0 = ăn full, 0.5 = giảm 50%, 1 = miễn nhiễm
 
     [Header("AI Settings")]
     [SerializeField] private float detectionRange = 6f;
@@ -52,6 +53,8 @@ public class BaseEnemy : MonoBehaviour, IPoolable
 
     // Components
     private Rigidbody2D rb;
+    private Vector2 externalVelocity = Vector2.zero; // lưu knockback tạm thời
+    private float externalVelDamping = 8f; // tốc độ giảm knockback
 
     [Header("Visual Flip Settings")] 
     [SerializeField] private bool useHorizontalFlip = true; // Nếu tắt sẽ giữ nguyên logic quay cũ
@@ -117,6 +120,16 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     {
         UpdateAI(Time.deltaTime);
     }
+
+    private void FixedUpdate()
+    {
+        // Giảm dần externalVelocity (knockback) để blend mượt
+        if (externalVelocity.sqrMagnitude > 0.0001f)
+        {
+            externalVelocity = Vector2.MoveTowards(externalVelocity, Vector2.zero, externalVelDamping * Time.fixedDeltaTime);
+            rb.velocity += externalVelocity; // cộng thêm vào vận tốc đang được AI set ở UpdateAI
+        }
+    }
     #endregion
 
     #region Core Logic
@@ -130,6 +143,16 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         if (currentHp <= 0)
         {
             Die();
+        }
+    }
+
+    // Overload nhận thêm hướng & lực knockback (forceMagnitude có thể âm -> bỏ qua)
+    public void TakeDamage(int dmg, Vector2 hitDirection, float forceMagnitude)
+    {
+        TakeDamage(dmg);
+        if (dmg > 0 && forceMagnitude > 0f && currentHp > 0)
+        {
+            ApplyKnockback(hitDirection, forceMagnitude);
         }
     }
 
@@ -342,13 +365,25 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     #endregion
     
     #region Public API
-    public void SetHp(int amount)
+    public virtual void SetHp(int amount)
     {
         currentHp = Mathf.Clamp(amount, 0, maxHp);
         if (currentHp <= 0)
         {
             Die();
         }
+    }
+
+    public void ApplyKnockback(Vector2 dir, float force)
+    {
+        if (force <= 0f) return;
+        float resist = Mathf.Clamp01(knockbackResistance);
+        float final = force * (1f - resist);
+        if (final <= 0f) return;
+        if (dir.sqrMagnitude < 0.0001f) return;
+        dir = dir.normalized;
+        // Thay vì set velocity trực tiếp (gây dật), cộng vào externalVel để được giảm dần
+        externalVelocity += dir * final;
     }
     #endregion
 

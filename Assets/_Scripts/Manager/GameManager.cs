@@ -96,6 +96,12 @@ public enum GameEvent
     SelectUpgrade,
 
     LevelUp,
+    BossSpawned,
+    BossHpChanged,
+    BossSkillCast, // payload: skillId (int), maybe extra info
+    BossDied,
+    BossChargeStart,
+    PlayerStunned, // payload: duration (float)
 
     Heal,
 
