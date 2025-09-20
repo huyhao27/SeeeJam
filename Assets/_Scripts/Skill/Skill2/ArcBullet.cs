@@ -13,6 +13,10 @@ public class ArcBullet : BaseBullet
     [Tooltip("Đường cong tăng trưởng. Trục X (0->1) là % vòng đời, Trục Y (0->1) là % mức độ tăng trưởng từ kích thước ban đầu đến kích thước tối đa.")]
     [SerializeField] private AnimationCurve growthCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
+    [Header("Effects")]
+    [Tooltip("Prefab particle cho hiệu ứng nổ của Buff 3.")]
+    [SerializeField] private GameObject explosionParticlePrefab;
+    
     private bool _explodesOnDeath = false;
     private float _explosionRadius = 0f;
     private Vector3 _initialScale;
@@ -85,6 +89,11 @@ public class ArcBullet : BaseBullet
 
     private void Explode()
     {
+        if (explosionParticlePrefab != null)
+        {
+            PoolManager.Instance.Spawn(explosionParticlePrefab, transform.position, transform.rotation);
+        }
+
         if (_explosionRadius <= 0) return;
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, _explosionRadius, hitLayers);
         foreach (var hit in hits)

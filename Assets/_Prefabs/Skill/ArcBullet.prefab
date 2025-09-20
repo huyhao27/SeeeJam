@@ -245,3 +245,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  explosionParticlePrefab: {fileID: 7327378600596668780, guid: 1a1ae2157d6fbb64eb6b895cfb6738e0, type: 3}

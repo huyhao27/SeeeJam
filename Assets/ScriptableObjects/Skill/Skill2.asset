@@ -20,5 +20,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d65b2c2afcb330b41874c7f6b3f59220, type: 2}
   arcPrefab: {fileID: 7664709567143440899, guid: 0b795fd3e7613154192e2f42c9fca2d3, type: 3}
   buff1_scaleMultiplier: 1.5
-  buff3_explosionRadius: 2.5
-  buff3_explosionDamage: 99999
+  buff3_explosionRadius: 4.5
+  buff3_explosionDamage: 100
