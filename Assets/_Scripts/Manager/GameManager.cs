@@ -21,7 +21,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        ChangeState(GameState.Tutorial);
+        // ChangeState(GameState.Tutorial);
+        ChangeState(GameState.Playing);
     }
 
     private void Update()

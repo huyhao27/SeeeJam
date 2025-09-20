@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour, IPoolable, IAffectable
 {
-    // ... (Toàn bộ các biến Serialized Fields giữ nguyên) ...
     #region Serialized Fields
     [Header("Stats")]
     [SerializeField] private int maxHp = 30;

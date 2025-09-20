@@ -76,11 +76,11 @@ public class BossEnemy : BaseEnemy
         EmitHpChanged();
     }
 
-    public override void SetHp(int amount)
-    {
-        base.SetHp(amount);
-        EmitHpChanged();
-    }
+    // public override void SetHp(int amount)
+    // {
+    //     base.SetHp(amount);
+    //     EmitHpChanged();
+    // }
 
     public void ApplyDamage(int dmg)
     {

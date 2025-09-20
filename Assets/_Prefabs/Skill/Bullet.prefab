@@ -167,5 +167,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   debugCollisions: 0
-  damage: 10
-  knockbackForce: 2
+  damage: 9999
