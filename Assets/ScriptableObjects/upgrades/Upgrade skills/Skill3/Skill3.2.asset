@@ -15,5 +15,5 @@ MonoBehaviour:
   upgradeName: Skill3 +1
   description: 'Skill3++(2): Instead of stunning, the shockwave now knocks enemies
     back a short distance.'
-  icon: {fileID: 21300000, guid: 5597d08c8d82d4e438439bd4540f6d58, type: 3}
+  icon: {fileID: 2518197422900474659, guid: 8c7026195c71b5d4cba613cbcaf0c27b, type: 3}
   targetSkill: {fileID: 11400000, guid: 58285f6e0420af4409014b011147238a, type: 2}

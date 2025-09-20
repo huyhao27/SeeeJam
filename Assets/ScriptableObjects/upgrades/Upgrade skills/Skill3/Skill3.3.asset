@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeName: Skill3 +1
   description: "Skill3++(3): Expands the shockwave\u2019s diameter."
-  icon: {fileID: 21300000, guid: 5597d08c8d82d4e438439bd4540f6d58, type: 3}
+  icon: {fileID: 2518197422900474659, guid: 8553e77cff2a70546804d078607b915a, type: 3}
   targetSkill: {fileID: 11400000, guid: 58285f6e0420af4409014b011147238a, type: 2}

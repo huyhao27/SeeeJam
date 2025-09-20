@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeName: +1 level skill 1
   description: 'Skill1++(3): Fires 2 waves of bullets per skill cast.'
-  icon: {fileID: 21300000, guid: 37849a72eda59ce48875c23e1ff3ecdd, type: 3}
+  icon: {fileID: 2518197422900474659, guid: bf90bf8727c2b3c499c778da11d6d16d, type: 3}
   targetSkill: {fileID: 11400000, guid: 81cdfc4f2c733c747b68b91aa1632b87, type: 2}
