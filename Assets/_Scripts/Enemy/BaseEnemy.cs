@@ -176,6 +176,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable, IAffectable
         {
             PoolManager.Instance.Spawn(deathParticlePrefab, transform.position, Quaternion.identity);
         }
+        SoundManager.Instance.PlaySfxOneShot(7);
 
         EventBus.Emit(GameEvent.EnemyDied, this);
         DropReward();

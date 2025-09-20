@@ -85,6 +85,8 @@ public class XpSystem : MonoBehaviour
 
     private void OnLevelUp()
     {
+        SoundManager.Instance.PlaySfxOneShot(6);
+
         levelText.text = "Lv." + ++currentLevel + "";
         maxXp *= penaltyXp; // tăng maxXp
     }
