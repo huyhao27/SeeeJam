@@ -17,9 +17,9 @@ public class UpgradeStat : UpgradeBase
                 stats.MoveSpeed += value;
                 break;
             case StatType.MaxHpAndHeal:
-                EventBus.Emit(GameEvent.Heal, value); 
                 stats.MaxHp += value;
                 EventBus.Emit(GameEvent.MaxHpChanged, stats.MaxHp);
+                EventBus.Emit(GameEvent.Heal, value);
                 break;
             case StatType.CollectRadius:
                 stats.CollectRadius += value;
