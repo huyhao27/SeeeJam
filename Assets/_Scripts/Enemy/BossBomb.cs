@@ -12,6 +12,10 @@ public class BossBomb : MonoBehaviour, IPoolable
     private bool exploded;
 
     private GameObject _originalPrefab;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip sfxSpawn;
+    [SerializeField] private AudioClip sfxExplode;
 
     public void Setup(float dmg)
     {
@@ -23,6 +27,13 @@ public class BossBomb : MonoBehaviour, IPoolable
         timer = selfDestructTime;
         exploded = false;
         gameObject.SetActive(true);
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false; audioSource.loop = false;
+        }
+        if (sfxSpawn != null) audioSource.PlayOneShot(sfxSpawn);
     }
 
     public void OnPoolDespawn()
@@ -55,6 +66,7 @@ public class BossBomb : MonoBehaviour, IPoolable
             if (hit != null)
             {
                 Explode();
+                audioSource.PlayOneShot(sfxExplode);
                 PoolManager.Instance.Despawn(this);
             }
         }
@@ -74,6 +86,7 @@ public class BossBomb : MonoBehaviour, IPoolable
             }
         }
         // TODO: VFX / âm thanh
+        if (sfxExplode != null && audioSource != null) audioSource.PlayOneShot(sfxExplode);
     }
 
 #if UNITY_EDITOR

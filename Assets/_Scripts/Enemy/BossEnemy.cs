@@ -51,6 +51,28 @@ public class BossEnemy : BaseEnemy
     [SerializeField] private Color gizmoBombColor = new Color(1f,0.6f,0.1f,0.25f);
     [SerializeField] private Color gizmoSummonColor = new Color(0.3f,0.8f,1f,0.15f);
 
+    [Header("Audio (SFX)")]
+    [Tooltip("AudioSource mặc định (loop false) để phát sfx đơn giản. Nếu null sẽ tự thêm.")]
+    [SerializeField] private AudioSource audioSource;
+    [Tooltip("SFX khi bắt đầu cast skill (generic fallback)")]
+    [SerializeField] private AudioClip sfxSkillCast;
+    [Header("Skill1 Spread")]
+    [SerializeField] private AudioClip sfxSkill1Start;
+    [SerializeField] private AudioClip sfxSkill1VolleyShot;
+    [Header("Skill2 Orb")]
+    [SerializeField] private AudioClip sfxSkill2Spawn;
+    [Header("Skill3 Bomb Field")]
+    [SerializeField] private AudioClip sfxSkill3SpawnBomb;
+    [SerializeField] private AudioClip sfxSkill3AllSpawned;
+    [Header("Skill4 Charge")]
+    [SerializeField] private AudioClip sfxSkill4Windup;
+    [SerializeField] private AudioClip sfxSkill4Dash;
+    [SerializeField] private AudioClip sfxSkill4Impact;
+    [Header("Skill5 Summon")]
+    [SerializeField] private AudioClip sfxSkill5Summon;
+    [Tooltip("Giảm âm lượng chung SFX của boss.")]
+    [SerializeField, Range(0f,1f)] private float sfxVolume = 0.9f;
+
     private bool isCasting;
     private Coroutine skillLoopCo;
     private Transform player;
@@ -70,6 +92,11 @@ public class BossEnemy : BaseEnemy
         if (playerObj) {
             player = playerObj.transform;
             if (debugDetection) Debug.Log("[Boss] Found player at start: " + player.position);
+        }
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false; audioSource.loop = false;
         }
         EventBus.Emit(GameEvent.BossSpawned, this);
         skillLoopCo = StartCoroutine(SkillLoop());
@@ -119,6 +146,7 @@ public class BossEnemy : BaseEnemy
     {
         if (logSkills) Debug.Log($"[Boss] Cast skill {id} -> {GetSkillName(id)}");
         EventBus.Emit(GameEvent.BossSkillCast, id);
+        PlaySfx(sfxSkillCast);
         switch(id)
         {
             case 1: StartCoroutine(C_Skill1_Spread()); break;
@@ -148,6 +176,7 @@ public class BossEnemy : BaseEnemy
         isCasting = true;
         if (!player || spreadBulletPrefab == null) { isCasting = false; yield break; }
         if (logSkills) Debug.Log("[Boss][Skill1] Start Spread Volley");
+        PlaySfx(sfxSkill1Start);
         Vector2 dirToPlayer = (player.position - transform.position).normalized;
         for (int v = 0; v < volleyCount; v++)
         {
@@ -183,6 +212,7 @@ public class BossEnemy : BaseEnemy
             if (bullet != null)
             {
                 bullet.Launch(dir);
+                if (sfxSkill1VolleyShot != null) PlaySfx(sfxSkill1VolleyShot, 0.75f);
             }
         }
     }
@@ -198,6 +228,7 @@ public class BossEnemy : BaseEnemy
             orb.Setup(orbDamage, orbExplosionRadius);
             orb.Launch(dir);
             if (logSkills) Debug.Log($"[Boss][Skill2] Spawn Orb dmg={orbDamage} radius={orbExplosionRadius} dir={dir}");
+            PlaySfx(sfxSkill2Spawn);
         }
         // orb tự xử lý nổ bằng lifetime
         yield return null;
@@ -214,7 +245,9 @@ public class BossEnemy : BaseEnemy
             Vector2 offset = Random.insideUnitCircle * bombSpawnRadius;
             var bomb = PoolManager.Instance.Spawn(bombPrefab, transform.position + (Vector3)offset, Quaternion.identity);
             if (bomb != null) bomb.Setup(bombDamage);
+            if (sfxSkill3SpawnBomb != null) PlaySfx(sfxSkill3SpawnBomb, 0.65f);
         }
+        PlaySfx(sfxSkill3AllSpawned);
         yield return null;
         isCasting = false;
     }
@@ -225,6 +258,7 @@ public class BossEnemy : BaseEnemy
         if (!player || rb2d == null) { isCasting = false; yield break; }
         EventBus.Emit(GameEvent.BossChargeStart, null);
         if (logSkills) Debug.Log("[Boss] Charge windup start");
+        PlaySfx(sfxSkill4Windup, 3);
         // Windup
         float timer = 0f;
         while (timer < chargeWindup) { timer += Time.deltaTime; yield return null; }
@@ -262,6 +296,7 @@ public class BossEnemy : BaseEnemy
                 PoolManager.Instance.Spawn(rangedPrefab, transform.position + (Vector3)off, Quaternion.identity);
             }
         }
+        PlaySfx(sfxSkill5Summon);
     }
     #endregion
 
@@ -274,6 +309,7 @@ public class BossEnemy : BaseEnemy
             EventBus.Emit(GameEvent.PlayerDamaged, (float)chargeDamage);
             EventBus.Emit(GameEvent.PlayerStunned, stunDuration);
             if (logSkills) Debug.Log("[Boss] Charge impact -> stunned player for " + stunDuration + "s");
+            PlaySfx(sfxSkill4Impact);
         }
     }
 
@@ -315,5 +351,11 @@ public class BossEnemy : BaseEnemy
         if (screen.z < 0) return;
         string txt = $"Boss HP {CurrentHp}/{MaxHp}\nCasting={isCasting}\nInterval={GetCurrentInterval():F2}";
         GUI.Label(new Rect(screen.x - 60, Screen.height - screen.y - 30, 160, 60), txt);
+    }
+
+    private void PlaySfx(AudioClip clip, float volumeMultiplier = 1f)
+    {
+        if (clip == null || audioSource == null) return;
+        audioSource.PlayOneShot(clip, sfxVolume * Mathf.Clamp01(volumeMultiplier));
     }
 }
