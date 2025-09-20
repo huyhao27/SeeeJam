@@ -75,6 +75,18 @@ public class PoolManager : Singleton<PoolManager>
     {
         var instanceGo = ((MonoBehaviour)instance).gameObject;
         var prefab = instance.GetOriginalPrefab();
+        string guessedKey = null;
+        if (prefab == null)
+        {
+            // Try recover by stripping (Clone) and numbers
+            guessedKey = System.Text.RegularExpressions.Regex.Replace(instanceGo.name, @"\(Clone\)|\(\d*\)", "").Trim();
+            if (_poolDictionary.TryGetValue(guessedKey, out var guessedPool))
+            {
+                // assign original prefab for next time
+                prefab = guessedPool.Prefab;
+                instance.SetOriginalPrefab(prefab);
+            }
+        }
 
         if (prefab != null && _poolDictionary.ContainsKey(prefab.name))
         {
@@ -84,7 +96,7 @@ public class PoolManager : Singleton<PoolManager>
         }
         else
         {
-            Debug.LogWarning($"Không tìm thấy pool cho {instanceGo.name}, sẽ Destroy.");
+            Debug.LogWarning($"Không tìm thấy pool cho {instanceGo.name} (prefab key={(prefab?prefab.name:guessedKey) ?? "null"}), sẽ Destroy.");
             Destroy(instanceGo);
         }
     }

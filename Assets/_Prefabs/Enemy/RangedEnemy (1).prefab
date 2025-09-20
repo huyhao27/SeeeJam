@@ -249,6 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 30
   baseMoveSpeed: 2.5
+  knockbackResistance: 0.5
   detectionRange: 14
   attackRange: 9
   attackCooldown: 1.2
