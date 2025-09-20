@@ -201,8 +201,8 @@ MonoBehaviour:
   orbDamage: 25
   orbExplosionRadius: 2.5
   bombPrefab: {fileID: 3883287413526674340, guid: 5537ce04289111f4d843560f70637c98, type: 3}
-  bombCount: 6
-  bombSpawnRadius: 11.9
+  bombCount: 10
+  bombSpawnRadius: 12.5
   bombDamage: 20
   chargeWindup: 2
   chargeSpeed: 18

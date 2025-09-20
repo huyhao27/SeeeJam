@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2301682080834470131}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.076, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 5358639499909977582}
   - component: {fileID: 3718360515113628995}
   - component: {fileID: 3883287413526674340}
-  - component: {fileID: 2149011771362961797}
+  - component: {fileID: 4797563251961714161}
   m_Layer: 0
   m_Name: BossBomb
   m_TagString: Untagged
@@ -157,7 +157,7 @@ Transform:
   m_GameObject: {fileID: 6793061443610329134}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.433, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -256,14 +256,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selfDestructTime: 5
-  triggerRadius: 0.6
+  triggerRadius: 0.59
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
   audioSource: {fileID: 8726731267616412307}
   sfxSpawn: {fileID: 8300000, guid: ba877b759f17869429a7434bb23ccb33, type: 3}
-  sfxExplode: {fileID: 8300000, guid: 2b6bf1bc4be16e240b188683f600b78d, type: 3}
---- !u!58 &2149011771362961797
+  sfxExplode: {fileID: 8300000, guid: 5cce02bc72f9eed44a25ef356906b339, type: 3}
+  destructibleByPlayerBullet: 1
+  playerBulletLayer:
+    serializedVersion: 2
+    m_Bits: 192
+  explodeOnBulletDestroy: 1
+  useTriggerColliderForBullet: 1
+  sfxDestroySilent: {fileID: 8300000, guid: 2b6bf1bc4be16e240b188683f600b78d, type: 3}
+--- !u!58 &4797563251961714161
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,6 +302,6 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.041015685, y: 0.75}
+  m_Offset: {x: -0.019153118, y: 0.011791706}
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 0.604228
