@@ -48,7 +48,7 @@ public class LevelHUD : MonoBehaviour
     {
         if (data is int waveNumber)
         {
-            waveText.text = $"Wave: {waveNumber}";
+            waveText.text = $"Wave: {waveNumber}" + "/10";
         }
     }
 }

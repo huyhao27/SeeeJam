@@ -190,6 +190,8 @@ MonoBehaviour:
   attackRange: 1.6
   attackCooldown: 1
   contactDamage: 5
+  enableContactDamage: 1
+  attackDebugLog: 0
   patrolSpeedMultiplier: 3
   patrolChangeDirInterval: {x: 1.5, y: 3.5}
   xpReward: 5
@@ -205,6 +207,7 @@ MonoBehaviour:
   separationEnemyLayers:
     serializedVersion: 2
     m_Bits: 256
+  deathParticlePrefab: {fileID: 4817897819252956058, guid: 224361507c8bc7d4587610810d046b83, type: 3}
 --- !u!50 &2038542352918260597
 Rigidbody2D:
   serializedVersion: 4

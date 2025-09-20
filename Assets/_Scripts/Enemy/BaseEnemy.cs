@@ -53,6 +53,8 @@ public class BaseEnemy : MonoBehaviour, IPoolable, IAffectable
     [SerializeField] private float separationMaxSpeedMultiplier = 1.15f;
     [Tooltip("LayerMask dùng để tìm các enemy khác (chỉ nên tick layer Enemy).")]
     [SerializeField] private LayerMask separationEnemyLayers;
+    [Header("Effects")]
+    [SerializeField] private GameObject deathParticlePrefab;
     #endregion
     
     #region Runtime State
@@ -170,6 +172,11 @@ public class BaseEnemy : MonoBehaviour, IPoolable, IAffectable
 
     protected virtual void Die()
     {
+        if (deathParticlePrefab != null)
+        {
+            PoolManager.Instance.Spawn(deathParticlePrefab, transform.position, Quaternion.identity);
+        }
+
         EventBus.Emit(GameEvent.EnemyDied, this);
         DropReward();
         PoolManager.Instance.Despawn(this);

@@ -124,13 +124,13 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: BossBomb
     originalName: 
-    pivot: {x: 0.535, y: -0.096273296}
+    pivot: {x: 0.5431132, y: 0.4441398}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 4
+      x: 5
+      y: 5
       width: 300
       height: 322
     spriteID: 44a3bf32791cf23408cf3f1f68db6d94
