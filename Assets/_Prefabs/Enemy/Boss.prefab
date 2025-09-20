@@ -186,6 +186,7 @@ MonoBehaviour:
   separationEnemyLayers:
     serializedVersion: 2
     m_Bits: 256
+  deathParticlePrefab: {fileID: 0}
   bossName: Boss
   skillIntervalBase: 5
   skillIntervalPhase2: 4
@@ -200,9 +201,9 @@ MonoBehaviour:
   orbPrefab: {fileID: 2906535252135732511, guid: a3828836c21cd6d49bc8f40eb36e9c22, type: 3}
   orbDamage: 25
   orbExplosionRadius: 2.5
-  bombPrefab: {fileID: 3883287413526674340, guid: 5537ce04289111f4d843560f70637c98, type: 3}
-  bombCount: 10
-  bombSpawnRadius: 12.5
+  bombPrefab: {fileID: 3883287413526674340, guid: c4e71a1d95218f94a9ac39c7af6590cf, type: 3}
+  bombCount: 15
+  bombSpawnRadius: 8.6
   bombDamage: 20
   chargeWindup: 2
   chargeSpeed: 18
@@ -231,7 +232,7 @@ MonoBehaviour:
   sfxSkill4Dash: {fileID: 8300000, guid: 4848de04911f64c42897d213fcdc7b52, type: 3}
   sfxSkill4Impact: {fileID: 8300000, guid: ba877b759f17869429a7434bb23ccb33, type: 3}
   sfxSkill5Summon: {fileID: 8300000, guid: b63de4f0ff835dc418e2afca6b5e306d, type: 3}
-  sfxVolume: 0.9
+  sfxVolume: 1
 --- !u!1 &4452887534372456269
 GameObject:
   m_ObjectHideFlags: 0
