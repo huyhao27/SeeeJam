@@ -108,10 +108,15 @@ MonoBehaviour:
   contactDamage: 5
   patrolSpeedMultiplier: 3
   patrolChangeDirInterval: {x: 1.5, y: 3.5}
+  xpReward: 5
+  xpRewardRandomRange: {x: 0, y: 0}
+  xpPrefabLevel: 1
+  xpSpawnChunks: 3
+  xpScatterRadius: 0.4
   useHorizontalFlip: 1
   visualRoot: {fileID: 0}
   enableSeparation: 1
-  separationRadius: 0.6
+  separationRadius: 0.5
   separationForce: 2.5
   separationMaxSpeedMultiplier: 1.15
   separationEnemyLayers:

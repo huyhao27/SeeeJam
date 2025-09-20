@@ -87,6 +87,19 @@ public class XpManager : Singleton<XpManager>
         PoolManager.Instance.Spawn<Xp>(xpPrefabs[index]);
     }
 
+    /// <summary>
+    /// Spawn một XP prefab cấp (level) tại vị trí xác định, gán amount tuỳ chỉnh.
+    /// </summary>
+    public Xp SpawnXpAt(int level, Vector3 position, float amount)
+    {
+        int index = Mathf.Clamp(level - 1, 0, xpPrefabs.Count - 1);
+        var xp = PoolManager.Instance.Spawn<Xp>(xpPrefabs[index]);
+        xp.transform.position = position;
+        xp.SetAmount(amount);
+        currentXpCount++;
+        return xp;
+    }
+
     public void ReleaseXp(GameObject xp)
     {
         currentXpCount--;

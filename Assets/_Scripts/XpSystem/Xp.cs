@@ -30,4 +30,9 @@ public class Xp : MonoBehaviour
         EventBus.Emit(GameEvent.GetXp, amount);
         XpManager.Instance.ReleaseXp(this.gameObject);
     }
+
+    public void SetAmount(float value)
+    {
+        amount = value;
+    }
 }

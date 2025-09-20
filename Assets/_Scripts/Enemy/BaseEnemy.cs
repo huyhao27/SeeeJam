@@ -18,6 +18,18 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     [Header("Patrol Settings")]
     [SerializeField] private float patrolSpeedMultiplier = 0.8f;
     [SerializeField] private Vector2 patrolChangeDirInterval = new Vector2(1.5f, 3.5f);
+
+    [Header("Rewards")]
+    [Tooltip("Số XP rơi ra (tổng). Nếu dùng randomRange thì bỏ qua giá trị này.")]
+    [SerializeField] private int xpReward = 5;
+    [Tooltip("Nếu > 0 sẽ random số XP giữa min-max (inclusive). Nếu cả hai = 0 sẽ dùng xpReward.")]
+    private Vector2Int xpRewardRandomRange = Vector2Int.zero; // x=min, y=max
+    [Tooltip("Level XP prefab trong danh sách XpManager (1 = phần tử đầu). Bạn có thể mapping enemy -> level khác nhau.")]
+    [SerializeField] private int xpPrefabLevel = 1;
+    [Tooltip("Chia nhỏ XP thành nhiều viên? 1 = không chia. Ví dụ 3 -> spawn 3 orbs.")]
+    [SerializeField, Min(1)] private int xpSpawnChunks = 1;
+    [Tooltip("Độ lệch vị trí spawn từng orb.")]
+    [SerializeField] private float xpScatterRadius = 0.4f;
     #endregion
 
     #region Runtime State
@@ -135,7 +147,30 @@ public class BaseEnemy : MonoBehaviour, IPoolable
 
     public virtual void DropReward()
     {
-        // Logic rớt vật phẩm ở đây
+        // XP DROP
+        int totalXp = xpReward;
+        if (xpRewardRandomRange.x > 0 || xpRewardRandomRange.y > 0)
+        {
+            int min = Mathf.Min(xpRewardRandomRange.x, xpRewardRandomRange.y);
+            int max = Mathf.Max(xpRewardRandomRange.x, xpRewardRandomRange.y);
+            totalXp = Random.Range(min, max + 1);
+        }
+        if (totalXp <= 0 || XpManager.Instance == null) return;
+
+        int chunks = Mathf.Clamp(xpSpawnChunks, 1, 25);
+        // Chia đều, phần dư cộng dần vào các orb đầu
+        int basePer = totalXp / chunks;
+        int remainder = totalXp - basePer * chunks;
+
+        for (int i = 0; i < chunks; i++)
+        {
+            int amountThis = basePer + (i < remainder ? 1 : 0);
+            if (amountThis <= 0) continue;
+
+            Vector2 offset = xpScatterRadius > 0f ? Random.insideUnitCircle * xpScatterRadius : Vector2.zero;
+            Vector3 spawnPos = transform.position + new Vector3(offset.x, offset.y, 0f);
+            XpManager.Instance.SpawnXpAt(xpPrefabLevel, spawnPos, amountThis);
+        }
     }
     #endregion
 
@@ -300,10 +335,9 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         if (target == null) return;
         rb.velocity = Vector2.zero; // Dừng lại khi tấn công
 
-        // Payload đơn giản: [0]=damage(int), [1]=attacker(GameObject), [2]=target(GameObject)
-        
+    // Payload đơn giản: [0]=damage(int), [1]=attacker(GameObject), [2]=target(GameObject)
+    EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
         attackTimer = attackCooldown;
-        Debug.Log($"[Enemy] Attacked Player: -{contactDamage} HP (chỉ log, chưa trừ máu)");
     }
     #endregion
     

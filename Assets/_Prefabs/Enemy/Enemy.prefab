@@ -111,9 +111,9 @@ MonoBehaviour:
   useHorizontalFlip: 1
   visualRoot: {fileID: 0}
   enableSeparation: 1
-  separationRadius: 0.6
+  separationRadius: 0.5
   separationForce: 2.5
-  separationMaxSpeedMultiplier: 1.15
+  separationMaxSpeedMultiplier: 1
   separationEnemyLayers:
     serializedVersion: 2
     m_Bits: 256
