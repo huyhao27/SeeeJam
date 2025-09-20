@@ -1,24 +1,17 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
+using System.Linq; 
 
 public class LevelUpPopup : Popup
 {
-    [SerializeField] private List<HoverLift> levelUpPanels; // UI panels
-    [SerializeField] private List<UpgradeBase> upgrades;    // pool các upgrade
-
+    [SerializeField] private List<HoverLift> levelUpPanels;
+    [SerializeField] private List<UpgradeBase> statUpgrades; 
     [SerializeField] private Animator animator;
-
-    void Start()
-    {
-        EventBus.On(GameEvent.SelectUpgrade, (obj) => { OnSelectUpgrade((HoverLift)obj); });
-    }
 
     void OnEnable()
     {
         animator.enabled = true;
+        Time.timeScale = 0f;
         RollPanels();
     }
 
@@ -27,62 +20,46 @@ public class LevelUpPopup : Popup
         base.Hide();
         Time.timeScale = 1f;
     }
-
-    public override void Show()
+    
+    public void SelectUpgrade(HoverLift selectedPanel)
     {
-        base.Show();
-        Time.timeScale = 0f;
-    }
+        selectedPanel.Upgrade.Apply();
 
-    private void OnSelectUpgrade(HoverLift selectedPanel)
-    {
-        animator.enabled = false;
-
-        foreach (var panel in levelUpPanels)
-        {
-            if (panel == selectedPanel)
-            {
-                panel.GetComponent<RectTransform>().DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack).SetUpdate(true);
-            }
-            else
-            {
-                panel.GetComponent<RectTransform>().DOScale(new Vector3(0f, 1f, 1f), 0.2f).SetEase(Ease.InBack).SetUpdate(true);
-            }
-        }
-        DOVirtual.DelayedCall(2f, () =>
-        {
-            upgrades.Remove(selectedPanel.Upgrade);
-            Hide();
-        });
+        Hide();
     }
 
     private void RollPanels()
     {
-        if (upgrades.Count < 3)
+        List<UpgradeBase> possibleUpgrades = new List<UpgradeBase>();
+        possibleUpgrades.AddRange(statUpgrades);
+
+        var playerSkills = PlayerStats.Instance.Skills;
+        foreach (var skill in playerSkills)
         {
-            Debug.LogWarning("Không đủ upgrade để roll!");
-            return;
+            if (skill == null || skill.upgradeChain == null) continue;
+            int currentLevel = SkillUpgradeManager.Instance.GetSkillLevel(skill);
+            if (currentLevel < skill.upgradeChain.Count)
+            {
+                possibleUpgrades.Add(skill.upgradeChain[currentLevel]);
+            }
         }
 
-        // Chọn ngẫu nhiên 3 upgrade khác nhau
-        List<UpgradeBase> chosenUpgrades = new();
-        for (int i = 0; i < 3; i++)
-        {
-            int index = UnityEngine.Random.Range(0, upgrades.Count);
-            chosenUpgrades.Add(upgrades[index]);
-        }
+        var chosenUpgrades = possibleUpgrades.OrderBy(x => System.Guid.NewGuid()).Take(levelUpPanels.Count).ToList();
 
-        // Gán cho các panel
         for (int i = 0; i < levelUpPanels.Count; i++)
         {
+            var panel = levelUpPanels[i];
             if (i < chosenUpgrades.Count)
             {
-                levelUpPanels[i].CanSelect = true;
-                levelUpPanels[i].Setup(chosenUpgrades[i]);
+                panel.gameObject.SetActive(true);
+                
+                panel.CanSelect = true; 
+                
+                panel.Setup(chosenUpgrades[i]);
             }
             else
             {
-                levelUpPanels[i].gameObject.SetActive(false); // ẩn nếu không có
+                panel.gameObject.SetActive(false); 
             }
         }
     }

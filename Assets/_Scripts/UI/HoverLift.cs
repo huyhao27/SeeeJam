@@ -3,11 +3,9 @@ using UnityEngine.EventSystems;
 using DG.Tweening;
 using TMPro;
 using UnityEngine.UI;
-using System;
 
 public class HoverLift : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-
     private RectTransform rectTransform;
     private Vector2 originalPos;
 
@@ -15,14 +13,19 @@ public class HoverLift : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     [SerializeField] private float duration = 0.2f;
 
     [SerializeField] private TextMeshProUGUI description;
+    [SerializeField] private TextMeshProUGUI title; 
     [SerializeField] private Image icon;
 
-    public UpgradeBase Upgrade;
+    public UpgradeBase Upgrade { get; private set; } 
     public bool CanSelect = false;
+    
+    private LevelUpPopup _popupController;
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         originalPos = rectTransform.anchoredPosition;
+        _popupController = GetComponentInParent<LevelUpPopup>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -41,14 +44,15 @@ public class HoverLift : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!CanSelect) return;
-        EventBus.Emit(GameEvent.SelectUpgrade, this);
-        this.Upgrade.Apply(PlayerStats.Instance);
+        if (!CanSelect || _popupController == null) return;
+        
+        _popupController.SelectUpgrade(this);
     }
 
     public void Setup(UpgradeBase upgrade)
     {
         this.Upgrade = upgrade;
+      //  title.text = upgrade.upgradeName; 
         description.text = upgrade.description;
         icon.sprite = upgrade.icon;
     }

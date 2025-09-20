@@ -15,31 +15,50 @@ public class PlayerHealth : MonoBehaviour, IAffectable
     {
         _maxHp = PlayerStats.Instance.MaxHp;
         _currentHp = _maxHp;
-        
         EventBus.Emit(GameEvent.PlayerHealthUpdated, new object[] { _currentHp, _maxHp });
     }
 
     private void OnEnable()
     {
         EventBus.On(GameEvent.PlayerDamaged, OnTakeDamageEvent);
+        EventBus.On(GameEvent.MaxHpChanged, OnMaxHpChanged);
+        EventBus.On(GameEvent.Heal, OnHeal);
     }
 
     private void OnDisable()
     {
         EventBus.Off(GameEvent.PlayerDamaged, OnTakeDamageEvent);
+        EventBus.Off(GameEvent.MaxHpChanged, OnMaxHpChanged);
+        EventBus.Off(GameEvent.Heal, OnHeal);
+    }
+
+    private void OnMaxHpChanged(object data)
+    {
+        if (data is float newMaxHp)
+        {
+            _maxHp = newMaxHp;
+            EventBus.Emit(GameEvent.PlayerHealthUpdated, new object[] { _currentHp, _maxHp });
+        }
+    }
+    
+    private void OnHeal(object data)
+    {
+        if (data is float healAmount)
+        {
+            _currentHp = Mathf.Min(_maxHp, _currentHp + healAmount);
+             EventBus.Emit(GameEvent.PlayerHealthUpdated, new object[] { _currentHp, _maxHp });
+        }
     }
 
     public void TakeDamage(int damage)
     {
         if (_currentHp <= 0) return;
-
         _currentHp -= damage;
         if (_currentHp <= 0)
         {
             _currentHp = 0;
             Die();
         }
-        
         EventBus.Emit(GameEvent.PlayerHealthUpdated, new object[] { _currentHp, _maxHp });
     }
 
