@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: WaveData1
   m_EditorClassIdentifier: 
   startTimePercentage: 0
-  spawnInterval: 1
-  spawnCountPerTick: 1
+  spawnInterval: 2
+  spawnCountPerTick: 2
   totalEnemyCount: 40
   enemyTypeA: {fileID: 8807301733000379759, guid: 9fe68e8043761574c81cb3541069960a, type: 3}
   ratioTypeA: 0.5
