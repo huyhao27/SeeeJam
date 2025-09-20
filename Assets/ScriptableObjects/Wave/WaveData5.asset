@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startTimePercentage: 0.4
   spawnInterval: 1
-  spawnCountPerTick: 6
-  totalEnemyCount: 36
-  enemyTypeA: {fileID: 8807301733000379759, guid: 9fe68e8043761574c81cb3541069960a, type: 3}
+  spawnCountPerTick: 4
+  totalEnemyCount: 120
+  enemyTypeA: {fileID: 5188537918395097275, guid: 2a26e013b875c0f4d9141e2e3e096296, type: 3}
   ratioTypeA: 0.7
-  enemyTypeB: {fileID: 8807301733000379759, guid: ca9f1458a2a90f4429ed144c29a4ce36, type: 3}
+  enemyTypeB: {fileID: 7160279537970851011, guid: 4577d66bf21849448a8266605bd9bf38, type: 3}

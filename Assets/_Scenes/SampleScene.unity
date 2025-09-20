@@ -1163,6 +1163,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6244416456596063461, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
+      propertyPath: dashDistance
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6244416456596063461, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
       propertyPath: dashDuration
       value: 0.6
       objectReference: {fileID: 0}
@@ -4379,27 +4383,27 @@ PrefabInstance:
       objectReference: {fileID: 2906535252135732511, guid: a3828836c21cd6d49bc8f40eb36e9c22, type: 3}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[0].initialSize
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[1].initialSize
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[2].initialSize
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[3].initialSize
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[4].initialSize
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[5].initialSize
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[6].initialSize
@@ -4407,11 +4411,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[8].initialSize
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[9].initialSize
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[10].initialSize
@@ -4435,11 +4439,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[15].initialSize
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[16].initialSize
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[17].initialSize
@@ -4451,7 +4455,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[19].initialSize
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7728797257330712306, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: spawnRadius
@@ -5841,6 +5845,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 1449330175884809278, guid: cc69d1f297d20474daa74be3173a7696, type: 3}
+      propertyPath: penaltyXp
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3030660866383829534, guid: cc69d1f297d20474daa74be3173a7696, type: 3}
       propertyPath: m_Name
       value: GameplayCanvas

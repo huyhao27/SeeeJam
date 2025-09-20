@@ -12,10 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 624ef5858bdb98744912d214f8b7a4d6, type: 3}
   m_Name: LevelData
   m_EditorClassIdentifier: 
-  levelDuration: 300
+  levelDuration: 600
   waves:
   - {fileID: 11400000, guid: 8966c440f73c7b34e92dc29bdbc49440, type: 2}
   - {fileID: 11400000, guid: 70f53b4b4c3f95840afbf007c6c52067, type: 2}
   - {fileID: 11400000, guid: 887bf9667579d9e4da3120dc067a01d5, type: 2}
+  - {fileID: 11400000, guid: 84da1f3923ef444449439e904f2d0a95, type: 2}
+  - {fileID: 11400000, guid: 9be89a7191a13b841867aba2e9787555, type: 2}
+  - {fileID: 11400000, guid: 40e1e3efd6bccda47a17bf3fe52f3f6a, type: 2}
+  - {fileID: 11400000, guid: 41f3e81143ccdd64181f50047434f246, type: 2}
+  - {fileID: 11400000, guid: db3807f912f3ab74c86d564a0106b9f9, type: 2}
+  - {fileID: 11400000, guid: 21f6ba3cb9305de418823f08f1cf3606, type: 2}
+  - {fileID: 11400000, guid: 0061213cdc03b54469e50533351c958b, type: 2}
   bossPrefab: {fileID: 8807301733000379759, guid: d82e38e3246993f45b54b9bb3594cb20, type: 3}
   bossSpawnPoint: {fileID: 486568627906953722, guid: d82e38e3246993f45b54b9bb3594cb20, type: 3}

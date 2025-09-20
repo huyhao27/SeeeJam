@@ -17,5 +17,5 @@ MonoBehaviour:
   spawnCountPerTick: 3
   totalEnemyCount: 60
   enemyTypeA: {fileID: 8807301733000379759, guid: 624e61a798f39e041a0df3f0d21db927, type: 3}
-  ratioTypeA: 0.6
+  ratioTypeA: 0.8
   enemyTypeB: {fileID: 7160279537970851011, guid: 4577d66bf21849448a8266605bd9bf38, type: 3}
