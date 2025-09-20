@@ -53,7 +53,7 @@ public class GameManager : Singleton<GameManager>
                 PopupManager.Instance.ShowPopup<PausePopup>();
                 break;
             case GameState.GameOver:
-                Time.timeScale = 1f; // or 0f 
+                Time.timeScale = 0f; // or 0f 
                 PopupManager.Instance.ShowPopup<GameOverPopup>();
                 EventBus.Emit(GameEvent.GameOver, 0);
                 break;

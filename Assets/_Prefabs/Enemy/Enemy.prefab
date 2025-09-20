@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2038542352918260597}
   m_Layer: 8
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,6 +108,10 @@ MonoBehaviour:
   contactDamage: 5
   patrolSpeedMultiplier: 3
   patrolChangeDirInterval: {x: 1.5, y: 3.5}
+  xpReward: 5
+  xpPrefabLevel: 1
+  xpSpawnChunks: 1
+  xpScatterRadius: 0.4
   useHorizontalFlip: 1
   visualRoot: {fileID: 0}
   enableSeparation: 1

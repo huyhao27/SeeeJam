@@ -11,6 +11,7 @@ public class Note : MonoBehaviour
 
     public void onHit()
     {
+        SoundManager.Instance.PlaySfx(this.type + 1);
         EventBus.Emit(GameEvent.ActivateSkill, this.type);
         Debug.Log("Note hit! Type: " + type);
     }

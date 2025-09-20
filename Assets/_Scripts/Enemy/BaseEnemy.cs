@@ -13,7 +13,9 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     [SerializeField] private float detectionRange = 6f;
     [SerializeField] private float attackRange = 1.4f;
     [SerializeField] private float attackCooldown = 1.2f;
-    [SerializeField] private int contactDamage = 5;
+    [SerializeField] private float contactDamage = 5;
+
+    public float ContactDamage => contactDamage;
 
     [Header("Patrol Settings")]
     [SerializeField] private float patrolSpeedMultiplier = 0.8f;
@@ -336,7 +338,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         rb.velocity = Vector2.zero; // Dừng lại khi tấn công
 
     // Payload đơn giản: [0]=damage(int), [1]=attacker(GameObject), [2]=target(GameObject)
-    EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
+    // EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
         attackTimer = attackCooldown;
     }
     #endregion

@@ -14,6 +14,7 @@ public class HpSystem : MonoBehaviour
 
     [SerializeField] private float fillSpeed = 2f;
 
+    [SerializeField] private Image nhaydo;
     public float MaxHp
     {
         get => PlayerStats.Instance ? PlayerStats.Instance.MaxHp : 50f;
@@ -37,8 +38,12 @@ public class HpSystem : MonoBehaviour
         EventBus.On(GameEvent.Heal, (amount) => { Heal((float)amount); });
         EventBus.On(GameEvent.MaxHpChanged, (amount) =>
         {
-            Debug.Log("Max hp update!");
             UpdateBar();
+        });
+
+        EventBus.On(GameEvent.PlayerDamaged, (amount) =>
+        {
+            TakeDamage((float)amount);
         });
     }
 
@@ -67,19 +72,29 @@ public class HpSystem : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHp = Mathf.Max(0, currentHp - damage);
-        SetFill(currentHp / MaxHp);
+
+        nhaydo.DOKill();
+        float currentAlpha = nhaydo.color.a;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(nhaydo.DOFade(0.8f, 0.2f).From(currentAlpha)) // từ currentAlpha -> 1
+           .Append(nhaydo.DOFade(0f, 0.2f));                         // 1 -> 0
+
+        UpdateBar();
     }
 
     public void Heal(float amount)
     {
         currentHp = Mathf.Min(MaxHp, currentHp + amount);
-        SetFill(currentHp / MaxHp);
+        UpdateBar();
     }
 
     private void UpdateBar()
     {
         SetFill(MaxHp > 0 ? currentHp / MaxHp : 0f);
         hpText.text = currentHp + "/" + MaxHp;
+
+        if (currentHp <= 0) { GameManager.Instance.ChangeState(GameState.GameOver); }
     }
 
     // Public API phụ nếu cần chỉnh HP runtime từ nơi khác
@@ -88,6 +103,15 @@ public class HpSystem : MonoBehaviour
         if (newMax <= 0f) return;
         MaxHp = newMax;
         UpdateBar();
+    }
+
+    void OnDestroy()
+    {
+        nhaydo.DOKill();
+        hp.DOKill();
+        hpIndicator.DOKill();
+
+        StopAllCoroutines();
     }
 
 }

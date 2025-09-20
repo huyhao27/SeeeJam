@@ -17,9 +17,9 @@ public class UpgradeStat : UpgradeBase
                 break;
             case StatType.MaxHpAndHeal:
                 Debug.Log("ngon");
-                EventBus.Emit(GameEvent.Heal, value);
                 stats.MaxHp += value;
                 EventBus.Emit(GameEvent.MaxHpChanged, stats.MaxHp);
+                EventBus.Emit(GameEvent.Heal, value);
                 break;
             case StatType.CollectRadius:
                 stats.CollectRadius += value;
