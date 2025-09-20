@@ -6,11 +6,7 @@ public class GameOverPopup : Popup
 
     public void OnRetry()
     {
-        EventBus.ClearAll();
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-        Time.timeScale = 1f;
+        GameManager.Instance.RestartGame();
     }
 
 

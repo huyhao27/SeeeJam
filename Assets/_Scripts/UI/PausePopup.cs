@@ -5,31 +5,24 @@ public class PausePopup : Popup
 {
     public void OnResume()
     {
+
         GameManager.Instance.ChangeState(GameState.Playing);
     }
 
-    public void OnRestart()
+
+    public void OnPlayAgain()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager.Instance.RestartGame();
     }
 
     public void OnQuit()
     {
+        Debug.Log("Quitting game...");
+        
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+            Application.Quit();
 #endif
-    }
-
-    public override void Show()
-    {
-        base.Show();
-    }
-
-    public override void Hide()
-    {
-        base.Hide();
     }
 }
