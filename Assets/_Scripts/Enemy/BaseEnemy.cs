@@ -1,8 +1,6 @@
 using UnityEngine;
 
-// Sử dụng PlayerDamageEvent struct
-
-public class BaseEnemy : MonoBehaviour, IPoolable
+public class BaseEnemy : MonoBehaviour, IPoolable, IAffectable
 {
     #region Serialized Fields
     [Header("Stats")]
@@ -32,33 +30,11 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     [SerializeField, Min(1)] private int xpSpawnChunks = 1;
     [Tooltip("Độ lệch vị trí spawn từng orb.")]
     [SerializeField] private float xpScatterRadius = 0.4f;
-    #endregion
 
-    #region Runtime State
-    // Stats
-    private int currentHp;
-    private float currentMoveSpeed; // Tốc độ sau khi áp dụng hiệu ứng Slow / Stun
-
-    // AI
-    private State currentState = State.Idle;
-    protected Transform currentTarget; // Cho phép lớp con (ví dụ RangedEnemy) truy cập target
-    protected float attackTimer;       // Cho phép override / tùy biến cooldown
-
-    // Patrol
-    private Vector2 patrolDir = Vector2.zero;
-    private float patrolTimer = 0f;
-    private Vector2 patrolVelocity = Vector2.zero;
-
-    // Pursue
-    private Vector2 pursueVelocity = Vector2.zero;
-
-    // Components
-    private Rigidbody2D rb;
-
-    [Header("Visual Flip Settings")] 
-    [SerializeField] private bool useHorizontalFlip = true; // Nếu tắt sẽ giữ nguyên logic quay cũ
-    [SerializeField] private Transform visualRoot;           // Gốc để flip (sprite container). Nếu null dùng transform hiện tại
-    private bool facingRight = true;                         // Trạng thái hướng hiện tại
+    [Header("Visual Flip Settings")]
+    [SerializeField] private bool useHorizontalFlip = true;
+    [SerializeField] private Transform visualRoot;
+    private bool facingRight = true;
 
     [Header("Separation (Anti-Overlap)")]
     [Tooltip("Bật để enemy tách nhẹ khỏi nhau khi đứng gần (steering tách chứ không dùng collision).")]
@@ -71,14 +47,33 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     [SerializeField] private float separationMaxSpeedMultiplier = 1.15f;
     [Tooltip("LayerMask dùng để tìm các enemy khác (chỉ nên tick layer Enemy).")]
     [SerializeField] private LayerMask separationEnemyLayers;
+    #endregion
+    
+    #region Runtime State
+    private int currentHp;
+    private float currentMoveSpeed; 
 
-    // Reusable buffer tránh GC
+    private State currentState = State.Idle;
+    protected Transform currentTarget; 
+    protected float attackTimer;
+
+    private Vector2 patrolDir = Vector2.zero;
+    private float patrolTimer = 0f;
+    private Vector2 patrolVelocity = Vector2.zero;
+
+    private Vector2 pursueVelocity = Vector2.zero;
+    
+    private bool isStunned = false;
+    private Effectable _effectable; 
+
+    private float knockbackTimer = 0f; 
+
+    private Rigidbody2D rb;
     private static readonly Collider2D[] _separationBuffer = new Collider2D[24];
     #endregion
 
-    #region IPoolable Implementation
     private GameObject _originalPrefab;
-
+    #region IPoolable Implementation
     public void OnPoolSpawn()
     {
         currentHp = maxHp;
@@ -90,22 +85,21 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         patrolVelocity = Vector2.zero;
         patrolTimer = 0;
         
+        isStunned = false; 
+
+        knockbackTimer = 0f; 
+        
         gameObject.SetActive(true);
     }
+    public void OnPoolDespawn() { currentTarget = null; }
+    public void SetOriginalPrefab(GameObject prefab) { _originalPrefab = prefab; }
+    public GameObject GetOriginalPrefab() { return _originalPrefab; }
+    #endregion
 
-    public void OnPoolDespawn()
+    #region IAffectable Implementation
+    public void AddEffect(IEffect effect)
     {
-        currentTarget = null;
-    }
-
-    public void SetOriginalPrefab(GameObject prefab)
-    {
-        _originalPrefab = prefab;
-    }
-
-    public GameObject GetOriginalPrefab()
-    {
-        return _originalPrefab;
+        _effectable.AddEffect(effect);
     }
     #endregion
 
@@ -113,11 +107,45 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        _effectable = GetComponent<Effectable>();
+        if (_effectable == null)
+        {
+            _effectable = gameObject.AddComponent<Effectable>();
+        }
     }
 
     private void Update()
     {
+        if (knockbackTimer > 0)
+        {
+            knockbackTimer -= Time.deltaTime;
+            return;
+        }
+
+        if (isStunned)
+        {
+            rb.velocity = Vector2.zero; 
+            return;
+        }
+
         UpdateAI(Time.deltaTime);
+    }
+    #endregion
+
+    #region Public API
+    public void ApplyKnockback(Vector2 direction, float force)
+    {
+        rb.AddForce(direction.normalized * force, ForceMode2D.Impulse);
+        knockbackTimer = 0.2f; 
+    }
+    public void SetStunned(bool stunned)
+    {
+        isStunned = stunned;
+    }
+    public void SetHp(int amount)
+    {
+        currentHp = Mathf.Clamp(amount, 0, maxHp);
+        if (currentHp <= 0) Die();
     }
     #endregion
 
@@ -127,7 +155,6 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         if (dmg <= 0 || currentHp <= 0) return;
 
         currentHp -= dmg;
-        // TODO: Thêm hiệu ứng trúng đòn (nháy đỏ, âm thanh,...)
 
         if (currentHp <= 0)
         {
@@ -137,19 +164,13 @@ public class BaseEnemy : MonoBehaviour, IPoolable
 
     protected virtual void Die()
     {
-        // Bắn sự kiện cho LevelManager và các hệ thống khác biết
         EventBus.Emit(GameEvent.EnemyDied, this);
-
-        // Rớt đồ/kinh nghiệm
         DropReward();
-
-        // Yêu cầu PoolManager "thu hồi" đối tượng này
         PoolManager.Instance.Despawn(this);
     }
 
     public virtual void DropReward()
     {
-        // XP DROP
         int totalXp = xpReward;
         if (xpRewardRandomRange.x > 0 || xpRewardRandomRange.y > 0)
         {
@@ -160,7 +181,6 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         if (totalXp <= 0 || XpManager.Instance == null) return;
 
         int chunks = Mathf.Clamp(xpSpawnChunks, 1, 25);
-        // Chia đều, phần dư cộng dần vào các orb đầu
         int basePer = totalXp / chunks;
         int remainder = totalXp - basePer * chunks;
 
@@ -175,7 +195,6 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         }
     }
     #endregion
-
     #region AI Logic
     private void UpdateAI(float dt)
     {
@@ -222,7 +241,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable
             }
         }
     }
-    
+
     public void SetState(State newState)
     {
         if (currentState == newState) return;
@@ -250,7 +269,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         float targetSpeed = baseMoveSpeed * patrolSpeedMultiplier;
         Vector2 desiredVel = patrolDir * targetSpeed;
         patrolVelocity = Vector2.MoveTowards(patrolVelocity, desiredVel, patrolAcceleration * dt);
-        
+
         Vector2 finalVel = patrolVelocity;
         if (enableSeparation)
         {
@@ -304,7 +323,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable
 
         Vector2 desiredVel = dist > 0.0001f ? toTarget.normalized * desiredSpeed : Vector2.zero;
         pursueVelocity = Vector2.MoveTowards(pursueVelocity, desiredVel, pursueAcceleration * dt);
-        
+
         Vector2 finalVel = pursueVelocity;
         if (enableSeparation)
         {
@@ -335,25 +354,11 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     protected virtual void DoAttack(Transform target)
     {
         if (target == null) return;
-        rb.velocity = Vector2.zero; // Dừng lại khi tấn công
-
-    // Payload đơn giản: [0]=damage(int), [1]=attacker(GameObject), [2]=target(GameObject)
-    // EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
+        rb.velocity = Vector2.zero;
+        EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
         attackTimer = attackCooldown;
     }
     #endregion
-    
-    #region Public API
-    public void SetHp(int amount)
-    {
-        currentHp = Mathf.Clamp(amount, 0, maxHp);
-        if (currentHp <= 0)
-        {
-            Die();
-        }
-    }
-    #endregion
-
     #region Helpers / Debug
     public int CurrentHp => currentHp;
     public int MaxHp => maxHp;
@@ -361,12 +366,11 @@ public class BaseEnemy : MonoBehaviour, IPoolable
     public Transform CurrentTarget => currentTarget;
 
     #endregion
-
     #region Flip Logic
     private void HandleFlip(float xMove)
     {
         if (!useHorizontalFlip) return;
-        if (Mathf.Abs(xMove) < 0.0001f) return; // Không thay đổi nếu gần như đứng yên ngang
+        if (Mathf.Abs(xMove) < 0.0001f) return;
 
         bool wantRight = xMove > 0f;
         if (wantRight != facingRight)
@@ -384,7 +388,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         if (!enableSeparation || separationRadius <= 0f || separationForce <= 0f) return Vector2.zero;
 
         int count = Physics2D.OverlapCircleNonAlloc(rb.position, separationRadius, _separationBuffer, separationEnemyLayers);
-        if (count <= 1) return Vector2.zero; // Chỉ có mình hoặc không tìm thấy
+        if (count <= 1) return Vector2.zero;
 
         Vector2 acc = Vector2.zero;
         int contributors = 0;
@@ -392,12 +396,11 @@ public class BaseEnemy : MonoBehaviour, IPoolable
         {
             var col = _separationBuffer[i];
             if (col == null) continue;
-            if (col.attachedRigidbody == rb) continue; // Bỏ qua chính mình
+            if (col.attachedRigidbody == rb) continue;
 
             Vector2 toMe = (Vector2)rb.position - (Vector2)col.transform.position;
             float dist = toMe.magnitude;
             if (dist < 0.0001f) continue;
-            // Trọng số nghịch với khoảng cách bình phương để đẩy mạnh khi rất gần
             acc += toMe / (dist * dist);
             contributors++;
         }
