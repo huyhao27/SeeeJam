@@ -117,4 +117,24 @@ public class PoolManager : Singleton<PoolManager>
             Debug.Log(e);
         }
     }
+    public GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation)
+    {
+        if (prefab == null)
+        {
+            return null;
+        }
+        
+        if (!_poolDictionary.ContainsKey(prefab.name))
+        {
+            Debug.LogError($"PoolManager không chứa pool cho prefab: {prefab.name}");
+            return null;
+        }
+
+        ObjectPool pool = _poolDictionary[prefab.name];
+        GameObject instanceGo = pool.Get();
+
+        instanceGo.transform.SetPositionAndRotation(position, rotation);
+
+        return instanceGo;
+    }
 }
