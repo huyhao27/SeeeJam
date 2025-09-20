@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Skill1.1
   m_EditorClassIdentifier: 
   upgradeName: +1 level skill 1
-  description: cac cac cac
-  icon: {fileID: 21300000, guid: 5597d08c8d82d4e438439bd4540f6d58, type: 3}
+  description: 'Skill1++(1): The bullet no longer disappears after killing an enemy.'
+  icon: {fileID: 21300000, guid: 37849a72eda59ce48875c23e1ff3ecdd, type: 3}
   targetSkill: {fileID: 11400000, guid: 81cdfc4f2c733c747b68b91aa1632b87, type: 2}

@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: ShockwaveSkill
   cooldown: 1
+  upgradeChain:
+  - {fileID: 11400000, guid: 8c60a2f1f70d59e49b279507c3981d36, type: 2}
+  - {fileID: 11400000, guid: 317ada4271b0b4b4599d41601c7960ed, type: 2}
+  - {fileID: 11400000, guid: abb1597092da4e642b3297454929036c, type: 2}
   wavePrefab: {fileID: 7476872919195972662, guid: 00f31a124fdf4b24d83f96a123169381, type: 3}
   expandDuration: 0.3
   baseRadius: 4

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c115333ca04630e4c9ed5fe5268fd83c, type: 3}
-  m_Name: Skill1.2
+  m_Name: Skill3.3
   m_EditorClassIdentifier: 
-  upgradeName: +1 level skill 1
-  description: 'Skill1++(2): Upgraded to fire 3 bullets.'
-  icon: {fileID: 21300000, guid: 37849a72eda59ce48875c23e1ff3ecdd, type: 3}
-  targetSkill: {fileID: 11400000, guid: 81cdfc4f2c733c747b68b91aa1632b87, type: 2}
+  upgradeName: Skill3 +1
+  description: "Skill3++(3): Expands the shockwave\u2019s diameter."
+  icon: {fileID: 21300000, guid: 5597d08c8d82d4e438439bd4540f6d58, type: 3}
+  targetSkill: {fileID: 11400000, guid: 58285f6e0420af4409014b011147238a, type: 2}
