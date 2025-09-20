@@ -33,6 +33,7 @@ public class HoverLift : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         rectTransform.DOAnchorPos(originalPos + new Vector2(0, liftAmount), duration)
                      .SetEase(Ease.OutCubic)
                      .SetUpdate(true);
+        SoundManager.Instance.PlaySfxOneShot(4);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -45,8 +46,9 @@ public class HoverLift : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!CanSelect || _popupController == null) return;
-        
+
         _popupController.SelectUpgrade(this);
+        SoundManager.Instance.PlaySfxOneShot(5);
     }
 
     public void Setup(UpgradeBase upgrade)
