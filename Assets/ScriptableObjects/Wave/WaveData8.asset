@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 695efcd125617a149a4b55c08aa349aa, type: 3}
-  m_Name: WaveData2
+  m_Name: WaveData8
   m_EditorClassIdentifier: 
-  startTimePercentage: 0.1
-  spawnInterval: 2
-  spawnCountPerTick: 3
-  totalEnemyCount: 60
-  enemyTypeA: {fileID: 8807301733000379759, guid: 624e61a798f39e041a0df3f0d21db927, type: 3}
-  ratioTypeA: 0.6
-  enemyTypeB: {fileID: 7160279537970851011, guid: 4577d66bf21849448a8266605bd9bf38, type: 3}
+  startTimePercentage: 0.4
+  spawnInterval: 1
+  spawnCountPerTick: 6
+  totalEnemyCount: 36
+  enemyTypeA: {fileID: 8807301733000379759, guid: 9fe68e8043761574c81cb3541069960a, type: 3}
+  ratioTypeA: 0.7
+  enemyTypeB: {fileID: 8807301733000379759, guid: ca9f1458a2a90f4429ed144c29a4ce36, type: 3}
