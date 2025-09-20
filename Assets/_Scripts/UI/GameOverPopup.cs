@@ -3,22 +3,26 @@ using UnityEngine.SceneManagement;
 
 public class GameOverPopup : Popup
 {
-    [Tooltip("Name scene")]
-    [SerializeField] private string mainMenuSceneName = "SampleScene";
 
     public void OnRetry()
     {
         EventBus.ClearAll();
-        // Load lại scene hiện tại
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        // Reset time scale (phòng khi game bị pause)
         Time.timeScale = 1f;
     }
 
-    public void OnMainMenu()
+
+    public void OnQuit()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(mainMenuSceneName);
+        Debug.Log("Quitting game...");
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            // Nếu đang chạy bản build game, đóng ứng dụng
+            Application.Quit();
+#endif
     }
 }
