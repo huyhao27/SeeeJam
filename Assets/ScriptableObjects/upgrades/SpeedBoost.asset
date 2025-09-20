@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5eecb8864b8cf304c9e7cf47382a8f7c, type: 3}
-  m_Name: BonusNote
+  m_Name: SpeedBoost
   m_EditorClassIdentifier: 
-  upgradeName: Bonus Note
-  description: + 1 Note
-  icon: {fileID: 774616702218211805, guid: fffbabb245ead3341b4bcbbfcc417724, type: 3}
-  statType: 3
+  upgradeName: Speed Boost
+  description: Speed Up 20%
+  icon: {fileID: -8191569919788630138, guid: f11d99f47fcbf9b4b88c6523bd730367, type: 3}
+  statType: 0
   value: 1
