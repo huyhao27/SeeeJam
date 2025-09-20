@@ -15,8 +15,11 @@ public class UpgradeStat : UpgradeBase
             case StatType.MoveSpeed:
                 stats.MoveSpeed += value;
                 break;
-            case StatType.MaxHp:
+            case StatType.MaxHpAndHeal:
+                Debug.Log("ngon");
+                EventBus.Emit(GameEvent.Heal, value);
                 stats.MaxHp += value;
+                EventBus.Emit(GameEvent.MaxHpChanged, stats.MaxHp);
                 break;
             case StatType.CollectRadius:
                 stats.CollectRadius += value;
@@ -24,7 +27,7 @@ public class UpgradeStat : UpgradeBase
             case StatType.NoteCount:
                 stats.NoteCount += (int)value;
                 break;
-                // thêm case khác...
+                // thêm case khác... 
         }
     }
 }
@@ -32,7 +35,7 @@ public class UpgradeStat : UpgradeBase
 public enum StatType
 {
     MoveSpeed,
-    MaxHp,
+    MaxHpAndHeal,
     CollectRadius,
     NoteCount,
 }

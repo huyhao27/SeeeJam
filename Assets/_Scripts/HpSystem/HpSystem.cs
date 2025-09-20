@@ -1,74 +1,73 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using TMPro;
+using DG.Tweening;
 
 public class HpSystem : MonoBehaviour
 {
     [Header("UI")]
-    [SerializeField] private Image hp;      
-    [SerializeField] private Image hpIndicator;  
+    [SerializeField] private Image hp;
+    [SerializeField] private Image hpIndicator;
 
-    [Header("Stats")]
-    [SerializeField] private float maxHp = 50f;
+    [SerializeField] private TextMeshProUGUI hpText;
+
+    [SerializeField] private float fillSpeed = 2f;
+
+    private float maxHp
+    {
+        get => PlayerStats.Instance ? PlayerStats.Instance.MaxHp : 50f;
+        set
+        {
+            if (PlayerStats.Instance != null)
+            {
+                SetMaxHp(value);
+                PlayerStats.Instance.MaxHp = value;
+            }
+        }
+    }
+
     [SerializeField] private float currentHp;
 
     [Header("Flags")]
     [Tooltip("Đánh dấu đây là HP của Player để tự động nhận damage từ EventBus.")]
-    [SerializeField] private bool isPlayerHp = true; 
+    [SerializeField] private bool isPlayerHp = true;
 
     private void Awake()
     {
         currentHp = Mathf.Clamp(currentHp <= 0 ? maxHp : currentHp, 0, maxHp);
         UpdateBar();
+        hpText.text = currentHp + "/" + maxHp;
+        EventBus.On(GameEvent.Heal, (amount) => { Heal((float)amount); });
+        EventBus.On(GameEvent.MaxHpChanged, (amount) =>
+        {
+            Debug.Log("Max hp update!");
+            UpdateBar();
+        });
     }
 
-    private void OnEnable()
-    {
-        if (isPlayerHp)
-        {
-            EventBus.On(GameEvent.PlayerDamaged, OnPlayerDamagedEvent);
-        }
-    }
 
-    private void OnDisable()
-    {
-        if (isPlayerHp)
-        {
-            EventBus.Off(GameEvent.PlayerDamaged, OnPlayerDamagedEvent);
-        }
-    }
-
-    // Handler cho event PlayerDamaged
-    private void OnPlayerDamagedEvent(object payload)
-    {
-        // Expect: object[] { int damage, GameObject attacker, GameObject target }
-        if (payload is not object[] arr || arr.Length < 3) return;
-
-        int damage;
-        try
-        {
-            damage = (int)arr[0];
-        }
-        catch
-        {
-            return; // Payload không hợp lệ
-        }
-
-        var targetObj = arr[2] as GameObject;
-        if (targetObj == null) return;
-
-        if (targetObj == this.gameObject)
-        {
-            TakeDamage(damage);
-        }
-    }
 
     public void SetFill(float percent)
     {
         percent = Mathf.Clamp01(percent);
-        if (hp != null)
-            hp.fillAmount = percent;  
-    }
 
+        if (hp != null)
+        {
+            // Kill tween cũ
+            hp.DOKill();
+            hpIndicator.DOKill();
+
+            // Tween thanh máu chính ngay lập tức
+            hp.DOFillAmount(percent, 1f / fillSpeed)
+              .SetUpdate(true); // Unscaled time
+
+            // Thanh indicator tụt chậm hơn (delay)
+            hpIndicator.DOFillAmount(percent, 1.5f / fillSpeed) // lâu hơn một chút
+                       .SetDelay(0.2f)                          // delay nhỏ (0.2s)
+                       .SetUpdate(true);
+        }
+    }
     public void TakeDamage(float damage)
     {
         if (damage <= 0f || currentHp <= 0f) return;
@@ -98,15 +97,14 @@ public class HpSystem : MonoBehaviour
     private void UpdateBar()
     {
         SetFill(maxHp > 0 ? currentHp / maxHp : 0f);
+        hpText.text = currentHp + "/" + maxHp;
     }
 
     // Public API phụ nếu cần chỉnh HP runtime từ nơi khác
-    public void SetMaxHp(float newMax, bool fillToMax = true)
+    public void SetMaxHp(float newMax)
     {
         if (newMax <= 0f) return;
         maxHp = newMax;
-        if (fillToMax) currentHp = maxHp;
-        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
         UpdateBar();
     }
 

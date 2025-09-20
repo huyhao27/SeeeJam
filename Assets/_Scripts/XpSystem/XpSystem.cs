@@ -40,6 +40,18 @@ public class XpSystem : MonoBehaviour
         StartCoroutine(AnimateXpBar());
     }
 
+    private void OnDestroy()
+    {
+        Debug.Log("vch");
+        StopAllCoroutines();
+        // Kill tất cả tween liên quan tới xp (Image)
+        if (xp != null)
+            xp.DOKill();
+
+        EventBus.Off(GameEvent.GetXp, (xpAmount) => { OnGetXp((float)xpAmount); });
+
+    }
+
     private IEnumerator AnimateXpBar()
     {
         while (currentXp >= maxXp)

@@ -1,14 +1,16 @@
 
 using System;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 public enum GameState
 {
     MainMenu,
     Playing,
     Paused,
     GameOver,
-    Win
+    Win, 
+    Tutorial,
 }
 
 public class GameManager : Singleton<GameManager>
@@ -19,8 +21,17 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        ChangeState(GameState.Playing);
+        ChangeState(GameState.Tutorial);
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            RestartGame();
+        }
+    }
+
     public void ChangeState(GameState newState)
     {
         if (CurrentState == newState) return;
@@ -46,10 +57,24 @@ public class GameManager : Singleton<GameManager>
                 PopupManager.Instance.ShowPopup<GameOverPopup>();
                 EventBus.Emit(GameEvent.GameOver, 0);
                 break;
+            case GameState.Tutorial:
+                Time.timeScale = 0f;
+                PopupManager.Instance.ShowPopup<Tutorial>();
+                break;
         }
 
         OnGameStateChanged?.Invoke(newState);
         Debug.Log("Game state changed to: " + newState);
+    }
+
+    public void RestartGame()
+    {
+        EventBus.ClearAll();
+        // Load lại scene hiện tại
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        // Reset time scale (phòng khi game bị pause)
+        Time.timeScale = 1f;
     }
 }
 
@@ -69,6 +94,10 @@ public enum GameEvent
     PlayerDamaged,
 
     SelectUpgrade,
-    
+
     LevelUp,
+
+    Heal,
+
+    MaxHpChanged,
 }
