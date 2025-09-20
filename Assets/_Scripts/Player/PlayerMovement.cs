@@ -73,7 +73,7 @@ using DG.Tweening;
 
         Vector2 targetPosition = rb.position + targetDirection * dashDistance;
 
-        SoundManager.Instance.PlaySfxOneShot(7);
+        SoundManager.Instance.PlaySfxOneShot(9);
         rb.DOMove(targetPosition, dashDuration)
             .SetEase(Ease.OutQuint)
             .SetUpdate(UpdateType.Fixed) 

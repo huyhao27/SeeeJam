@@ -3169,8 +3169,8 @@ Transform:
   - {fileID: 894698590}
   - {fileID: 982860275}
   - {fileID: 159254602}
-  - {fileID: 176146874}
   - {fileID: 458940492}
+  - {fileID: 176146874}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1118169788
@@ -3195,6 +3195,7 @@ MonoBehaviour:
   - {fileID: 982860276}
   - {fileID: 159254603}
   - {fileID: 458940493}
+  - {fileID: 176146875}
 --- !u!1 &1178037805
 GameObject:
   m_ObjectHideFlags: 0
