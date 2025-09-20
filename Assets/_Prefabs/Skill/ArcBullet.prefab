@@ -213,10 +213,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55623c67a959ade4595c475253e4a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  lifetime: 3
+  speed: 3
+  lifetime: 4
   hitLayers:
     serializedVersion: 2
     m_Bits: 2304
+  particle: {fileID: 8033091766994890584, guid: 224361507c8bc7d4587610810d046b83, type: 3}
   debugCollisions: 0
-  explosionDamage: 50
+  explosionDamage: 100

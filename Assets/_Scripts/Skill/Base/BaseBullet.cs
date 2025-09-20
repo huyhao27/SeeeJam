@@ -8,6 +8,7 @@ public abstract class BaseBullet : MonoBehaviour, IPoolable
     [SerializeField] protected float lifetime = 3f;
     [SerializeField] protected LayerMask hitLayers;
 
+    [SerializeField] private ParticleSystem particle = default;
     [Header("Debug")]
     [SerializeField] private bool debugCollisions = false;
 
@@ -78,6 +79,7 @@ public abstract class BaseBullet : MonoBehaviour, IPoolable
 
             if (!CanPierce)
             {
+                PlayParticle();
                 PoolManager.Instance.Despawn(this);
             }
         }
@@ -108,4 +110,12 @@ public abstract class BaseBullet : MonoBehaviour, IPoolable
 #endif
 
     protected abstract void OnHit(GameObject target);
+    
+    public void PlayParticle()
+    {
+        if (particle != null)
+        {
+            Instantiate(particle, transform.position, Quaternion.identity);
+        }
+    }
 }

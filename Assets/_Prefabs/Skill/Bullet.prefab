@@ -162,9 +162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  lifetime: 3
+  lifetime: 2
   hitLayers:
     serializedVersion: 2
     m_Bits: 256
+  particle: {fileID: 8033091766994890584, guid: 224361507c8bc7d4587610810d046b83, type: 3}
   debugCollisions: 0
   damage: 50

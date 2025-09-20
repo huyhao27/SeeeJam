@@ -20,7 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: abb1597092da4e642b3297454929036c, type: 2}
   wavePrefab: {fileID: 7476872919195972662, guid: 00f31a124fdf4b24d83f96a123169381, type: 3}
   expandDuration: 0.3
-  baseRadius: 4
+  baseRadius: 5
   targetLayers:
     serializedVersion: 2
     m_Bits: 256

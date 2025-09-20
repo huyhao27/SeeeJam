@@ -166,5 +166,6 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 64
+  particle: {fileID: 8033091766994890584, guid: 224361507c8bc7d4587610810d046b83, type: 3}
   debugCollisions: 0
   damage: 3
