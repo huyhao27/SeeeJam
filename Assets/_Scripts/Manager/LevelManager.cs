@@ -148,6 +148,7 @@ public class LevelManager : Singleton<LevelManager>
 
         if (data is BaseEnemy enemy && enemy.CompareTag("Boss"))
         {
+            EventBus.Emit(GameEvent.Win, true); // true = win
             GameManager.Instance.ChangeState(GameState.Win);
             Debug.Log("YOU WIN!");
         }
