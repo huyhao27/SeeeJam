@@ -71,10 +71,8 @@ public class GameManager : Singleton<GameManager>
     public void RestartGame()
     {
         EventBus.ClearAll();
-        // Load lại scene hiện tại
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        // Reset time scale (phòng khi game bị pause)
         Time.timeScale = 1f;
     }
 }

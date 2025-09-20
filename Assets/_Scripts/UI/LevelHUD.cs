@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // <<< QUAN TRỌNG: Thêm dòng này để dùng TextMeshPro
+using TMPro; 
 
 public class LevelHUD : MonoBehaviour
 {
@@ -21,7 +21,14 @@ public class LevelHUD : MonoBehaviour
         EventBus.Off(GameEvent.KillCountUpdated, OnKillsUpdate);
         EventBus.Off(GameEvent.WaveStarted, OnWaveUpdate);
     }
-
+    
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && GameManager.Instance.CurrentState == GameState.Playing)
+        {
+            GameManager.Instance.ChangeState(GameState.Paused);
+        }
+    }
 
     private void OnTimerUpdate(object data)
     {
