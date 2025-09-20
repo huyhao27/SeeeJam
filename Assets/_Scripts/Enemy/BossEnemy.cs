@@ -271,7 +271,7 @@ public class BossEnemy : BaseEnemy
         if (isCasting && other.CompareTag("Player"))
         {
             // Gây damage + stun event
-            EventBus.Emit(GameEvent.PlayerDamaged, new object[]{ chargeDamage, this.gameObject, other.gameObject });
+            EventBus.Emit(GameEvent.PlayerDamaged, (float)chargeDamage);
             EventBus.Emit(GameEvent.PlayerStunned, stunDuration);
             if (logSkills) Debug.Log("[Boss] Charge impact -> stunned player for " + stunDuration + "s");
         }

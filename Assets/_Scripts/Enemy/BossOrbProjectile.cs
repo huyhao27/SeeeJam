@@ -38,7 +38,7 @@ public class BossOrbProjectile : BaseBullet
         {
             if (h.CompareTag("Player"))
             {
-                EventBus.Emit(GameEvent.PlayerDamaged, new object[]{ (int)damage, this.gameObject, h.gameObject });
+                EventBus.Emit(GameEvent.PlayerDamaged, (float)damage);
             }
         }
         // TODO: VFX explosion

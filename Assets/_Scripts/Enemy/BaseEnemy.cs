@@ -363,7 +363,7 @@ public virtual void DropReward()
         rb.velocity = Vector2.zero;
         if (enableContactDamage)
         {
-            EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
+            EventBus.Emit(GameEvent.PlayerDamaged, (float)contactDamage);
         }
         if (attackDebugLog)
         {

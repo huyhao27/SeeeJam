@@ -15,7 +15,7 @@ MonoBehaviour:
   startTimePercentage: 0
   spawnInterval: 1
   spawnCountPerTick: 4
-  totalEnemyCount: 20
-  enemyTypeA: {fileID: 8807301733000379759, guid: 9fe68e8043761574c81cb3541069960a, type: 3}
+  totalEnemyCount: 1
+  enemyTypeA: {fileID: 406277185003107197, guid: d82e38e3246993f45b54b9bb3594cb20, type: 3}
   ratioTypeA: 0.7
-  enemyTypeB: {fileID: 5188537918395097275, guid: 2a26e013b875c0f4d9141e2e3e096296, type: 3}
+  enemyTypeB: {fileID: 0}

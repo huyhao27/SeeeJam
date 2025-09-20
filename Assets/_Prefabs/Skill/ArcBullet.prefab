@@ -219,4 +219,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2304
   debugCollisions: 0
-  explosionDamage: 99999
+  explosionDamage: 50
