@@ -1,10 +1,13 @@
 using UnityEngine;
+using System.Collections; 
 
 public class PlayerHealth : MonoBehaviour, IAffectable
 {
     private float _currentHp;
     private float _maxHp;
     private Effectable _effectable;
+    
+    private float Vitality => PlayerStats.Instance ? PlayerStats.Instance.Vitality : 0f;
 
     private void Awake()
     {
@@ -16,6 +19,18 @@ public class PlayerHealth : MonoBehaviour, IAffectable
         _maxHp = PlayerStats.Instance.MaxHp;
         _currentHp = _maxHp;
         EventBus.Emit(GameEvent.PlayerHealthUpdated, new object[] { _currentHp, _maxHp });
+        
+        StartCoroutine(RunVitality());
+    }
+
+    IEnumerator RunVitality()
+    {
+        yield return new WaitForSeconds(5f);
+        if (Vitality > 0f)
+        {
+            EventBus.Emit(GameEvent.Heal, Vitality);
+        }
+        StartCoroutine(RunVitality());
     }
 
     private void OnEnable()
@@ -43,14 +58,14 @@ public class PlayerHealth : MonoBehaviour, IAffectable
     
     private void OnHeal(object data)
     {
-        if (data is float healAmount)
+        if (data is float healAmount && _currentHp > 0)
         {
             _currentHp = Mathf.Min(_maxHp, _currentHp + healAmount);
-             EventBus.Emit(GameEvent.PlayerHealthUpdated, new object[] { _currentHp, _maxHp });
+            EventBus.Emit(GameEvent.PlayerHealthUpdated, new object[] { _currentHp, _maxHp });
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage) 
     {
         if (_currentHp <= 0) return;
         _currentHp -= damage;
@@ -64,7 +79,7 @@ public class PlayerHealth : MonoBehaviour, IAffectable
 
     private void OnTakeDamageEvent(object data)
     {
-        if (data is object[] args && args.Length > 0 && args[0] is int damage)
+        if (data is float damage)
         {
             TakeDamage(damage);
         }
