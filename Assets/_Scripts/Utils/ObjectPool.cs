@@ -6,6 +6,8 @@ public class ObjectPool : MonoBehaviour
     private GameObject _prefab;
     private readonly Queue<GameObject> _pool = new Queue<GameObject>();
 
+    public GameObject Prefab => _prefab; // expose for fallback assignment
+
     public void Configure(GameObject prefab, int initialSize)
     {
         _prefab = prefab;

@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 486568627906953722}
   - component: {fileID: 6190627478653244154}
-  - component: {fileID: 8807301733000379759}
   - component: {fileID: 4678129540618564909}
   - component: {fileID: 2038542352918260597}
+  - component: {fileID: 406277185003107197}
   m_Layer: 8
   m_Name: Boss
   m_TagString: Boss
@@ -88,35 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8807301733000379759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3883851890245192990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab7237223d9d13e45a35311caf47989d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHp: 30
-  baseMoveSpeed: 2.5
-  detectionRange: 16
-  attackRange: 1.6
-  attackCooldown: 1
-  contactDamage: 5
-  patrolSpeedMultiplier: 3
-  patrolChangeDirInterval: {x: 1.5, y: 3.5}
-  useHorizontalFlip: 1
-  visualRoot: {fileID: 0}
-  enableSeparation: 1
-  separationRadius: 0.6
-  separationForce: 2.5
-  separationMaxSpeedMultiplier: 1.15
-  separationEnemyLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!58 &4678129540618564909
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -179,6 +150,73 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &406277185003107197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883851890245192990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8c42288ebd12b4eb63582376261e2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 30
+  baseMoveSpeed: 2.5
+  detectionRange: 6.12
+  attackRange: -1.21
+  attackCooldown: 1.2
+  contactDamage: 5
+  patrolSpeedMultiplier: 0.8
+  patrolChangeDirInterval: {x: 1.5, y: 3.5}
+  xpReward: 5
+  xpPrefabLevel: 1
+  xpSpawnChunks: 1
+  xpScatterRadius: 0.4
+  useHorizontalFlip: 1
+  visualRoot: {fileID: 0}
+  enableSeparation: 1
+  separationRadius: 0.6
+  separationForce: 2.5
+  separationMaxSpeedMultiplier: 1.15
+  separationEnemyLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  bossName: Boss
+  skillIntervalBase: 5
+  skillIntervalPhase2: 4
+  skillIntervalPhase3: 3
+  decisionDelayAfterSkill: 0.25
+  spreadBulletPrefab: {fileID: -6767130331462266043, guid: 0b0d5176aa809ff47bde5fb74abf2022, type: 3}
+  volleyCount: 5
+  bulletsPerVolley: 7
+  spreadAngle: 60
+  delayBetweenVolleys: 0.25
+  spreadBulletDamageMultiplier: 1
+  orbPrefab: {fileID: 2906535252135732511, guid: a3828836c21cd6d49bc8f40eb36e9c22, type: 3}
+  orbDamage: 25
+  orbExplosionRadius: 2.5
+  bombPrefab: {fileID: 3883287413526674340, guid: 5537ce04289111f4d843560f70637c98, type: 3}
+  bombCount: 6
+  bombSpawnRadius: 6
+  bombDamage: 20
+  chargeWindup: 2
+  chargeSpeed: 18
+  chargeDuration: 0.5
+  chargeDamage: 30
+  stunDuration: 3
+  meleePrefab: {fileID: 8807301733000379759, guid: 9fe68e8043761574c81cb3541069960a, type: 3}
+  rangedPrefab: {fileID: 5188537918395097275, guid: 2a26e013b875c0f4d9141e2e3e096296, type: 3}
+  summonMeleeCount: 5
+  summonRangedCount: 5
+  summonRadius: 5
+  logSkills: 1
+  debugDetection: 1
+  debugIntervals: 1
+  debugOverlay: 1
+  gizmoBombColor: {r: 1, g: 0.6, b: 0.1, a: 0.25}
+  gizmoSummonColor: {r: 0.3, g: 0.8, b: 1, a: 0.15}
 --- !u!1 &4452887534372456269
 GameObject:
   m_ObjectHideFlags: 0

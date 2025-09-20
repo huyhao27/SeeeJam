@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class NormalBullet : BaseBullet
 {
-    [SerializeField] private int damage = 10;
+    [SerializeField] private int damage = 99999;
 
     protected override void OnHit(GameObject target)
     {

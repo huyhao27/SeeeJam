@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 1945168035204102059}
   - component: {fileID: 1031729238405808576}
   - component: {fileID: 5188537918395097275}
+  - component: {fileID: 1696417001801616763}
   m_Layer: 8
   m_Name: RangedEnemy
   m_TagString: Enemy
@@ -248,6 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 30
   baseMoveSpeed: 2.5
+  knockbackResistance: 0.5
   detectionRange: 12
   attackRange: 8
   attackCooldown: 1.2
@@ -272,3 +274,15 @@ MonoBehaviour:
   projectileSpread: 0
   rangedAttackCooldown: 1.5
   damageOverride: -1
+--- !u!114 &1696417001801616763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927714876080730399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c00b801216c36ef4b88568d8450c6577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

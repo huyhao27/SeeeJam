@@ -20,6 +20,7 @@ public class PlayerSkillManager : MonoBehaviour
     private Vector3 originalScale;
     private readonly Dictionary<BaseSkill, float> skillCooldowns = new Dictionary<BaseSkill, float>();
 
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -49,7 +50,6 @@ public class PlayerSkillManager : MonoBehaviour
 
         HandleFlipAndAim();
     }
-
     private void OnSkillActivateEvent(object data)
     {
         if (data is int skillNumber)
@@ -58,6 +58,7 @@ public class PlayerSkillManager : MonoBehaviour
         }
     }
 
+
     public void TryActivateSkill(int skillIndex)
     {
         if (GameManager.Instance.CurrentState != GameState.Playing) return;
@@ -65,7 +66,9 @@ public class PlayerSkillManager : MonoBehaviour
         if (skillIndex >= 0 && skillIndex < skills.Count && skills[skillIndex] != null)
         {
             BaseSkill skill = skills[skillIndex];
-            skill.Activate(gameObject, firePoint);
+            
+            skill.Activate(this, firePoint);
+            
             skillCooldowns[skill] = skill.Cooldown;
         }
     }

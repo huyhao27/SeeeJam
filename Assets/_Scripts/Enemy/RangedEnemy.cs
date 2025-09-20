@@ -3,13 +3,13 @@ using UnityEngine;
 public class RangedEnemy : BaseEnemy
 {
     [Header("Ranged Settings")] 
-    [SerializeField] private BaseBullet bulletPrefab;          // Prefab đạn (đã có trong PoolManager)
-    [SerializeField] private Transform firePoint;              // Điểm bắn (gắn trên prefab enemy)
-    [SerializeField] private float projectileSpread = 0f;      // Độ lệch góc ngẫu nhiên (độ)
+    [SerializeField] protected BaseBullet bulletPrefab;          // Prefab đạn (đã có trong PoolManager)
+    [SerializeField] protected Transform firePoint;              // Điểm bắn (gắn trên prefab enemy)
+    [SerializeField] protected float projectileSpread = 0f;      // Độ lệch góc ngẫu nhiên (độ)
 
     [Header("Attack Override")]
-    [SerializeField] private float rangedAttackCooldown = 1.5f; // Thay thế contact attack cooldown
-    [SerializeField] private int damageOverride = -1;           // Nếu >=0 sẽ set vào bullet nếu bullet có trường damage public
+    [SerializeField] protected float rangedAttackCooldown = 1.5f; // Thay thế contact attack cooldown
+    [SerializeField] protected int damageOverride = -1;           // Nếu >=0 sẽ set vào bullet nếu bullet có trường damage public
 
     protected override void DoAttack(Transform target)
     {
@@ -22,10 +22,20 @@ public class RangedEnemy : BaseEnemy
         // Cooldown
         if (attackTimer > 0f) return;
 
-        // Xoay hướng tới target
-        Vector2 dir = (target.position - firePoint.position).normalized;
+        Vector2 baseDir = (target.position - firePoint.position).normalized;
+        FireSingleBulletWithRandomSpread(baseDir);
+        attackTimer = rangedAttackCooldown; 
+    }
 
-        // Spread
+    /// <summary>
+    /// Bắn 1 viên đạn theo baseDir (đã chuẩn hóa) + áp dụng random spread nếu có.
+    /// Trả về hướng thực tế đã bắn (sau random) để subclass có thể dùng.
+    /// </summary>
+    protected virtual Vector2 FireSingleBulletWithRandomSpread(Vector2 baseDir)
+    {
+        if (bulletPrefab == null || firePoint == null) return Vector2.zero;
+
+        Vector2 dir = baseDir;
         if (projectileSpread > 0f)
         {
             float half = projectileSpread * 0.5f;
@@ -33,23 +43,23 @@ public class RangedEnemy : BaseEnemy
             dir = Quaternion.Euler(0,0, rand) * dir;
         }
 
-        // Spawn bullet qua PoolManager
         var bullet = PoolManager.Instance.Spawn(bulletPrefab, firePoint.position, Quaternion.LookRotation(Vector3.forward, dir));
         if (bullet != null)
         {
             bullet.Launch(dir);
-
-            if (damageOverride >= 0)
-            {
-                var type = bullet.GetType();
-                var dmgField = type.GetField("damage", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
-                if (dmgField != null && dmgField.FieldType == typeof(int))
-                {
-                    dmgField.SetValue(bullet, damageOverride);
-                }
-            }
+            ApplyDamageOverrideIfAny(bullet);
         }
+        return dir;
+    }
 
-        attackTimer = rangedAttackCooldown; 
+    protected void ApplyDamageOverrideIfAny(BaseBullet bullet)
+    {
+        if (bullet == null || damageOverride < 0) return;
+        var type = bullet.GetType();
+        var dmgField = type.GetField("damage", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
+        if (dmgField != null && dmgField.FieldType == typeof(int))
+        {
+            dmgField.SetValue(bullet, damageOverride);
+        }
     }
 }
