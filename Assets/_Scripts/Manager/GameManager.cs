@@ -55,6 +55,7 @@ public class GameManager : Singleton<GameManager>
                 break;
             case GameState.GameOver:
                 Time.timeScale = 0f; // or 0f 
+                SoundManager.Instance.PlaySfxOneShot(8);
                 PopupManager.Instance.ShowPopup<GameOverPopup>();
                 EventBus.Emit(GameEvent.GameOver, 0);
                 break;
