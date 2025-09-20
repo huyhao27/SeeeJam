@@ -255,9 +255,8 @@ MonoBehaviour:
   patrolSpeedMultiplier: 2
   patrolChangeDirInterval: {x: 1.5, y: 3.5}
   xpReward: 5
-  xpRewardRandomRange: {x: 0, y: 0}
-  xpPrefabLevel: 1
-  xpSpawnChunks: 3
+  xpPrefabLevel: 2
+  xpSpawnChunks: 4
   xpScatterRadius: 0.4
   useHorizontalFlip: 1
   visualRoot: {fileID: 0}
