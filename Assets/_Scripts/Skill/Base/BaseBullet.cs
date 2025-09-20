@@ -6,14 +6,16 @@ public abstract class BaseBullet : MonoBehaviour, IPoolable
     [Header("Base Bullet Stats")]
     [SerializeField] protected float speed = 15f;
     [SerializeField] protected float lifetime = 3f;
-    [SerializeField] protected LayerMask hitLayers; 
+    [SerializeField] protected LayerMask hitLayers;
 
     [Header("Debug")]
-    [SerializeField] private bool debugCollisions = false; // Bật để in log các va chạm & kết quả kiểm tra layer
+    [SerializeField] private bool debugCollisions = false;
+
+    public bool CanPierce { get; set; }
 
     protected Rigidbody2D rb;
-    private float _lifetimeTimer;
-    
+    protected float _lifetimeTimer;
+
     #region IPoolable Implementation
     private GameObject _originalPrefab;
 
@@ -21,6 +23,7 @@ public abstract class BaseBullet : MonoBehaviour, IPoolable
     {
         _lifetimeTimer = lifetime;
         gameObject.SetActive(true);
+        CanPierce = false;
     }
 
     public virtual void OnPoolDespawn()
@@ -72,12 +75,16 @@ public abstract class BaseBullet : MonoBehaviour, IPoolable
         if (pass)
         {
             OnHit(other.gameObject);
-            PoolManager.Instance.Despawn(this);
+
+            if (!CanPierce)
+            {
+                PoolManager.Instance.Despawn(this);
+            }
         }
     }
 
 #if UNITY_EDITOR
-    [ContextMenu("Print Hit Layers")] 
+    [ContextMenu("Print Hit Layers")]
     private void PrintHitLayers()
     {
         var layers = GetLayerNamesFromMask(hitLayers);

@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 3339818259949721813}
   - component: {fileID: 806332227485568762}
   - component: {fileID: 7160279537970851011}
+  - component: {fileID: -7617909672465544168}
   m_Layer: 8
   m_Name: RangedEnemy (1)
   m_TagString: Untagged
@@ -272,3 +273,15 @@ MonoBehaviour:
   projectileSpread: 0
   rangedAttackCooldown: 1.5
   damageOverride: -1
+--- !u!114 &-7617909672465544168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4951492477783214425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c00b801216c36ef4b88568d8450c6577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

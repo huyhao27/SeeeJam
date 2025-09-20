@@ -35,22 +35,3 @@ public class SlowEffect : DurationEffect
         // Ví dụ: target.GetComponent<PlayerMovement>().moveSpeed /= slowFactor;
     }
 }
-
-public class StunEffect : DurationEffect
-{
-    public StunEffect(float duration) : base(duration) { }
-
-    public override void OnAttached(IAffectable target)
-    {
-        base.OnAttached(target);
-        // TODO: Vô hiệu hóa hành động của target (di chuyển, tấn công)
-        // Ví dụ: target.GetComponent<EnemyAI>().enabled = false;
-    }
-
-    public override void OnDetached(IAffectable target)
-    {
-        base.OnDetached(target);
-        // TODO: Cho phép target hành động trở lại
-        // Ví dụ: target.GetComponent<EnemyAI>().enabled = true;
-    }
-}

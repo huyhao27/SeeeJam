@@ -9,11 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52f6a080cf49d4b4ea48857106bc0957, type: 3}
-  m_Name: SKill3
+  m_Script: {fileID: 11500000, guid: c284005dcc599c14ea00a158c1582b0c, type: 3}
+  m_Name: Skill3
   m_EditorClassIdentifier: 
-  skillName: AoeWave
+  skillName: ShockwaveSkill
   cooldown: 1
   wavePrefab: {fileID: 7476872919195972662, guid: 00f31a124fdf4b24d83f96a123169381, type: 3}
-  finalRadius: 5
-  expandDuration: 0.5
+  expandDuration: 0.3
+  baseRadius: 4
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  buff_baseStunDuration: 1
+  buff1_upgradedStunDuration: 1.5
+  buff2_knockbackForce: 10
+  buff3_upgradedRadius: 10

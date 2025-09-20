@@ -1695,6 +1695,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4641313946777187659, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5208764564457755063, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
       propertyPath: m_BodyType
       value: 1
@@ -36593,6 +36597,10 @@ PrefabInstance:
       value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
+      propertyPath: poolsToCreate.Array.data[6].prefab
+      value: 
+      objectReference: {fileID: 7664709567143440899, guid: 0b795fd3e7613154192e2f42c9fca2d3, type: 3}
+    - target: {fileID: 6854877315903368294, guid: 99471592132d05649864aa49d172417e, type: 3}
       propertyPath: poolsToCreate.Array.data[8].prefab
       value: 
       objectReference: {fileID: 5188537918395097275, guid: 2a26e013b875c0f4d9141e2e3e096296, type: 3}
@@ -38015,9 +38023,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: {fileID: 1765756592}
   hpIndicator: {fileID: 1965761789}
-  maxHp: 50
-  currentHp: 50
-  isPlayerHp: 0
 --- !u!1 &2054580519
 GameObject:
   m_ObjectHideFlags: 0

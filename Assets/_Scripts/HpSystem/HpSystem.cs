@@ -1,42 +1,42 @@
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening; 
 
 public class HpSystem : MonoBehaviour
 {
-    [SerializeField] private Image hp;           // Thanh máu (Image type = Filled)
-    [SerializeField] private Image hpIndicator;  // Viền/khung nếu cần
-
-    [SerializeField] private float currentHp;
-    private float maxHp = 50f;
-
-    void Start()
+    [SerializeField] private Image hp;           
+    [SerializeField] private Image hpIndicator;  
+    
+    private void OnEnable()
     {
-        currentHp = maxHp;
-        UpdateBar();
+        EventBus.On(GameEvent.PlayerHealthUpdated, OnHealthUpdated);
     }
 
-    public void SetFill(float percent)
+    private void OnDisable()
     {
+        EventBus.Off(GameEvent.PlayerHealthUpdated, OnHealthUpdated);
+    }
+
+    private void OnHealthUpdated(object data)
+    {
+        if (data is object[] args && args.Length == 2 && args[0] is float currentHp && args[1] is float maxHp)
+        {
+            UpdateBar(currentHp, maxHp);
+        }
+    }
+
+    private void UpdateBar(float currentHp, float maxHp)
+    {
+        if (maxHp <= 0) return;
+
+        float percent = currentHp / maxHp;
         percent = Mathf.Clamp01(percent);
-        hp.fillAmount = percent;   // Đây chính là "filled" của UI Image
-    }
 
-    public void TakeDamage(float damage)
-    {
-        currentHp = Mathf.Max(0, currentHp - damage);
-        SetFill(currentHp / maxHp);
-    }
-
-    public void Heal(float amount)
-    {
-        currentHp = Mathf.Min(maxHp, currentHp + amount);
-        SetFill(currentHp / maxHp);
-    }
-
-    private void UpdateBar()
-    {
-        Debug.Log(currentHp / maxHp);
+        hp.DOFillAmount(percent, 0.2f).SetEase(Ease.OutCubic);
         
-        SetFill(currentHp / maxHp);
+        if (hpIndicator != null)
+        {
+            hpIndicator.DOFillAmount(percent, 0.5f).SetEase(Ease.OutCubic).SetDelay(0.3f);
+        }
     }
 }
