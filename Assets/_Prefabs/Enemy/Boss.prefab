@@ -186,6 +186,7 @@ MonoBehaviour:
   separationEnemyLayers:
     serializedVersion: 2
     m_Bits: 256
+  deathParticlePrefab: {fileID: 0}
   bossName: Boss
   skillIntervalBase: 5
   skillIntervalPhase2: 4
