@@ -21,3 +21,4 @@ MonoBehaviour:
   MaxHp: 50
   CollectRadius: 3
   DashCoolDown: 1
+  vitality: 1

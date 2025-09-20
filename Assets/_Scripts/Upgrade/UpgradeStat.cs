@@ -28,6 +28,9 @@ public class UpgradeStat : UpgradeBase
                 stats.NoteCount += (int)value;
                 EventBus.Emit(GameEvent.NoteCountChanged, stats.NoteCount);
                 break;
+            case StatType.Vitality:
+                stats.Vitality += (float)value;
+                break;
         }
     }
 }
@@ -38,4 +41,5 @@ public enum StatType
     MaxHpAndHeal,
     CollectRadius,
     NoteCount,
+    Vitality,
 }

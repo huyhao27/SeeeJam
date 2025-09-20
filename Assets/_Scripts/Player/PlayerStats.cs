@@ -14,6 +14,8 @@ public class PlayerStats : Singleton<PlayerStats>
     public float CollectRadius;
     public float DashCoolDown;
 
+    public float Vitality;
+
     public List<BaseSkill> Skills;
 
     protected override void Awake()
@@ -30,6 +32,7 @@ public class PlayerStats : Singleton<PlayerStats>
         CollectRadius = Data.CollectRadius;
         DashCoolDown = Data.DashCoolDown;
         Skills = new List<BaseSkill>(Data.Skills);
+        Vitality = Data.vitality;
     }
 
 }

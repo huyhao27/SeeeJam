@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eecb8864b8cf304c9e7cf47382a8f7c, type: 3}
+  m_Name: VitalityUpgrade
+  m_EditorClassIdentifier: 
+  upgradeName: Vitality Boost
+  description: Heal +1 Hp every 5 seconds
+  icon: {fileID: -1745388689213895477, guid: a7f0b1ba8cf5d584e9d59ed0835d8a07, type: 3}
+  statType: 4
+  value: 1
