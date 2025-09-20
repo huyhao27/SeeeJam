@@ -9,17 +9,40 @@ public class PlayerCollision : MonoBehaviour
         // check enemy
         if (collision.CompareTag("Enemy"))
         {
-            BaseEnemy comp = collision.gameObject.GetComponent<BaseEnemy>();
-            float dmg = (float)comp.ContactDamage;
-            EventBus.Emit(GameEvent.PlayerDamaged, dmg);
+            // Dự phòng: prefab có thể gắn collider trên child khác với BaseEnemy
+            BaseEnemy comp;
+            if (!collision.TryGetComponent<BaseEnemy>(out comp))
+            {
+                comp = collision.GetComponentInParent<BaseEnemy>();
+            }
+            if (comp != null)
+            {
+                float dmg = (float)comp.ContactDamage;
+                EventBus.Emit(GameEvent.PlayerDamaged, dmg);
+            }
+            else
+            {
+                Debug.LogWarning($"[PlayerCollision] Collider tag=Enemy nhưng không tìm thấy BaseEnemy trên {collision.name}. Kiểm tra prefab hoặc tag.");
+            }
         }
 
         // check đạn enemy
         if (collision.CompareTag("EnemyBullet"))
         {
-            EnemyBullet comp = collision.gameObject.GetComponent<EnemyBullet>();
-            float dmg = (float)comp.Damage;
-            EventBus.Emit(GameEvent.PlayerDamaged, dmg);
+            EnemyBullet bullet;
+            if (!collision.TryGetComponent<EnemyBullet>(out bullet))
+            {
+                bullet = collision.GetComponentInParent<EnemyBullet>();
+            }
+            if (bullet != null)
+            {
+                float dmg = bullet.Damage;
+                EventBus.Emit(GameEvent.PlayerDamaged, dmg);
+            }
+            else
+            {
+                Debug.LogWarning($"[PlayerCollision] Collider tag=EnemyBullet nhưng không tìm thấy EnemyBullet component trên {collision.name}.");
+            }
         }
     }
 }

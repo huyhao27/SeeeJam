@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 468032790893231335}
   - component: {fileID: 8726731267616412307}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Audio
-  m_TagString: Untagged
+  m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,9 +141,9 @@ GameObject:
   - component: {fileID: 3718360515113628995}
   - component: {fileID: 3883287413526674340}
   - component: {fileID: 4797563251961714161}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BossBomb
-  m_TagString: Untagged
+  m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
