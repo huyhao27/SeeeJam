@@ -359,8 +359,8 @@ MonoBehaviour:
   liftAmount: 20
   duration: 0.2
   description: {fileID: 497205563}
+  title: {fileID: 0}
   icon: {fileID: 1726985952}
-  Upgrade: {fileID: 0}
   CanSelect: 0
 --- !u!1 &34604758
 GameObject:
@@ -1452,28 +1452,10 @@ MonoBehaviour:
   - {fileID: 27562966}
   - {fileID: 1082728987}
   - {fileID: 908830419}
-  upgrades:
-  - {fileID: 11400000, guid: ea4ef699864008849a08fd98c49bf015, type: 2}
-  - {fileID: 11400000, guid: ea4ef699864008849a08fd98c49bf015, type: 2}
-  - {fileID: 11400000, guid: ea4ef699864008849a08fd98c49bf015, type: 2}
-  - {fileID: 11400000, guid: ea4ef699864008849a08fd98c49bf015, type: 2}
-  - {fileID: 11400000, guid: de47b4ce12fb54f4f872939b48fb90a5, type: 2}
+  statUpgrades:
   - {fileID: 11400000, guid: ea4ef699864008849a08fd98c49bf015, type: 2}
   - {fileID: 11400000, guid: de47b4ce12fb54f4f872939b48fb90a5, type: 2}
   - {fileID: 11400000, guid: 2b2cbacef0f7a5a4981d0f00d56f1ab7, type: 2}
-  - {fileID: 11400000, guid: 2b2cbacef0f7a5a4981d0f00d56f1ab7, type: 2}
-  - {fileID: 11400000, guid: 732242b7e7c7e7c46b4b7dbba6593c83, type: 2}
-  - {fileID: 11400000, guid: 732242b7e7c7e7c46b4b7dbba6593c83, type: 2}
-  - {fileID: 11400000, guid: 732242b7e7c7e7c46b4b7dbba6593c83, type: 2}
-  - {fileID: 11400000, guid: 2b2cbacef0f7a5a4981d0f00d56f1ab7, type: 2}
-  - {fileID: 11400000, guid: ea4ef699864008849a08fd98c49bf015, type: 2}
-  - {fileID: 11400000, guid: ea4ef699864008849a08fd98c49bf015, type: 2}
-  - {fileID: 11400000, guid: ea4ef699864008849a08fd98c49bf015, type: 2}
-  - {fileID: 11400000, guid: ea4ef699864008849a08fd98c49bf015, type: 2}
-  - {fileID: 11400000, guid: de47b4ce12fb54f4f872939b48fb90a5, type: 2}
-  - {fileID: 11400000, guid: de47b4ce12fb54f4f872939b48fb90a5, type: 2}
-  - {fileID: 11400000, guid: de47b4ce12fb54f4f872939b48fb90a5, type: 2}
-  - {fileID: 11400000, guid: ea4ef699864008849a08fd98c49bf015, type: 2}
   - {fileID: 11400000, guid: 732242b7e7c7e7c46b4b7dbba6593c83, type: 2}
   animator: {fileID: 523867133}
 --- !u!1 &525568671
@@ -2444,8 +2426,8 @@ MonoBehaviour:
   liftAmount: 20
   duration: 0.2
   description: {fileID: 831981256}
+  title: {fileID: 0}
   icon: {fileID: 119509304}
-  Upgrade: {fileID: 0}
   CanSelect: 0
 --- !u!1 &939192096
 GameObject:
@@ -3342,8 +3324,8 @@ MonoBehaviour:
   liftAmount: 20
   duration: 0.2
   description: {fileID: 1057175526}
+  title: {fileID: 0}
   icon: {fileID: 738137243}
-  Upgrade: {fileID: 0}
   CanSelect: 0
 --- !u!1 &1118169785
 GameObject:

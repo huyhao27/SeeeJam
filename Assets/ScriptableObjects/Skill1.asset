@@ -14,4 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Throw Bullet
   cooldown: 0.55
+  upgradeChain:
+  - {fileID: 11400000, guid: 7f27dab96d61088489a8ba8940932096, type: 2}
+  - {fileID: 11400000, guid: 24e01176df21c9a4b9386bb0209b735c, type: 2}
+  - {fileID: 11400000, guid: dd5f855ac7e649947aca69d6998f3e68, type: 2}
   bulletPrefab: {fileID: 636582734053345947, guid: c189a1488919f1642ad643f5f4b2b7d3, type: 3}
+  multiShotAngle: 15
+  doubleTapDelay: 0.11

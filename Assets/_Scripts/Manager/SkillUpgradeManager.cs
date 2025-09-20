@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SkillUpgradeManager : Singleton<SkillUpgradeManager>
 {
-    // Dictionary để lưu trữ cấp độ hiện tại của mỗi kỹ năng (ScriptableObject)
     private readonly Dictionary<BaseSkill, int> _skillLevels = new Dictionary<BaseSkill, int>();
 
     /// <summary>

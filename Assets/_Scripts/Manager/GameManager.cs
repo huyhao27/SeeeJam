@@ -94,7 +94,7 @@ public enum GameEvent
     GetXp,
     PlayerDamaged,
     PlayerHealthUpdated,
-
+    
     SelectUpgrade,
 
     LevelUp,
