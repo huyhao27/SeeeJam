@@ -1330,6 +1330,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: de47b4ce12fb54f4f872939b48fb90a5, type: 2}
   - {fileID: 11400000, guid: 2b2cbacef0f7a5a4981d0f00d56f1ab7, type: 2}
   - {fileID: 11400000, guid: 732242b7e7c7e7c46b4b7dbba6593c83, type: 2}
+  - {fileID: 11400000, guid: e4d37ac49dabe914c967e913a552077b, type: 2}
   animator: {fileID: 523867133}
 --- !u!1 &692223865
 GameObject:

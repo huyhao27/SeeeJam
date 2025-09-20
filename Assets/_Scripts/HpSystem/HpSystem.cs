@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 using DG.Tweening;
+using System;
 
 public class HpSystem : MonoBehaviour
 {
@@ -28,6 +29,18 @@ public class HpSystem : MonoBehaviour
         }
     }
 
+    private float vitality
+    {
+                get => PlayerStats.Instance ? PlayerStats.Instance.Vitality : 0f;
+        set
+        {
+            if (PlayerStats.Instance != null)
+            {
+                PlayerStats.Instance.Vitality = value;
+            }
+        }
+    }
+
     [SerializeField] private float currentHp;
 
     void Start()
@@ -45,9 +58,18 @@ public class HpSystem : MonoBehaviour
         {
             TakeDamage((float)amount);
         });
+
+        StartCoroutine(RunVitality());
     }
 
+    IEnumerator RunVitality()
+    {
+        yield return new WaitForSeconds(5f);
 
+        this.Heal(vitality);
+
+        StartCoroutine(RunVitality());
+    }
 
     public void SetFill(float percent)
     {

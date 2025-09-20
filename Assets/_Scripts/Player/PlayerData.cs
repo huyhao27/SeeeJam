@@ -15,4 +15,6 @@ public class PlayerData : ScriptableObject
     public float CollectRadius;
 
     public float DashCoolDown;
+
+    public float vitality;
 }
