@@ -166,5 +166,5 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 64
-  debugCollisions: 1
+  debugCollisions: 0
   damage: 3

@@ -55,8 +55,8 @@ public class BossOrbProjectile : BaseBullet
     {
         if (explosionRadius > 0)
         {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(transform.position, explosionRadius);
+            UnityEditor.Handles.color = Color.magenta;
+            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, explosionRadius);
         }
     }
 #endif
