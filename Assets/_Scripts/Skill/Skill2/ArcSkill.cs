@@ -46,7 +46,7 @@ public class ArcSkill : BaseSkill
 
         if (isWider)
         {
-            arc.transform.localScale *= buff1_scaleMultiplier;
+            arc.SetInitialScale(buff1_scaleMultiplier);
         }
 
         if (willExplode)
