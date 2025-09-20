@@ -8,13 +8,17 @@ public class GameOverPopup : Popup
 
     public void OnRetry()
     {
+        EventBus.ClearAll();
+        // Load lại scene hiện tại
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        // Reset time scale (phòng khi game bị pause)
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void OnMainMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(mainMenuSceneName); 
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 }
