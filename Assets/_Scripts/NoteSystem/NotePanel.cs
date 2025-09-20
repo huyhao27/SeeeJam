@@ -21,7 +21,11 @@ public class NotePanel : MonoBehaviour, IPointerClickHandler
     private int noteCount
     {
         get => PlayerStats.Instance != null ? PlayerStats.Instance.NoteCount : 1;
-        set { if (PlayerStats.Instance != null) PlayerStats.Instance.NoteCount = value; }
+        set { if (PlayerStats.Instance != null)
+            {
+                PlayerStats.Instance.NoteCount = value;
+                EventBus.Emit(GameEvent.NoteCountChanged, noteCount);
+            } }
     }
 
     void Start()

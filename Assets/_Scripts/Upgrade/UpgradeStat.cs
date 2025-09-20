@@ -26,6 +26,7 @@ public class UpgradeStat : UpgradeBase
                 break;
             case StatType.NoteCount:
                 stats.NoteCount += (int)value;
+                EventBus.Emit(GameEvent.NoteCountChanged, stats.NoteCount);
                 break;
         }
     }

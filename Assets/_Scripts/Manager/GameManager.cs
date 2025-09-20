@@ -94,7 +94,7 @@ public enum GameEvent
     GetXp,
     PlayerDamaged,
     PlayerHealthUpdated,
-    
+
     SelectUpgrade,
 
     LevelUp,
@@ -108,4 +108,6 @@ public enum GameEvent
     Heal,
 
     MaxHpChanged,
+    
+    NoteCountChanged,
 }
