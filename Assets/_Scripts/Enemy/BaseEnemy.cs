@@ -11,7 +11,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable, IAffectable
     [SerializeField] private float detectionRange = 6f;
     [SerializeField] private float attackRange = 1.4f;
     [SerializeField] private float attackCooldown = 1.2f;
-    [SerializeField] private float contactDamage = 5;
+    [SerializeField] private int contactDamage = 5;
 
     public float ContactDamage => contactDamage;
 
@@ -169,31 +169,31 @@ public class BaseEnemy : MonoBehaviour, IPoolable, IAffectable
         PoolManager.Instance.Despawn(this);
     }
 
-    public virtual void DropReward()
+public virtual void DropReward()
+{
+    int totalXp = xpReward;
+    if (xpRewardRandomRange.x > 0 || xpRewardRandomRange.y > 0)
     {
-        int totalXp = xpReward;
-        if (xpRewardRandomRange.x > 0 || xpRewardRandomRange.y > 0)
-        {
-            int min = Mathf.Min(xpRewardRandomRange.x, xpRewardRandomRange.y);
-            int max = Mathf.Max(xpRewardRandomRange.x, xpRewardRandomRange.y);
-            totalXp = Random.Range(min, max + 1);
-        }
-        if (totalXp <= 0 || XpManager.Instance == null) return;
-
-        int chunks = Mathf.Clamp(xpSpawnChunks, 1, 25);
-        int basePer = totalXp / chunks;
-        int remainder = totalXp - basePer * chunks;
-
-        for (int i = 0; i < chunks; i++)
-        {
-            int amountThis = basePer + (i < remainder ? 1 : 0);
-            if (amountThis <= 0) continue;
-
-            Vector2 offset = xpScatterRadius > 0f ? Random.insideUnitCircle * xpScatterRadius : Vector2.zero;
-            Vector3 spawnPos = transform.position + new Vector3(offset.x, offset.y, 0f);
-            XpManager.Instance.SpawnXpAt(xpPrefabLevel, spawnPos, amountThis);
-        }
+        int min = Mathf.Min(xpRewardRandomRange.x, xpRewardRandomRange.y);
+        int max = Mathf.Max(xpRewardRandomRange.x, xpRewardRandomRange.y);
+        totalXp = Random.Range(min, max + 1);
     }
+    if (totalXp <= 0 || XpManager.Instance == null) return;
+
+    // Chia totalXp thành các viên ngẫu nhiên từ 1-5
+    while (totalXp > 0)
+    {
+        int amountThis = Random.Range(1, 6); // random 1 → 5
+        if (amountThis > totalXp) amountThis = totalXp; // nếu dư thì lấy hết
+
+        // spawn
+        Vector2 offset = xpScatterRadius > 0f ? Random.insideUnitCircle * xpScatterRadius : Vector2.zero;
+        Vector3 spawnPos = transform.position + new Vector3(offset.x, offset.y, 0f);
+        XpManager.Instance.SpawnXpAt(amountThis, spawnPos);
+
+        totalXp -= amountThis; // trừ đi số đã phát sinh
+    }
+}
     #endregion
     #region AI Logic
     private void UpdateAI(float dt)
