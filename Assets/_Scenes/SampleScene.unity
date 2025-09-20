@@ -1158,6 +1158,10 @@ PrefabInstance:
       propertyPath: m_BodyType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6244416456596063461, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
+      propertyPath: dashDuration
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 7201830524325114646, guid: eaedd01b8cc9fd44aa72c930d00ef6f7, type: 3}
       propertyPath: m_IsTrigger
       value: 0
