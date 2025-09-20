@@ -70,7 +70,7 @@ public class BossBomb : MonoBehaviour, IPoolable
         {
             if (h.CompareTag("Player"))
             {
-                EventBus.Emit(GameEvent.PlayerDamaged, new object[]{ (int)damage, this.gameObject, h.gameObject });
+                EventBus.Emit(GameEvent.PlayerDamaged, (float)damage);
             }
         }
         // TODO: VFX / âm thanh
@@ -79,8 +79,8 @@ public class BossBomb : MonoBehaviour, IPoolable
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, triggerRadius);
+        UnityEditor.Handles.color = Color.yellow;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, triggerRadius);
     }
 #endif
 }

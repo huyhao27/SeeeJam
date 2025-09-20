@@ -162,13 +162,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8c42288ebd12b4eb63582376261e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 30
-  baseMoveSpeed: 2.5
-  detectionRange: 6.12
-  attackRange: -1.21
+  maxHp: 2000
+  baseMoveSpeed: 5
+  detectionRange: 26.5
+  attackRange: 17.68
   attackCooldown: 1.2
   contactDamage: 5
-  patrolSpeedMultiplier: 0.8
+  enableContactDamage: 1
+  attackDebugLog: 0
+  patrolSpeedMultiplier: 5
   patrolChangeDirInterval: {x: 1.5, y: 3.5}
   xpReward: 5
   xpPrefabLevel: 1
@@ -199,7 +201,7 @@ MonoBehaviour:
   orbExplosionRadius: 2.5
   bombPrefab: {fileID: 3883287413526674340, guid: 5537ce04289111f4d843560f70637c98, type: 3}
   bombCount: 6
-  bombSpawnRadius: 6
+  bombSpawnRadius: 15
   bombDamage: 20
   chargeWindup: 2
   chargeSpeed: 18
@@ -210,11 +212,11 @@ MonoBehaviour:
   rangedPrefab: {fileID: 5188537918395097275, guid: 2a26e013b875c0f4d9141e2e3e096296, type: 3}
   summonMeleeCount: 5
   summonRangedCount: 5
-  summonRadius: 5
+  summonRadius: 8.05
   logSkills: 1
   debugDetection: 1
-  debugIntervals: 1
-  debugOverlay: 1
+  debugIntervals: 0
+  debugOverlay: 0
   gizmoBombColor: {r: 1, g: 0.6, b: 0.1, a: 0.25}
   gizmoSummonColor: {r: 0.3, g: 0.8, b: 1, a: 0.15}
 --- !u!1 &4452887534372456269

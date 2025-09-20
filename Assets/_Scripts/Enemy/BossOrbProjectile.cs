@@ -38,7 +38,7 @@ public class BossOrbProjectile : BaseBullet
         {
             if (h.CompareTag("Player"))
             {
-                EventBus.Emit(GameEvent.PlayerDamaged, new object[]{ (int)damage, this.gameObject, h.gameObject });
+                EventBus.Emit(GameEvent.PlayerDamaged, (float)damage);
             }
         }
         // TODO: VFX explosion
@@ -55,8 +55,8 @@ public class BossOrbProjectile : BaseBullet
     {
         if (explosionRadius > 0)
         {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(transform.position, explosionRadius);
+            UnityEditor.Handles.color = Color.magenta;
+            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, explosionRadius);
         }
     }
 #endif
