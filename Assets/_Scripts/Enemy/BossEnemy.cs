@@ -76,11 +76,11 @@ public class BossEnemy : BaseEnemy
         EmitHpChanged();
     }
 
-    // public override void SetHp(int amount)
-    // {
-    //     base.SetHp(amount);
-    //     EmitHpChanged();
-    // }
+    public override void SetHp(int amount)
+    {
+        base.SetHp(amount);
+        EmitHpChanged();
+    }
 
     public void ApplyDamage(int dmg)
     {
@@ -147,25 +147,39 @@ public class BossEnemy : BaseEnemy
     {
         isCasting = true;
         if (!player || spreadBulletPrefab == null) { isCasting = false; yield break; }
+        if (logSkills) Debug.Log("[Boss][Skill1] Start Spread Volley");
         Vector2 dirToPlayer = (player.position - transform.position).normalized;
         for (int v = 0; v < volleyCount; v++)
         {
             FireSpreadVolley(dirToPlayer);
             yield return new WaitForSeconds(delayBetweenVolleys);
         }
+        if (logSkills) Debug.Log("[Boss][Skill1] End Spread Volley");
         isCasting = false;
     }
 
     private void FireSpreadVolley(Vector2 forward)
     {
-        if (bulletsPerVolley <= 0) return;
-        float half = (bulletsPerVolley - 1) * 0.5f;
+        if (bulletsPerVolley <= 0 || spreadBulletPrefab == null) return;
+
+        // Lấy hướng chuẩn ban đầu (forward đã chuẩn hóa bên ngoài)
+        // Ta muốn tạo một “fan” đều từ -spreadAngle/2 -> +spreadAngle/2
+        float totalAngle = spreadAngle;
+        float start = -totalAngle * 0.5f;
+        // Nếu chỉ 1 viên: bắn thẳng forward
+        if (bulletsPerVolley == 1)
+        {
+            var one = PoolManager.Instance.Spawn(spreadBulletPrefab, transform.position, Quaternion.LookRotation(Vector3.forward, forward));
+            if (one != null) one.Launch(forward);
+            return;
+        }
+
+        float step = totalAngle / (bulletsPerVolley - 1); // chia đều
         for (int i = 0; i < bulletsPerVolley; i++)
         {
-            float t = (i - half) / half; // -1 .. 1
-            float angle = t * (spreadAngle * 0.5f);
-            Vector2 dir = Quaternion.Euler(0,0,angle) * forward;
-            var bullet = PoolManager.Instance.Spawn(spreadBulletPrefab, transform.position, Quaternion.identity);
+            float ang = start + step * i; // góc hiện tại
+            Vector2 dir = Quaternion.Euler(0,0, ang) * forward;
+            var bullet = PoolManager.Instance.Spawn(spreadBulletPrefab, transform.position, Quaternion.LookRotation(Vector3.forward, dir));
             if (bullet != null)
             {
                 bullet.Launch(dir);
@@ -183,6 +197,7 @@ public class BossEnemy : BaseEnemy
         {
             orb.Setup(orbDamage, orbExplosionRadius);
             orb.Launch(dir);
+            if (logSkills) Debug.Log($"[Boss][Skill2] Spawn Orb dmg={orbDamage} radius={orbExplosionRadius} dir={dir}");
         }
         // orb tự xử lý nổ bằng lifetime
         yield return null;
@@ -193,6 +208,7 @@ public class BossEnemy : BaseEnemy
     {
         isCasting = true;
         if (bombPrefab == null) { isCasting = false; yield break; }
+        if (logSkills) Debug.Log($"[Boss][Skill3] Spawning {bombCount} bombs radius={bombSpawnRadius}");
         for (int i = 0; i < bombCount; i++)
         {
             Vector2 offset = Random.insideUnitCircle * bombSpawnRadius;
@@ -261,16 +277,35 @@ public class BossEnemy : BaseEnemy
         }
     }
 
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    protected override void DoAttack(Transform target)
     {
-        // Visualize bomb & summon radius
-        Gizmos.color = gizmoBombColor;
-        Gizmos.DrawWireSphere(transform.position, bombSpawnRadius);
-        Gizmos.color = gizmoSummonColor;
-        Gizmos.DrawWireSphere(transform.position, summonRadius);
+        // Override để vô hiệu hóa contact damage mặc định (boss chỉ gây damage qua skill)
+        // Nếu muốn cho boss cắn/quất sát thương gần thì bật lại logic base bằng cách gọi base.DoAttack(target);
+        // Giữ cooldown để state máy không spam.
+        attackTimer = 0.75f; // cooldown ngắn nhẹ để boss vẫn đổi state
+        if (logSkills)
+        {
+            Debug.Log($"[Boss] Suppressed base contact attack vs {target?.name} (no direct contact damage)");
+        }
     }
+
+    private void OnDrawGizmos()
+    {
+#if UNITY_EDITOR
+        // Dùng Handles.DrawWireDisc để đồng bộ 2D (như BaseEnemy)
+        UnityEditor.Handles.color = new Color(1f, 0.9f, 0f, 0.9f);
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, 6f); // detection fallback
+
+        UnityEditor.Handles.color = new Color(1f, 0f, 0f, 0.9f);
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, 1.4f); // attack fallback
+
+        UnityEditor.Handles.color = gizmoBombColor;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, bombSpawnRadius);
+
+        UnityEditor.Handles.color = gizmoSummonColor;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, summonRadius);
 #endif
+    }
 
     private void OnGUI()
     {

@@ -28,7 +28,9 @@ public class PlayerXpCollector : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, pickupRange);
+#if UNITY_EDITOR
+        UnityEditor.Handles.color = Color.yellow;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, pickupRange);
+#endif
     }
 }

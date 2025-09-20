@@ -78,10 +78,12 @@ public class ArcBullet : BaseBullet
 
     private void OnDrawGizmosSelected()
     {
-        if (_explodesOnDeath)
+#if UNITY_EDITOR
+        if (_explodesOnDeath && _explosionRadius > 0f)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _explosionRadius);
+            UnityEditor.Handles.color = Color.red;
+            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, _explosionRadius);
         }
+#endif
     }
 }

@@ -12,6 +12,12 @@ public class BaseEnemy : MonoBehaviour, IPoolable, IAffectable
     [SerializeField] private float attackRange = 1.4f;
     [SerializeField] private float attackCooldown = 1.2f;
     [SerializeField] private int contactDamage = 5;
+    [Tooltip("Bật tắt gây damage tiếp xúc khi trong attack range. Tắt để enemy chỉ gây damage bằng skill khác.")]
+    [SerializeField] protected bool enableContactDamage = true;
+
+    [Header("Attack Debug")] 
+    [Tooltip("In ra log mỗi lần enemy thực hiện DoAttack (tiện debug mất máu không rõ nguyên nhân).")]
+    [SerializeField] private bool attackDebugLog = false;
 
     public float ContactDamage => contactDamage;
 
@@ -142,7 +148,7 @@ public class BaseEnemy : MonoBehaviour, IPoolable, IAffectable
     {
         isStunned = stunned;
     }
-    public void SetHp(int amount)
+    public virtual void SetHp(int amount)
     {
         currentHp = Mathf.Clamp(amount, 0, maxHp);
         if (currentHp <= 0) Die();
@@ -355,7 +361,14 @@ public virtual void DropReward()
     {
         if (target == null) return;
         rb.velocity = Vector2.zero;
-        EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
+        if (enableContactDamage)
+        {
+            EventBus.Emit(GameEvent.PlayerDamaged, new object[] { contactDamage, this.gameObject, target.gameObject });
+        }
+        if (attackDebugLog)
+        {
+            Debug.Log($"[Enemy:{name}] DoAttack -> target={target.name} dmg={(enableContactDamage ? contactDamage : 0)} enableContactDamage={enableContactDamage} time={Time.time:F2}");
+        }
         attackTimer = attackCooldown;
     }
     #endregion

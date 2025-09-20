@@ -79,8 +79,8 @@ public class BossBomb : MonoBehaviour, IPoolable
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, triggerRadius);
+        UnityEditor.Handles.color = Color.yellow;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, triggerRadius);
     }
 #endif
 }
