@@ -9,7 +9,7 @@ public enum GameState
     Playing,
     Paused,
     GameOver,
-    Win, 
+    Win,
     Tutorial,
 }
 
@@ -62,6 +62,10 @@ public class GameManager : Singleton<GameManager>
                 Time.timeScale = 0f;
                 PopupManager.Instance.ShowPopup<Tutorial>();
                 break;
+            case GameState.Win:
+                Time.timeScale = 0f;
+                PopupManager.Instance.ShowPopup<WinPopup>();
+                break;
         }
 
         OnGameStateChanged?.Invoke(newState);
@@ -106,6 +110,6 @@ public enum GameEvent
     Heal,
 
     MaxHpChanged,
-    
+
     NoteCountChanged,
 }

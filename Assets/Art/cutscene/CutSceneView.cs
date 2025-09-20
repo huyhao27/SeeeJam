@@ -30,6 +30,11 @@ public class CutSceneView : MonoBehaviour
 
         // Bắt đầu slideshow
         StartCoroutine(PlayCutScenes());
+
+        if (PlayerPrefs.GetInt("Done") == 1)
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
     }
 
     private IEnumerator PlayCutScenes()
@@ -99,6 +104,11 @@ public class CutSceneView : MonoBehaviour
 
         if (!string.IsNullOrEmpty(nextSceneName))
         {
+            #if UNITY_EDITOR
+
+            #else
+            PlayerPrefs.SetInt("Done", 1);
+            #endif
             SceneManager.LoadScene(nextSceneName);
         }
     }
