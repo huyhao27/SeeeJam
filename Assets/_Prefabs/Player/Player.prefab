@@ -5269,7 +5269,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3464809050425438483}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -5300,8 +5300,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feead5c07fa3d824a87c661870e0d389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseData: {fileID: 11400000, guid: c8d7c74b62c5b244ab11211207ebcb9c, type: 2}
   _data: {fileID: 11400000, guid: c8d7c74b62c5b244ab11211207ebcb9c, type: 2}
+  MoveSpeed: 0
+  MaxHp: 0
+  NoteCount: 0
+  CollectRadius: 0
+  DashCoolDown: 0
+  Skills: []
 --- !u!114 &8677844241782549908
 MonoBehaviour:
   m_ObjectHideFlags: 0

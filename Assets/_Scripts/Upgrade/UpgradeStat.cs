@@ -22,7 +22,7 @@ public class UpgradeStat : UpgradeBase
                 stats.CollectRadius += value;
                 break;
             case StatType.NoteCount:
-                stats.Data.NoteCount += (int)value;
+                stats.NoteCount += (int)value;
                 break;
                 // thêm case khác...
         }

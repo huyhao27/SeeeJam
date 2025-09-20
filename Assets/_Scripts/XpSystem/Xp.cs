@@ -6,14 +6,15 @@ public class Xp : MonoBehaviour
     [SerializeField] private float amount;
     private bool isCollected = false;
 
+    void OnEnable()
+    {
+        isCollected = false;
+    }
+
     public void Collect(Transform player)
     {
         if (isCollected) return;
         isCollected = true;
-
-        // disable collider để không collect nhiều lần
-        Collider2D col = GetComponent<Collider2D>();
-        if (col) col.enabled = false;
 
         // gắn làm child của player
         transform.SetParent(player);

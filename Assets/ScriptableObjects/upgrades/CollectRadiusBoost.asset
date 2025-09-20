@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5eecb8864b8cf304c9e7cf47382a8f7c, type: 3}
-  m_Name: BonusNote
+  m_Name: CollectRadiusBoost
   m_EditorClassIdentifier: 
-  upgradeName: Bonus Note
-  description: + 1 Note
-  icon: {fileID: 774616702218211805, guid: fffbabb245ead3341b4bcbbfcc417724, type: 3}
-  statType: 3
+  upgradeName: Collect Radius Boost
+  description: Boost Collect Radius 30%
+  icon: {fileID: -1105823635228992846, guid: 46184ad1168a3b94dac5a4391182453f, type: 3}
+  statType: 2
   value: 1
