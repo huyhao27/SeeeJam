@@ -18,7 +18,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 272c8f8a0df5a42419203599a06fb1f2, type: 2}
   - {fileID: 11400000, guid: 58285f6e0420af4409014b011147238a, type: 2}
   NoteCount: 1
-  MaxHp: 500
+  MaxHp: 50
   CollectRadius: 3
   DashCoolDown: 1
   vitality: 1
