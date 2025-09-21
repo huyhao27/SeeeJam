@@ -25,13 +25,6 @@ public class GameManager : Singleton<GameManager>
         // ChangeState(GameState.Playing);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            RestartGame();
-        }
-    }
 
     public void ChangeState(GameState newState)
     {
