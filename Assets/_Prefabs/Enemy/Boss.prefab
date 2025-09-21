@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8c42288ebd12b4eb63582376261e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 2000
+  maxHp: 5000
   baseMoveSpeed: 5
   detectionRange: 27.5
   attackRange: 13.6

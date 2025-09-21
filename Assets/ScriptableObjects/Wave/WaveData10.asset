@@ -15,7 +15,7 @@ MonoBehaviour:
   startTimePercentage: 0.9
   spawnInterval: 1
   spawnCountPerTick: 8
-  totalEnemyCount: 200
-  enemyTypeA: {fileID: 5007396094847522767, guid: 882677f3e83032c46b982cefb9fa7c06, type: 3}
-  ratioTypeA: 0.4
+  totalEnemyCount: 2
+  enemyTypeA: {fileID: 406277185003107197, guid: f2c6c8b3a3d1c7d4fb2a129685d85f13, type: 3}
+  ratioTypeA: 0.5
   enemyTypeB: {fileID: 8807301733000379759, guid: ca9f1458a2a90f4429ed144c29a4ce36, type: 3}
