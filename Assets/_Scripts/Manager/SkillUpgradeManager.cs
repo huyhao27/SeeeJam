@@ -5,18 +5,14 @@ public class SkillUpgradeManager : Singleton<SkillUpgradeManager>
 {
     private readonly Dictionary<BaseSkill, int> _skillLevels = new Dictionary<BaseSkill, int>();
 
-    /// <summary>
-    /// Lấy cấp độ hiện tại của một kỹ năng. Mặc định là 0 nếu chưa được nâng cấp.
-    /// </summary>
+ 
     public int GetSkillLevel(BaseSkill skill)
     {
         _skillLevels.TryGetValue(skill, out int level);
         return level;
     }
 
-    /// <summary>
-    /// Nâng cấp một kỹ năng lên 1 cấp.
-    /// </summary>
+
     public void UpgradeSkill(BaseSkill skill)
     {
         if (skill == null) return;
@@ -33,33 +29,25 @@ public class SkillUpgradeManager : Singleton<SkillUpgradeManager>
         Debug.Log($"<color=cyan>ĐÃ NÂNG CẤP:</color> Kỹ năng '{skill.SkillName}' lên <color=yellow>Cấp độ {GetSkillLevel(skill)}</color>!");
     }
 
-    /// <summary>
-    /// Reset toàn bộ cấp độ kỹ năng.
-    /// </summary>
     public void ResetAllSkillLevels()
     {
         _skillLevels.Clear();
         Debug.Log("Đã reset cấp độ của tất cả kỹ năng.");
     }
 
-    // --- THÊM MỚI: CHỨC NĂNG DEBUG ---
-    // Đoạn code này sẽ chỉ chạy trong Unity Editor
 #if UNITY_EDITOR
     private void Update()
     {
-        // Nhấn phím '1' để nâng cấp Skill 1
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             UpgradeSkillByIndex(0);
         }
 
-        // Nhấn phím '2' để nâng cấp Skill 2
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             UpgradeSkillByIndex(1);
         }
 
-        // Nhấn phím '3' để nâng cấp Skill 3
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             UpgradeSkillByIndex(2);
@@ -83,5 +71,4 @@ public class SkillUpgradeManager : Singleton<SkillUpgradeManager>
         }
     }
 #endif
-    // --- KẾT THÚC PHẦN THÊM MỚI ---
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 624ef5858bdb98744912d214f8b7a4d6, type: 3}
   m_Name: LevelData
   m_EditorClassIdentifier: 
-  levelDuration: 600
+  levelDuration: 1200
   waves:
   - {fileID: 11400000, guid: 8966c440f73c7b34e92dc29bdbc49440, type: 2}
   - {fileID: 11400000, guid: 70f53b4b4c3f95840afbf007c6c52067, type: 2}
