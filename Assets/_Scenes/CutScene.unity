@@ -682,10 +682,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\"In the heart of the world lies Harmonia \u2014 a city where music is
-    the very lifeblood of its people. Here, every street resonates with rhythm, every
-    light dances in harmony. The city never sleeps, forever alive with song and radiant
-    with brilliance.\""
+  m_text: '"In the heart of the world lies Harmonia - a city where music is the very
+    lifeblood of its people. Here, every street resonates with rhythm, every light
+    dances in harmony. The city never sleeps, forever alive with song and radiant
+    with brilliance."'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 07d67f226b3ee4a48976cee6bb9d94d0, type: 2}
   m_sharedMaterial: {fileID: -3334432252046615984, guid: 07d67f226b3ee4a48976cee6bb9d94d0, type: 2}
@@ -1426,8 +1426,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\"Cornered in a narrow alley, the protagonist hides as the maddened search
     for the last fragments of harmony. From the shadows, the Prism Core\u2019s spirit
-    glows, casting a protective aura\u2014now, the fight to survive and save the
-    city begins.\""
+    glows, casting a protective aura-now, the fight to survive and save the city
+    begins.\""
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 07d67f226b3ee4a48976cee6bb9d94d0, type: 2}
   m_sharedMaterial: {fileID: -3334432252046615984, guid: 07d67f226b3ee4a48976cee6bb9d94d0, type: 2}
@@ -1985,7 +1985,7 @@ Transform:
   m_GameObject: {fileID: 1684464722}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45708.94, y: 43792.332, z: -467150.9}
+  m_LocalPosition: {x: 46674.223, y: 44717.105, z: -477016.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
